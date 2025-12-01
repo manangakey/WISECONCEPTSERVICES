@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Discutons de votre projet</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Identique -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Logo" class="logo">
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="formations.html" class="nav-link">Formations</a>
+                <a href="portfolio.html" class="nav-link">Portfolio</a>
+                <a href="contact.html" class="nav-link active">Contact</a>
+            </div>
+            <div class="nav-cta">
+                <a href="#contact-form" class="btn btn-primary">Nous contacter</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Contact -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Parlons de votre 
+                    <span class="text-orange">projet</span>
+                </h1>
+                <p class="hero-description">
+                    Que vous soyez intéressé par nos formations ou nos services professionnels, 
+                    nous sommes là pour vous accompagner. Choisissez le formulaire adapté à vos besoins.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sélecteur de Formulaire -->
+    <section class="form-selector">
+        <div class="container">
+            <div class="selector-tabs">
+                <button class="tab-btn active" data-tab="formation">
+                    <div class="tab-icon">🎓</div>
+                    <div class="tab-content">
+                        <h3>Inscription Formation</h3>
+                        <p>Pour les particuliers souhaitant développer leurs compétences</p>
+                    </div>
+                </button>
+                <button class="tab-btn" data-tab="service">
+                    <div class="tab-icon">💼</div>
+                    <div class="tab-content">
+                        <h3>Demande de Service Pro</h3>
+                        <p>Pour les entreprises cherchant des solutions professionnelles</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Formulaire de Contact -->
+    <section id="contact-form" class="contact-form-section">
+        <div class="container">
+            <div class="form-container">
+                <!-- Formulaire Formations (B2C) -->
+                <form id="formation-form" class="contact-form active" data-type="formation">
+                    <div class="form-header">
+                        <h2>Inscription à une formation</h2>
+                        <p>Remplissez ce formulaire pour vous inscrire à l'une de nos formations</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="formation-nom">Nom complet *</label>
+                            <input type="text" id="formation-nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="formation-email">Email *</label>
+                            <input type="email" id="formation-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="formation-telephone">Téléphone *</label>
+                            <input type="tel" id="formation-telephone" name="telephone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="formation-entreprise">Entreprise (optionnel)</label>
+                            <input type="text" id="formation-entreprise" name="entreprise">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="formation-choix">Formation souhaitée *</label>
+                            <select id="formation-choix" name="formation" required>
+                                <option value="">Choisissez une formation</option>
+                                <option value="photoshop">Adobe Photoshop - Débutant (350€)</option>
+                                <option value="video">Montage Vidéo Professionnel (600€)</option>
+                                <option value="community">Community Management (450€)</option>
+                                <option value="office">Suite Office Avancée (300€)</option>
+                                <option value="seo">SEO Expert (750€)</option>
+                                <option value="crea">Créa Publicitaire (500€)</option>
+                                <option value="autre">Autre formation</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="formation-message">Message ou questions particulières</label>
+                            <textarea id="formation-message" name="message" rows="4" placeholder="Précisez vos attentes, votre niveau actuel, ou toute question..."></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="newsletter" checked>
+                                <span class="checkmark"></span>
+                                Je souhaite recevoir les newsletters et offres promotionnelles
+                            </label>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="conditions" required>
+                                <span class="checkmark"></span>
+                                J'accepte les conditions générales et la politique de confidentialité *
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <span class="btn-text">S'inscrire à la formation</span>
+                            <span class="btn-loading">Traitement...</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Formulaire Services (B2B) -->
+                <form id="service-form" class="contact-form" data-type="service">
+                    <div class="form-header">
+                        <h2>Demande de service professionnel</h2>
+                        <p>Décrivez votre projet et nous vous recontacterons sous 24h</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="service-nom">Nom complet *</label>
+                            <input type="text" id="service-nom" name="nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-entreprise">Entreprise *</label>
+                            <input type="text" id="service-entreprise" name="entreprise" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-email">Email professionnel *</label>
+                            <input type="email" id="service-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-telephone">Téléphone *</label>
+                            <input type="tel" id="service-telephone" name="telephone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-poste">Poste occupé</label>
+                            <input type="text" id="service-poste" name="poste" placeholder="Directeur, Chef de projet...">
+                        </div>
+                        <div class="form-group">
+                            <label for="service-site">Site web (optionnel)</label>
+                            <input type="url" id="service-site" name="siteweb" placeholder="https://">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="service-type">Type de service recherché *</label>
+                            <select id="service-type" name="service_type" required>
+                                <option value="">Choisissez un service</option>
+                                <option value="design">Design Graphique</option>
+                                <option value="it">Support IT</option>
+                                <option value="marketing">Marketing Digital</option>
+                                <option value="formation">Formation en entreprise</option>
+                                <option value="multiple">Plusieurs services</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="service-budget">Budget estimé</label>
+                            <select id="service-budget" name="budget">
+                                <option value="">Choisissez une fourchette</option>
+                                <option value="500-1000">500€ - 1 000€</option>
+                                <option value="1000-2500">1 000€ - 2 500€</option>
+                                <option value="2500-5000">2 500€ - 5 000€</option>
+                                <option value="5000+">Plus de 5 000€</option>
+                                <option value="indetermine">À déterminer</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="service-description">Description du projet *</label>
+                            <textarea id="service-description" name="description" rows="5" required placeholder="Décrivez votre projet en détail : objectifs, délais, spécificités..."></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="devis" checked>
+                                <span class="checkmark"></span>
+                                Je souhaite recevoir un devis détaillé
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <span class="btn-text">Envoyer la demande</span>
+                            <span class="btn-loading">Traitement...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Informations de Contact -->
+    <section class="contact-info">
+        <div class="container">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">📧</div>
+                    <h3>Email</h3>
+                    <p>contact@wiseconceptservices.com</p>
+                    <span>Réponse sous 24h</span>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📞</div>
+                    <h3>Téléphone</h3>
+                    <p>+243 822 229 286</p>
+                    <span>Lun-Ven 9h-18h</span>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">💬</div>
+                    <h3>Messagerie</h3>
+                    <p>WhatsApp & Messenger</p>
+                    <span>Support instantané</span>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🕒</div>
+                    <h3>Disponibilité</h3>
+                    <p>Réunions en ligne</p>
+                    <span>Sur rendez-vous</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="contact-faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Questions fréquentes</h2>
+                <p>Quelques réponses aux questions les plus courantes</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Quels sont les délais de réponse ?</h4>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nous répondons à toutes les demandes sous 24 heures ouvrées. Pour les urgences, privilégiez l'appel téléphonique.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Proposez-vous des formations en entreprise ?</h4>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui, nous adaptons toutes nos formations pour des sessions intra-entreprise, sur site ou en ligne.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Quelle est votre zone d'intervention ?</h4>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Nous travaillons principalement à distance pour les services digitaux. Pour les formations, nous intervenons dans toute la France.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Acceptez-vous les projets urgents ?</h4>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Oui, nous avons des créneaux dédiés aux projets urgents. Contactez-nous par téléphone pour en discuter.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="contact-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Prêt à démarrer ?</h2>
+                <p>N'attendez plus pour concrétiser vos projets digitaux</p>
+                <div class="cta-buttons">
+                    <a href="tel:+243 822 229 286" class="btn btn-primary">
+                        <span>📞</span> Nous appeler
+                    </a>
+                    <a href="mailto:contact@wiseconceptservices.com" class="btn btn-secondary">
+                        <span>📧</span> Envoyer un email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Identique -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="Logo" class="footer-logo">
+                    </a>
+                    <p>Expert en solutions digitales créatives et innovantes</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Rapide</h4>
+                    <a href="mailto:contact@wiseconceptservices.com">📧 votre@email.com</a>
+                    <a href="tel:+243822229286">📞 +283 822 229 286</a>
+                    <a href="https://wa.me/XXXXXXXXXX">💬 WhatsApp</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens Utiles</h4>
+                    <a href="portfolio.html">Portfolio</a>
+                    <a href="services.html">Services</a>
+                    <a href="formations.html">Formations</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wise Concept Services. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Confirmation -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content confirmation-modal">
+            <div class="confirmation-icon">✅</div>
+            <h3 id="confirmation-title">Message envoyé !</h3>
+            <p id="confirmation-message">Nous vous recontacterons très rapidement.</p>
+            <button class="btn btn-primary" onclick="closeConfirmation()">Parfait</button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/contact.js"></script>
+<!-- Bouton Retour en haut -->
+<button id="back-to-top" class="back-to-top" aria-label="Retour en haut">
+    <i class="fas fa-chevron-up"></i> <!-- Pour Font Awesome -->
+</button>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Nos Réalisations</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Identique -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Logo" class="logo">
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="formations.html" class="nav-link">Formations</a>
+                <a href="portfolio.html" class="nav-link active">Portfolio</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-cta">
+                <a href="contact.html" class="btn btn-primary">Commencer</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Portfolio -->
+    <section class="portfolio-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Notre 
+                    <span class="text-orange">Portfolio</span>
+                </h1>
+                <p class="hero-description">
+                    Découvrez une sélection de nos réalisations en design graphique, montage vidéo et créations digitales. 
+                    Chaque projet raconte une histoire unique.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistiques -->
+    <section class="portfolio-stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Projets Réalisés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Clients Satisfaits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3+</div>
+                    <div class="stat-label">Années d'Expérience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Taux de Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galerie Portfolio -->
+    <section class="portfolio-gallery">
+        <div class="container">
+            <!-- Filtres -->
+            <div class="portfolio-filters">
+                <button class="portfolio-filter active" data-filter="all">Tous</button>
+                <button class="portfolio-filter" data-filter="logos">Logos</button>
+                <button class="portfolio-filter" data-filter="affiches">Affiches</button>
+                <button class="portfolio-filter" data-filter="flyers">Flyers</button>
+                <button class="portfolio-filter" data-filter="videos">Vidéos</button>
+                <button class="portfolio-filter" data-filter="montage">Montage</button>
+                <button class="portfolio-filter" data-filter="design">Design Digital</button>
+            </div>
+
+            <!-- Grid Portfolio -->
+            <div class="gallery-grid">
+                <!-- Logo 1 -->
+                <div class="gallery-item" data-category="logos">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container logo-placeholder">
+                                <span>Logo Restaurant</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('logo1')">
+                                    <span>👁</span> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Logo "Gusto Italiano"</h3>
+                            <p>Restaurant italien - Identité visuelle complète</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Logo</span>
+                                <span class="tag">Restaurant</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Affiche 1 -->
+                <div class="gallery-item" data-category="affiches">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container affiche-placeholder">
+                                <span>Affiche Concert</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('affiche1')">
+                                    <span>👁</span> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Affiche Concert Jazz</h3>
+                            <p>Festival de musique - Design rétro moderne</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Affiche</span>
+                                <span class="tag">Événement</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flyer 1 -->
+                <div class="gallery-item" data-category="flyers">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container flyer-placeholder">
+                                <span>Flyer Promotion</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('flyer1')">
+                                    <span>👁</span> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Flyer Soldes d'Été</h3>
+                            <p>Boutique de mode - Promotion saisonnière</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Flyer</span>
+                                <span class="tag">Commercial</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vidéo 1 -->
+                <div class="gallery-item" data-category="videos">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container video-placeholder">
+                                <span>🎬 Vidéo Corporate</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('video1')">
+                                    <span>▶</span> Regarder
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Vidéo Corporate TechStart</h3>
+                            <p>Présentation entreprise - Motion design</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Vidéo</span>
+                                <span class="tag">Corporate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logo 2 -->
+                <div class="gallery-item" data-category="logos">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container logo-placeholder">
+                                <span>Logo Startup</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('logo2')">
+                                    <span>👁</span> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Logo "InnovLabs"</h3>
+                            <p>Startup technologique - Design futuriste</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Logo</span>
+                                <span class="tag">Tech</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Affiche 2 -->
+                <div class="gallery-item" data-category="affiches">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container affiche-placeholder">
+                                <span>Affiche Festival</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('affiche2')">
+                                    <span>👁</span> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Affiche Festival Art</h3>
+                            <p>Événement culturel - Design artistique</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Affiche</span>
+                                <span class="tag">Culture</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Montage 1 -->
+                <div class="gallery-item" data-category="montage">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container montage-placeholder">
+                                <span>Montage Vidéo</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('montage1')">
+                                    <span>▶</span> Regarder
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Montage Mariage</h3>
+                            <p>Reportage événementiel - Montage émotionnel</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Montage</span>
+                                <span class="tag">Événement</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Design Digital -->
+                <div class="gallery-item" data-category="design">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container design-placeholder">
+                                <span>UI/Design App</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('design1')">
+                                    <span>👁</span> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Interface Application</h3>
+                            <p>Design d'application mobile - UX/UI moderne</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Digital</span>
+                                <span class="tag">UI/UX</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flyer 2 -->
+                <div class="gallery-item" data-category="flyers">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container flyer-placeholder">
+                                <span>Flyer Formation</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('flyer2')">
+                                    <span>👁</span> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Flyer Workshop Digital</h3>
+                            <p>Formation professionnelle - Design informatif</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Flyer</span>
+                                <span class="tag">Éducation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vidéo 2 -->
+                <div class="gallery-item" data-category="videos">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container video-placeholder">
+                                <span>🎬 Tutoriel</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('video2')">
+                                    <span>▶</span> Regarder
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Tutoriel Photoshop</h3>
+                            <p>Formation en ligne - Pédagogie visuelle</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Vidéo</span>
+                                <span class="tag">Éducation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logo 3 -->
+                <div class="gallery-item" data-category="logos">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container logo-placeholder">
+                                <span>Logo Café</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('logo3')">
+                                    <span>👁</span> Voir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Logo "Café Culture"</h3>
+                            <p>Salon de thé - Design chaleureux</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Logo</span>
+                                <span class="tag">Food</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Montage 2 -->
+                <div class="gallery-item" data-category="montage">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <div class="image-container montage-placeholder">
+                                <span>Clip Musical</span>
+                            </div>
+                            <div class="portfolio-overlay">
+                                <button class="view-btn" onclick="openLightbox('montage2')">
+                                    <span>▶</span> Regarder
+                                </button>
+                            </div>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Clip Artistique</h3>
+                            <p>Production musicale - Montage créatif</p>
+                            <div class="portfolio-tags">
+                                <span class="tag">Montage</span>
+                                <span class="tag">Musique</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="portfolio-testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Ce que disent nos clients</h2>
+                <p>Retours d'expérience sur nos collaborations</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"Le logo créé pour notre restaurant a parfaitement capturé notre identité. Professionnalisme et créativité au rendez-vous !"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">🍝</div>
+                        <div class="author-info">
+                            <h4>Marco Lombardi</h4>
+                            <p>Propriétaire - Gusto Italiano</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"La vidéo corporate a considérablement boosté notre image de marque. Un travail d'une qualité exceptionnelle."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">💼</div>
+                        <div class="author-info">
+                            <h4>Sarah Chen</h4>
+                            <p>CEO - TechStart</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"Les affiches pour notre festival ont été un véritable succès. Design percutant et délais respectés."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">🎭</div>
+                        <div class="author-info">
+                            <h4>Thomas Dubois</h4>
+                            <p>Directeur Artistique</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Portfolio -->
+    <section class="portfolio-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Inspiré par nos réalisations ?</h2>
+                <p>Discutons de votre prochain projet créatif</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-primary">Démarrer un projet</a>
+                    <a href="services.html" class="btn btn-secondary">Voir nos services</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Identique -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="Logo" class="footer-logo">
+                    </a>
+                    <p>Expert en solutions digitales créatives et innovantes</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Portfolio</h4>
+                    <a href="#logos">Logos</a>
+                    <a href="#affiches">Affiches</a>
+                    <a href="#videos">Vidéos</a>
+                    <a href="#design">Design Digital</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: contact@wiseconceptservices.com</p>
+                    <p>Tél: +243 822 229 286</p>
+ 			<div class="social-links">
+    				<a href="https://facebook.com/votrepage" target="_blank" class="social-link" title="Facebook">
+        				<i class="fab fa-facebook-f"></i>
+    				</a>
+    				<a href="https://linkedin.com/in/votreprofil" target="_blank" class="social-link" title="LinkedIn">
+        				<i class="fab fa-linkedin-in"></i>
+    				</a>
+    				<a href="https://instagram.com/votrecompte" target="_blank" class="social-link" title="Instagram">
+        				<i class="fab fa-instagram"></i>
+    				</a>
+    				<a href="https://twitter.com/votrecompte" target="_blank" class="social-link" title="Twitter">
+        				<i class="fab fa-twitter"></i>
+    				</a>
+    				<a href="https://youtube.com/votrechaine" target="_blank" class="social-link" title="YouTube">
+        				<i class="fab fa-youtube"></i>
+    				</a>
+			</div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wise Concept Services. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="close-lightbox">&times;</span>
+            <div class="lightbox-body">
+                <div class="lightbox-image">
+                    <div class="lightbox-placeholder">
+                        <span>Votre réalisation s'affichera ici</span>
+                    </div>
+                </div>
+                <div class="lightbox-info">
+                    <h3 id="lightbox-title">Titre du projet</h3>
+                    <p id="lightbox-description">Description du projet</p>
+                    <div class="lightbox-tags" id="lightbox-tags"></div>
+                    <div class="lightbox-actions">
+                        <button class="btn btn-primary">Voir le projet complet</button>
+                        <button class="btn btn-secondary">Partager</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/portfolio.js"></script>
+<!-- Bouton Retour en haut -->
+<button id="back-to-top" class="back-to-top" aria-label="Retour en haut">
+    <i class="fas fa-chevron-up"></i> <!-- Pour Font Awesome -->
+</button>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formations | Design, IT & Digital</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Identique -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="assets/images/logo.png" alt="Logo" class="logo">
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="services.html" class="nav-link">Services</a>
+                <a href="formations.html" class="nav-link active">Formations</a>
+                <a href="portfolio.html" class="nav-link">Portfolio</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-cta">
+                <a href="contact.html" class="btn btn-primary">Commencer</a>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Formations -->
+    <section class="formations-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Formations 
+                    <span class="text-orange">Professionnelles</span>
+                </h1>
+                <p class="hero-description">
+                    Développez vos compétences digitales avec nos formations pratiques et adaptées. 
+                    De la conception graphique au marketing digital, devenez expert dans votre domaine.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalogue Formations -->
+    <section class="formations-catalog">
+        <div class="container">
+            <div class="section-header">
+                <h2>Notre Catalogue de Formations</h2>
+                <p>Des programmes complets pour tous les niveaux</p>
+            </div>
+
+            <!-- Filtres -->
+            <div class="formations-filters">
+                <button class="filter-btn active" data-filter="all">Toutes</button>
+                <button class="filter-btn" data-filter="design">Design</button>
+                <button class="filter-btn" data-filter="marketing">Marketing</button>
+                <button class="filter-btn" data-filter="bureautique">Bureautique</button>
+                <button class="filter-btn" data-filter="debutant">Débutant</button>
+                <button class="filter-btn" data-filter="avance">Avancé</button>
+            </div>
+
+            <!-- Grid Formations -->
+            <div class="formations-grid">
+                <!-- Formation 1 -->
+                <div class="formation-card" data-categories="design debutant">
+                    <div class="formation-badge">Populaire</div>
+                    <div class="formation-image">
+                        <div class="image-placeholder">🖌</div>
+                    </div>
+                    <div class="formation-content">
+                        <h3>Adobe Photoshop - Débutant</h3>
+                        <p class="formation-description">
+                            Maîtrisez les bases de Photoshop pour créer des designs professionnels
+                        </p>
+                        <div class="formation-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⏱</span>
+                                <span>12 heures</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span>Flexible</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🎓</span>
+                                <span>Certifiante</span>
+                            </div>
+                        </div>
+                        <div class="formation-price">
+                            <span class="price">350€</span>
+                            <span class="price-old">450€</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="openModal('photoshop-modal')">
+                            S'inscrire maintenant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formation 2 -->
+                <div class="formation-card" data-categories="design avance">
+                    <div class="formation-badge">Nouveau</div>
+                    <div class="formation-image">
+                        <div class="image-placeholder">🎬</div>
+                    </div>
+                    <div class="formation-content">
+                        <h3>Montage Vidéo Professionnel</h3>
+                        <p class="formation-description">
+                            Apprenez les techniques avancées de montage et motion design
+                        </p>
+                        <div class="formation-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⏱</span>
+                                <span>20 heures</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span>Week-end</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🎓</span>
+                                <span>Certifiante</span>
+                            </div>
+                        </div>
+                        <div class="formation-price">
+                            <span class="price">600€</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="openModal('video-modal')">
+                            S'inscrire maintenant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formation 3 -->
+                <div class="formation-card" data-categories="marketing debutant">
+                    <div class="formation-image">
+                        <div class="image-placeholder">📊</div>
+                    </div>
+                    <div class="formation-content">
+                        <h3>Community Management</h3>
+                        <p class="formation-description">
+                            Développez une stratégie réseaux sociaux efficace pour votre entreprise
+                        </p>
+                        <div class="formation-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⏱</span>
+                                <span>15 heures</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span>En semaine</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🎓</span>
+                                <span>Certifiante</span>
+                            </div>
+                        </div>
+                        <div class="formation-price">
+                            <span class="price">450€</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="openModal('cm-modal')">
+                            S'inscrire maintenant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formation 4 -->
+                <div class="formation-card" data-categories="bureautique debutant">
+                    <div class="formation-image">
+                        <div class="image-placeholder">💼</div>
+                    </div>
+                    <div class="formation-content">
+                        <h3>Suite Office Avancée</h3>
+                        <p class="formation-description">
+                            Maîtrisez Excel, Word et PowerPoint comme un professionnel
+                        </p>
+                        <div class="formation-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⏱</span>
+                                <span>18 heures</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span>Flexible</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🎓</span>
+                                <span>Certifiante</span>
+                            </div>
+                        </div>
+                        <div class="formation-price">
+                            <span class="price">300€</span>
+                            <span class="price-old">400€</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="openModal('office-modal')">
+                            S'inscrire maintenant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formation 5 -->
+                <div class="formation-card" data-categories="marketing avance">
+                    <div class="formation-badge">Limité</div>
+                    <div class="formation-image">
+                        <div class="image-placeholder">🔍</div>
+                    </div>
+                    <div class="formation-content">
+                        <h3>SEO Expert</h3>
+                        <p class="formation-description">
+                            Techniques avancées de référencement naturel pour dominer Google
+                        </p>
+                        <div class="formation-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⏱</span>
+                                <span>25 heures</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span>Intensif</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🎓</span>
+                                <span>Certifiante</span>
+                            </div>
+                        </div>
+                        <div class="formation-price">
+                            <span class="price">750€</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="openModal('seo-modal')">
+                            S'inscrire maintenant
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Formation 6 -->
+                <div class="formation-card" data-categories="design marketing">
+                    <div class="formation-image">
+                        <div class="image-placeholder">🚀</div>
+                    </div>
+                    <div class="formation-content">
+                        <h3>Créa Publicitaire</h3>
+                        <p class="formation-description">
+                            Créez des campagnes publicitaires percutantes sur les réseaux sociaux
+                        </p>
+                        <div class="formation-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">⏱</span>
+                                <span>16 heures</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span>Week-end</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">🎓</span>
+                                <span>Certifiante</span>
+                            </div>
+                        </div>
+                        <div class="formation-price">
+                            <span class="price">500€</span>
+                        </div>
+                        <button class="btn btn-primary btn-block" onclick="openModal('crea-modal')">
+                            S'inscrire maintenant
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Avantages -->
+    <section class="avantages-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Pourquoi choisir nos formations ?</h2>
+                <p>Une expérience d'apprentissage unique et efficace</p>
+            </div>
+            <div class="avantages-grid">
+                <div class="avantage-card">
+                    <div class="avantage-icon">👨‍🏫</div>
+                    <h4>Formateurs Experts</h4>
+                    <p>Des professionnels en activité avec une expertise terrain</p>
+                </div>
+                <div class="avantage-card">
+                    <div class="avantage-icon">🛠</div>
+                    <h4>Pratique Intensive</h4>
+                    <p>70% de pratique et 30% de théorie pour une montée en compétences rapide</p>
+                </div>
+                <div class="avantage-card">
+                    <div class="avantage-icon">📚</div>
+                    <h4>Support Continu</h4>
+                    <p>Accès aux ressources et support après la formation</p>
+                </div>
+                <div class="avantage-card">
+                    <div class="avantage-icon">🎯</div>
+                    <h4>Sur Mesure</h4>
+                    <p>Programmes adaptables selon vos objectifs et votre niveau</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Formations -->
+    <section class="formations-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Prêt à booster votre carrière ?</h2>
+                <p>Rejoignez nos apprenants satisfaits et développez vos compétences digitales</p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary">Demander un programme</a>
+                    <a href="#temoignages" class="btn btn-secondary">Voir les témoignages</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Identique -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="Logo" class="footer-logo">
+                    </a>
+                    <p>Expert en solutions digitales créatives et innovantes</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Formations</h4>
+                    <a href="#design">Design Graphique</a>
+                    <a href="#marketing">Marketing Digital</a>
+                    <a href="#bureautique">Bureautique</a>
+                    <a href="#video">Montage Vidéo</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: contact@wiseconceptservices.com</p>
+                    <p>Tél: +243 822 229 286</p>
+ 			<div class="social-links">
+    				<a href="https://facebook.com/votrepage" target="_blank" class="social-link" title="Facebook">
+        				<i class="fab fa-facebook-f"></i>
+    				</a>
+    				<a href="https://linkedin.com/in/votreprofil" target="_blank" class="social-link" title="LinkedIn">
+        				<i class="fab fa-linkedin-in"></i>
+    				</a>
+    				<a href="https://instagram.com/votrecompte" target="_blank" class="social-link" title="Instagram">
+        				<i class="fab fa-instagram"></i>
+    				</a>
+    				<a href="https://twitter.com/votrecompte" target="_blank" class="social-link" title="Twitter">
+        				<i class="fab fa-twitter"></i>
+    				</a>
+    				<a href="https://youtube.com/votrechaine" target="_blank" class="social-link" title="YouTube">
+        				<i class="fab fa-youtube"></i>
+    				</a>
+			</div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Wise Concept Services. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Inscription -->
+    <div id="inscription-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Inscription à la formation</h3>
+            <form id="inscription-form" class="inscription-form">
+                <div class="form-step step-1 active">
+                    <h4>Informations personnelles</h4>
+                    <div class="form-group">
+                        <input type="text" placeholder="Nom complet" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Téléphone" required>
+                    </div>
+                    <div class="form-group">
+                        <select required>
+                            <option value="">Formation choisie</option>
+                            <option value="photoshop">Adobe Photoshop - 350€</option>
+                            <option value="video">Montage Vidéo - 600€</option>
+                            <option value="cm">Community Management - 450€</option>
+                            <option value="office">Suite Office - 300€</option>
+                            <option value="seo">SEO Expert - 750€</option>
+                            <option value="crea">Créa Publicitaire - 500€</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary next-step">Suivant</button>
+                </div>
+
+                <div class="form-step step-2">
+                    <h4>Méthode de paiement</h4>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="card" checked>
+                            <span>Carte de crédit</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="paypal">
+                            <span>PayPal</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="transfer">
+                            <span>Virement bancaire</span>
+                        </label>
+                    </div>
+                    <div class="card-payment">
+                        <div class="form-group">
+                            <input type="text" placeholder="Numéro de carte" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" placeholder="MM/AA" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="CVV" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary prev-step">Précédent</button>
+                        <button type="submit" class="btn btn-primary">Payer et s'inscrire</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/formations.js"></script>
+<!-- Bouton Retour en haut -->
+<button id="back-to-top" class="back-to-top" aria-label="Retour en haut">
+    <i class="fas fa-chevron-up"></i> <!-- Pour Font Awesome -->
+</button>
+</body>
+</html>

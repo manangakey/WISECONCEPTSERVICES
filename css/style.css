@@ -658,7 +658,7 @@ body {
 
     .hero-background {
         position: absolute;
-        background-attachment: fixed;
+        background-attachment: scroll;
     }
 
     @supports (-webkit-touch-callout: none) {

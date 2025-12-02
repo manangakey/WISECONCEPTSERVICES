@@ -32,7 +32,11 @@ portfolioFilters.forEach(filter => {
 // Lightbox
 function openLightbox(projectId) {
     const lightbox = document.getElementById('lightbox');
-    const projectData = getProjectData(projectId);
+    const projectData = getProjectData ? getProjectData(projectId) : {
+    title: 'Projet Créatif',
+    description: 'Une réalisation unique alliant créativité et expertise technique.',
+    tags: ['Design', 'Créatif']
+};
     
     // Mettre à jour le contenu de la lightbox
     document.getElementById('lightbox-title').textContent = projectData.title;

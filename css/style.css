@@ -565,6 +565,7 @@ body {
     .hero-background {
         position: fixed;
         height: 100vh;
+        background-attachment: fixed;
     }
 
     .hero {
@@ -656,8 +657,19 @@ body {
     }
 
     .hero-background {
-        position: absolute;
+        position: fixed;
         background-attachment: scroll;
+        background-size: cover;
+        background-position: center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+    }
+
+    @supports (-webkit-touch-callout: none) {
+        .hero-background {
+            background-attachment: initial;
+        }
     }
 }
 

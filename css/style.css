@@ -451,7 +451,7 @@ body {
 /* Footer */
 
 .footer {
-    background: var(--blue-darker);
+    background: linear-gradient(90deg,rgba(0, 6, 51, 1) 39%, rgba(27, 35, 98, 1) 100%);
     color: var(--white);
     padding: 60px 0 20px;
     position: relative;

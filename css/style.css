@@ -663,6 +663,12 @@ body {
         background-attachment: local;
     }
 
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem !important;
+    }
+
     @supports (-webkit-touch-callout: none) {
         .hero-background {
             background-attachment: initial;

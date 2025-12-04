@@ -660,6 +660,7 @@ body {
 
     .hero-background {
         position: fixed;
+        height: 100vh;
         background-attachment: fixed;
     }
 }

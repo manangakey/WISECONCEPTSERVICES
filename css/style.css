@@ -2199,3 +2199,24 @@ body {
 .back-to-top.visible:hover {
     animation: none; /* Stop l'animation au survol */
 }
+
+/* Désactive l'effet fixed sur mobile et tablette */
+@media (max-width: 1024px) {
+    .hero-background {
+        background-attachment: scroll !important;
+        position: absolute; /* Change 'fixed' en 'absolute' sur mobile */
+    }
+    /* Assure que l'overlay suit le background */
+    .hero-overlay {
+        position: absolute !important;
+    }
+}
+
+/* Option : désactiver complètement l'animation de flottement sur mobile si elle gêne */
+@media (max-width: 768px) {
+    .floating-card {
+        animation: none !important;
+        transform: translateY(0) !important;
+        margin-top: 0 !important;
+    }
+}

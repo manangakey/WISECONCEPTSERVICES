@@ -646,12 +646,12 @@ body {
     .hero-bg-element {
         background-size: 100% auto;
     }
+}
 
-    @supports (-webkit-touch-callout: none) {
-        .hero-bg-element {
-            position: absolute;
-            background-attachment: scroll;
-        }
+@supports (-webkit-touch-callout: none) {
+    .hero-bg-element {
+        position: absolute;
+        background-attachment: scroll;
     }
 }
 

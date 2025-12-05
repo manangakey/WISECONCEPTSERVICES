@@ -156,20 +156,18 @@ body {
 }
 
 /* Background avec image */
-.hero-background {
+.hero-bg-element {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100vw;
+    height: 100vh;
     background-image: url('../assets/images/hero-background.jpg'); /* Remplacez par votre image */
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     opacity: 0.7; /* Transparence de l'image */
     z-index: 1;
     pointer-events: none;
-    will-change: transform;
 }
 
 .hero-overlay {
@@ -563,19 +561,6 @@ body {
     transition: 0.3s;
 }
 
-@media (min-width: 769px) {
-    .hero-background {
-        position: fixed;
-        height: 100vh;
-        background-attachment: fixed;
-    }
-
-    .hero {
-        position: relative;
-        z-index: 3;
-    }
-}
-
 @media (max-width: 768px) {
      .nav-menu {
         display: none;
@@ -658,10 +643,15 @@ body {
         font-size: 1rem;
     }
 
-    .hero-background {
-        position: fixed;
-        height: 100vh;
-        background-attachment: fixed;
+    .hero-bg-element {
+        background-size: 100% auto;
+    }
+
+    @supports (-webkit-touch-callout: none) {
+        .hero-bg-element {
+            position: absolute;
+            background-attachment: scroll;
+        }
     }
 }
 

@@ -309,6 +309,8 @@ body {
 .section-header {
     text-align: center;
     margin-bottom: 3rem;
+    transform: translateY(30px);
+    animation: slideUp 1s ease 0.5s forwards;
 }
 
 .section-header h2 {
@@ -2177,4 +2179,5 @@ body {
 .back-to-top.visible:hover {
     animation: none; /* Stop l'animation au survol */
 }
+
 

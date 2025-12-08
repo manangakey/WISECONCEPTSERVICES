@@ -343,6 +343,8 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     text-align: center;
     transition: transform 0.3s;
+    transform: translateY(30px);
+    animation: slideUp 1s ease 0.5s forwards;
 }
 
 .service-card:hover {
@@ -2175,3 +2177,4 @@ body {
 .back-to-top.visible:hover {
     animation: none; /* Stop l'animation au survol */
 }
+

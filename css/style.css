@@ -2181,19 +2181,28 @@ body {
     animation: none; /* Stop l'animation au survol */
 }
 
-/* Animation SlideUp pour les cartes */
+/* ============================================= */
+/* ANIMATION SLIDEUP POUR LES CARTES SERVICE */
+/* ============================================= */
+
+/* État initial des cartes (invisibles, décalées vers le bas) */
 .service-card {
-    opacity: 0; /* La carte est invisible au départ */
-    transform: translateY(30px); /* Positionnée 30px plus bas */
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Classe ajoutée par le JS quand la carte est visible */
-.service-card.in-view {
+/* État final quand la carte est visible (animation terminée) */
+.service-card.animated {
     opacity: 1;
-    transform: translateY(0); /* Remonte à sa position normale */
+    transform: translateY(0);
 }
 
-
+/* Délais décalés pour un effet en cascade */
+.service-card:nth-child(1) { transition-delay: 0.1s; }
+.service-card:nth-child(2) { transition-delay: 0.2s; }
+.service-card:nth-child(3) { transition-delay: 0.3s; }
+.service-card:nth-child(4) { transition-delay: 0.4s; }
 
 

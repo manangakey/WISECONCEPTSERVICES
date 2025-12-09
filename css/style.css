@@ -2176,5 +2176,17 @@ body {
     animation: none; /* Stop l'animation au survol */
 }
 
+/* Animation SlideUp pour les cartes */
+.service-card {
+    opacity: 0; /* La carte est invisible au départ */
+    transform: translateY(30px); /* Positionnée 30px plus bas */
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Classe ajoutée par le JS quand la carte est visible */
+.service-card.in-view {
+    opacity: 1;
+    transform: translateY(0); /* Remonte à sa position normale */
+}
 
 

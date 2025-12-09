@@ -41,27 +41,30 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // =============================================
-// ANIMATION AU SCROLL (INTERSECTION OBSERVER)
+// ANIMATION AU SCROLL (VERSION SIMPLIFIÉE)
 // =============================================
-const observerOptions = {
-    threshold: 0.15, // Légèrement augmenté pour un déclenchement plus naturel
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            // Ajoute la classe pour déclencher l'animation CSS
-            entry.target.classList.add('animate-in');
-            // Optionnel : arrête d'observer après l'animation pour économiser des ressources
-            // observer.unobserve(entry.target);
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    const elementsToAnimate = document.querySelectorAll('.service-card, .portfolio-item, .formation-card');
+    
+    // Créer l'observateur une seule fois
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // Quand l'élément entre dans le viewport
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+                // Arrêter d'observer cet élément (optionnel, économise des ressources)
+                // observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15, // Seuil de visibilité (15%)
+        rootMargin: '0px 0px -10% 0px' // Déclenche l'animation un peu avant que l'élément n'entre complètement
     });
-}, observerOptions);
-
-// Observer les éléments à animer
-document.querySelectorAll('.service-card, .portfolio-item, .formation-card').forEach(el => {
-    observer.observe(el);
+    
+    // Démarrer l'observation pour chaque élément
+    elementsToAnimate.forEach(element => {
+        observer.observe(element);
+    });
 });
 
 // =============================================

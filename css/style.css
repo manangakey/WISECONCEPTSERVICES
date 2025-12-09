@@ -423,6 +423,14 @@ body {
     justify-content: center;
     color: var(--gray-medium);
     font-style: italic;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.5s ease;
+}
+
+.portfolio-item:hover .portfolio-placeholder {
+    transform: scale(1.08); /* Légère zoom */
 }
 
 .section-cta {
@@ -2212,4 +2220,5 @@ body {
 .portfolio-item:nth-child(2) { transition-delay: 0.2s; }
 .portfolio-item:nth-child(3) { transition-delay: 0.3s; }
 .portfolio-item:nth-child(4) { transition-delay: 0.4s; }
+
 

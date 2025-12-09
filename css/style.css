@@ -353,6 +353,12 @@ body {
     margin-bottom: 1rem;
 }
 
+.service-icon i {
+    font-size: 2.5rem; /* Taille de l'icône */
+    color: var(--orange-primary); /* Utilise votre couleur orange */
+    margin-bottom: 1rem;
+}
+
 .service-card h3 {
     color: var(--blue-dark);
     margin-bottom: 1rem;
@@ -2187,6 +2193,7 @@ body {
     opacity: 1;
     transform: translateY(0); /* Remonte à sa position normale */
 }
+
 
 
 

@@ -1,31 +1,28 @@
-// Animation au scroll pour les cartes de service
-function animateServicesOnScroll() {
+// Animation des cartes de service au scroll
+document.addEventListener('DOMContentLoaded', function() {
     const serviceCards = document.querySelectorAll('.service-card');
     
-    // Fonction pour vérifier si un élément est dans le viewport
-    const isInViewport = (element) => {
-        const rect = element.getBoundingClientRect();
+    // Fonction pour vérifier si un élément est visible à l'écran
+    function isElementInViewport(el) {
+        const rect = el.getBoundingClientRect();
         return (
             rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.85
         );
-    };
+    }
     
     // Fonction pour gérer l'animation
-    const handleScrollAnimation = () => {
+    function handleScrollAnimation() {
         serviceCards.forEach(card => {
-            if (isInViewport(card)) {
-                card.classList.add('in-view');
+            if (isElementInViewport(card) && !card.classList.contains('animated')) {
+                card.classList.add('animated');
             }
         });
-    };
+    }
     
-    // Vérifie au chargement et au scroll
-    window.addEventListener('load', handleScrollAnimation);
+    // Écouter le scroll et le chargement
     window.addEventListener('scroll', handleScrollAnimation);
+    window.addEventListener('load', handleScrollAnimation);
     
-    // Déclenche une première vérification
+    // Déclencher une première vérification
     handleScrollAnimation();
-}
-
-// Initialise l'animation quand le DOM est chargé
-document.addEventListener('DOMContentLoaded', animateServicesOnScroll);
+});

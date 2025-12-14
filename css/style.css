@@ -434,6 +434,8 @@ body {
 
 .portfolio-item:hover .portfolio-placeholder {
     transform: scale(1.08); /* Légère zoom */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px); /* Légère élévation */
 }
 
 .section-cta {
@@ -2223,6 +2225,7 @@ body {
 .portfolio-item:nth-child(2) { transition-delay: 0.2s; }
 .portfolio-item:nth-child(3) { transition-delay: 0.3s; }
 .portfolio-item:nth-child(4) { transition-delay: 0.4s; }
+
 
 
 

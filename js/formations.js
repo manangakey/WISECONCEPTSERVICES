@@ -12,7 +12,8 @@ filterBtns.forEach(btn => {
         const filter = btn.getAttribute('data-filter');
         
         formationCards.forEach(card => {
-            if (filter === 'all' || card.getAttribute('data-categories').includes(filter)) {
+            const categories = card.getAttribute('data-categories');
+            if (filter === 'all' || categories.includes(filter)) {
                 card.style.display = 'block';
                 setTimeout(() => {
                     card.style.opacity = '1';

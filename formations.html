@@ -63,219 +63,208 @@
 
             <!-- Filtres -->
             <div class="formations-filters">
-                <button class="filter-btn active" data-filter="all">Toutes</button>
-                <button class="filter-btn" data-filter="design">Design</button>
-                <button class="filter-btn" data-filter="marketing">Langue</button>
-                <button class="filter-btn" data-filter="bureautique">Bureautique</button>
-                <button class="filter-btn" data-filter="debutant">Débutant</button>
-                <button class="filter-btn" data-filter="avance">Avancé</button>
-            </div>
+    			<button class="filter-btn active" data-filter="all">Toutes</button>
+    			<button class="filter-btn" data-filter="design">Design</button>
+    			<button class="filter-btn" data-filter="langue">Langue</button>
+    			<button class="filter-btn" data-filter="bureautique">Bureautique</button>
+    			<button class="filter-btn" data-filter="it">IT</button>
+    			<button class="filter-btn" data-filter="marketing">Marketing digital</button>
+			</div>
 
             <!-- Grid Formations -->
-            <div class="formations-grid">
-                <!-- Formation 1 -->
-                <div class="formation-card" data-categories="design debutant">
-                    <div class="formation-badge">Populaire</div>
-                    <div class="formation-image">
-                        <div class="image-placeholder">🖌</div>
-                    </div>
-                    <div class="formation-content">
-                        <h3>Adobe Photoshop - Débutant</h3>
-                        <p class="formation-description">
-                            Maîtrisez les bases de Photoshop pour créer des designs professionnels
-                        </p>
-                        <div class="formation-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">⏱</span>
-                                <span>12 heures</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">📅</span>
-                                <span>Flexible</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">🎓</span>
-                                <span>Certifiante</span>
-                            </div>
-                        </div>
-                        <div class="formation-price">
-                            <span class="price">40$</span>
-                            <span class="price-old">95$</span>
-                        </div>
-                        <button class="btn btn-primary btn-block" onclick="openModal('photoshop-modal')">
-                            S'inscrire maintenant
-                        </button>
-                    </div>
-                </div>
+			<div class="formations-grid">
+    		<!-- Formation 1 : Adobe Photoshop -->
+    			<div class="formation-card" data-categories="design">
+        			<div class="formation-badge">Populaire</div>
+        			<div class="formation-image" style="background-image: url('/assets/images/formations/photoshop.jpg');">
+            			<!-- Laissez cette div vide, l'image est en fond -->
+        			</div>
+        			<div class="formation-content">
+            			<h3>Adobe Photoshop - Débutant</h3>
+            			<p class="formation-description">
+                			Maîtrisez les bases de Photoshop pour créer des designs professionnels
+            			</p>
+            		<div class="formation-details">
+                		<div class="detail-item">
+                    		<span class="detail-icon">⏱️</span>
+                    		<span>12 heures</span>
+               		 	</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">📅</span>
+                    		<span>Flexible</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">🎓</span>
+                    		<span>Certifiante</span>
+                		</div>
+            		</div>
+            		<div class="formation-price">
+                		<span class="price">40$</span>
+                		<span class="price-old">95$</span>
+            		</div>
+            		<button class="btn btn-primary btn-block" onclick="openModal('photoshop-modal')">
+                		S'inscrire maintenant
+            		</button>
+        		</div>
+    		</div>
 
-                <!-- Formation 2 -->
-                <div class="formation-card" data-categories="design avance">
-                    <div class="formation-badge">Nouveau</div>
-                    <div class="formation-image">
-                        <div class="image-placeholder">🎬</div>
-                    </div>
-                    <div class="formation-content">
-                        <h3>Montage Vidéo Professionnel</h3>
-                        <p class="formation-description">
-                            Apprenez les techniques avancées de montage et motion design
-                        </p>
-                        <div class="formation-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">⏱</span>
-                                <span>20 heures</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">📅</span>
-                                <span>Week-end</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">🎓</span>
-                                <span>Certifiante</span>
-                            </div>
-                        </div>
-                        <div class="formation-price">
-                            <span class="price">120$</span>
-                        </div>
-                        <button class="btn btn-primary btn-block" onclick="openModal('video-modal')">
-                            S'inscrire maintenant
-                        </button>
-                    </div>
-                </div>
+    		<!-- Formation 2 : Suite Office 365 -->
+    		<div class="formation-card" data-categories="bureautique">
+        		<div class="formation-image" style="background-image: url('/assets/images/formations/office365.jpg');"></div>
+        		<div class="formation-content">
+            		<h3>Suite Office 365</h3>
+            		<p class="formation-description">
+                		Maîtrisez Word, Excel, PowerPoint et Outlook comme un professionnel
+            		</p>
+            		<div class="formation-details">
+                		<div class="detail-item">
+                    		<span class="detail-icon">⏱️</span>
+                    		<span>18 heures</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">📅</span>
+                    		<span>Flexible</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">🎓</span>
+                    		<span>Certifiante</span>
+                		</div>
+            		</div>
+            		<div class="formation-price">
+                		<span class="price">200$</span>
+            		</div>
+            		<button class="btn btn-primary btn-block" onclick="openModal('office-modal')">
+                		S'inscrire maintenant
+            		</button>
+        		</div>
+    		</div>
 
-                <!-- Formation 3 -->
-                <div class="formation-card" data-categories="marketing debutant">
-                    <div class="formation-image">
-                        <div class="image-placeholder">📊</div>
-                    </div>
-                    <div class="formation-content">
-                        <h3>Community Management</h3>
-                        <p class="formation-description">
-                            Développez une stratégie réseaux sociaux efficace pour votre entreprise
-                        </p>
-                        <div class="formation-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">⏱</span>
-                                <span>15 heures</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">📅</span>
-                                <span>En semaine</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">🎓</span>
-                                <span>Certifiante</span>
-                            </div>
-                        </div>
-                        <div class="formation-price">
-                            <span class="price">150$</span>
-                        </div>
-                        <button class="btn btn-primary btn-block" onclick="openModal('cm-modal')">
-                            S'inscrire maintenant
-                        </button>
-                    </div>
-                </div>
+    		<!-- Formation 3 : Anglais -->
+    		<div class="formation-card" data-categories="langue">
+        		<div class="formation-badge">Nouveau</div>
+        		<div class="formation-image" style="background-image: url('/assets/images/formations/anglais.jpg');"></div>
+        		<div class="formation-content">
+            		<h3>Anglais Professionnel</h3>
+            		<p class="formation-description">
+                		Développez votre anglais pour le monde professionnel et les communications d'affaires
+            		</p>
+            		<div class="formation-details">
+                		<div class="detail-item">
+                    		<span class="detail-icon">⏱️</span>
+                    		<span>3 mois</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">📅</span>
+                    		<span>Flexible</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">🎓</span>
+                    		<span>Certifiante</span>
+                		</div>
+            		</div>
+            		<div class="formation-price">
+                		<span class="price">100$<span class="price-unit">/mois</span></span>
+            		</div>
+            		<button class="btn btn-primary btn-block" onclick="openModal('anglais-modal')">
+                		S'inscrire maintenant
+            		</button>
+        		</div>
+    		</div>
 
-                <!-- Formation 4 -->
-                <div class="formation-card" data-categories="bureautique debutant">
-                    <div class="formation-image">
-                        <div class="image-placeholder">💼</div>
-                    </div>
-                    <div class="formation-content">
-                        <h3>Suite Office Avancée</h3>
-                        <p class="formation-description">
-                            Maîtrisez Excel, Word et PowerPoint comme un professionnel
-                        </p>
-                        <div class="formation-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">⏱</span>
-                                <span>18 heures</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">📅</span>
-                                <span>Flexible</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">🎓</span>
-                                <span>Certifiante</span>
-                            </div>
-                        </div>
-                        <div class="formation-price">
-                            <span class="price">200$</span>
-                            <span class="price-old">350$</span>
-                        </div>
-                        <button class="btn btn-primary btn-block" onclick="openModal('office-modal')">
-                            S'inscrire maintenant
-                        </button>
-                    </div>
-                </div>
+    		<!-- Formation 4 : Cisco CCNA -->
+    		<div class="formation-card" data-categories="it">
+        		<div class="formation-badge">Certification</div>
+        		<div class="formation-image" style="background-image: url('/assets/images/formations/ccna.jpg');"></div>
+        		<div class="formation-content">
+            		<h3>Cisco CCNA - Réseaux</h3>
+            		<p class="formation-description">
+                		Certification officielle Cisco pour maîtriser les réseaux informatiques et la sécurité
+            		</p>
+            		<div class="formation-details">
+                		<div class="detail-item">
+                    		<span class="detail-icon">⏱️</span>
+                    		<span>16 heures</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">📅</span>
+                    		<span>Week-end</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">🎓</span>
+                    		<span>Certifiante</span>
+                		</div>
+            		</div>
+            		<div class="formation-price">
+               		 	<span class="price">105$<span class="price-unit">/mois</span></span>
+            		</div>
+            		<button class="btn btn-primary btn-block" onclick="openModal('ccna-modal')">
+                		S'inscrire maintenant
+            		</button>
+        		</div>
+    		</div>
 
-                <!-- Formation 5 -->
-                <div class="formation-card" data-categories="marketing avance">
-                    <div class="formation-badge">Limité</div>
-                    <div class="formation-image">
-                        <div class="image-placeholder">🔍</div>
-                    </div>
-                    <div class="formation-content">
-                        <h3>Anglais</h3>
-                        <p class="formation-description">
-                            Apprenez l’anglais de façon simple et efficace pour le travail, les études et la vie quotidienne
-                        </p>
-                        <div class="formation-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">⏱</span>
-                                <span>3 mois</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">📅</span>
-                                <span>Intensif</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">🎓</span>
-                                <span>Certifiante</span>
-                            </div>
-                        </div>
-                        <div class="formation-price">
-                            <span class="price">80$/mois</span>
-                        </div>
-                        <button class="btn btn-primary btn-block" onclick="openModal('seo-modal')">
-                            S'inscrire maintenant
-                        </button>
-                    </div>
-                </div>
+    		<!-- Formation 5 : Adobe Illustrator -->
+    		<div class="formation-card" data-categories="design">
+        		<div class="formation-image" style="background-image: url('/assets/images/formations/illustrator.jpg');"></div>
+        		<div class="formation-content">
+            		<h3>Adobe Illustrator Avancé</h3>
+            		<p class="formation-description">
+                		Créez des logos, illustrations vectorielles et designs graphiques de qualité professionnelle
+            		</p>
+            		<div class="formation-details">
+                		<div class="detail-item">
+                    		<span class="detail-icon">⏱️</span>
+                    		<span>12 heures</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">📅</span>
+                    		<span>Flexible</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">🎓</span>
+                    		<span>Certifiante</span>
+                		</div>
+            		</div>
+            		<div class="formation-price">
+                		<span class="price">60$</span>
+            		</div>
+            		<button class="btn btn-primary btn-block" onclick="openModal('illustrator-modal')">
+                		S'inscrire maintenant
+            		</button>
+        		</div>
+    		</div>
 
-                <!-- Formation 6 -->
-                <div class="formation-card" data-categories="design marketing">
-                    <div class="formation-image">
-                        <div class="image-placeholder">🚀</div>
-                    </div>
-                    <div class="formation-content">
-                        <h3>Cisco (CCNA)</h3>
-                        <p class="formation-description">
-                            Préparez la certification Cisco CCNA et développez des compétences pratiques en réseaux informatiques
-                        </p>
-                        <div class="formation-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">⏱</span>
-                                <span>16 heures</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">📅</span>
-                                <span>Week-end</span>
-                            </div>
-                            <div class="detail-item">
-                                <span class="detail-icon">🎓</span>
-                                <span>Certifiante</span>
-                            </div>
-                        </div>
-                        <div class="formation-price">
-                            <span class="price">105$</span>
-                        </div>
-                        <button class="btn btn-primary btn-block" onclick="openModal('crea-modal')">
-                            S'inscrire maintenant
-                        </button>
-                    </div>
-                </div>
-            </div>
+    		<!-- Formation 6 : Montage Vidéo -->
+    		<div class="formation-card" data-categories="marketing">
+        		<div class="formation-image" style="background-image: url('/assets/images/formations/montage-video.jpg');"></div>
+        		<div class="formation-content">
+            		<h3>Montage Vidéo Professionnel</h3>
+            		<p class="formation-description">
+                		Apprenez les techniques de montage, effets spéciaux et storytelling vidéo pour YouTube et réseaux sociaux
+            		</p>
+            		<div class="formation-details">
+                		<div class="detail-item">
+                    		<span class="detail-icon">⏱️</span>
+                    		<span>20 heures</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">📅</span>
+                    		<span>Week-end</span>
+                		</div>
+                		<div class="detail-item">
+                    		<span class="detail-icon">🎓</span>
+                    		<span>Certifiante</span>
+                		</div>
+            		</div>
+            		<div class="formation-price">
+                		<span class="price">120$</span>
+            		</div>
+            		<button class="btn btn-primary btn-block" onclick="openModal('video-modal')">
+                		S'inscrire maintenant
+            		</button>
+        		</div>
+    		</div>
+		</div>
         </div>
     </section>
 

@@ -2234,6 +2234,21 @@ body {
 .portfolio-item:nth-child(3) { transition-delay: 0.3s; }
 .portfolio-item:nth-child(4) { transition-delay: 0.4s; }
 
+/* Style pour les images de formation */
+.formation-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 200px;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Style pour le prix unitaire (/mois) */
+.price-unit {
+    font-size: 0.9rem;
+    font-weight: normal;
+    opacity: 0.8;
+}
 
 
 

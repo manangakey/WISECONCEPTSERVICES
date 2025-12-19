@@ -965,6 +965,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 .image-placeholder {
@@ -2249,6 +2251,7 @@ body {
     font-weight: normal;
     opacity: 0.8;
 }
+
 
 
 

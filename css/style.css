@@ -927,9 +927,10 @@ body {
 /* Grid Formations */
 .formations-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* L'élément minimum fait 300px */
     gap: 2rem;
-    margin-bottom: 4rem;
+    width: 100%;
+    justify-items: center; /* Centre les cartes dans leur cellule */
 }
 
 .formation-card {
@@ -941,6 +942,9 @@ body {
     position: relative;
     opacity: 1;
     transform: translateY(0);
+    width: 100%; /* Prend toute la largeur de sa cellule de grille */
+    max-width: 350px; /* Largeur maximale pour éviter l'étirement */
+    margin: 0 auto; /* Centre la carte si elle est seule */
 }
 
 .formation-card:hover {
@@ -2254,6 +2258,7 @@ body {
     font-weight: normal;
     opacity: 0.8;
 }
+
 
 
 

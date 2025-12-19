@@ -960,7 +960,7 @@ body {
 }
 
 .formation-image {
-    height: 150px;
+    height: 125px;
     overflow: hidden; /* Cache les parties qui dépassent */
     border-radius: 10px 10px 0 0;
     position: relative;
@@ -2266,6 +2266,7 @@ body {
     font-weight: normal;
     opacity: 0.8;
 }
+
 
 
 

@@ -168,6 +168,8 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     opacity: 0.7; /* Transparence de l'image */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
     z-index: 1;
 }
 
@@ -968,14 +970,6 @@ body {
     /* Fixe le bug au niveau de l'iPhone */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
-}
-
-/* Règle spécifique pour iOS */
-@supports (-webkit-touch-callout: none) {
-    .formation-img {
-        height: 100%;
-        width: 100%;
-    }
 }
 
 .image-placeholder {
@@ -2260,6 +2254,7 @@ body {
     font-weight: normal;
     opacity: 0.8;
 }
+
 
 
 

@@ -104,3 +104,24 @@ window.addEventListener('click', (e) => {
         closeModal();
     }
 });
+
+// Synchronise le bouton d'inscription avec le modal
+document.querySelectorAll('.formation-card .btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const card = this.closest('.formation-card');
+        const title = card.querySelector('h3').textContent;
+        const select = document.getElementById('formation-choix');
+        
+        // Trouve l'option correspondante dans la liste
+        for (let option of select.options) {
+            if (option.text.includes(title.split(' - ')[0]) || 
+                option.text.includes(title.split(' ')[0])) {
+                select.value = option.value;
+                break;
+            }
+        }
+        
+        // Ouvre le modal (assurez-vous que openModal() existe)
+        openModal('inscription-modal');
+    });
+});

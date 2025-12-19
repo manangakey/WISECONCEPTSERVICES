@@ -965,8 +965,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Fixe le bug au niveau de l'iPhone */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+}
+
+/* Règle spécifique pour iOS */
+@supports (-webkit-touch-callout: none) {
+    .formation-img {
+        height: 100%;
+        width: 100%;
+    }
 }
 
 .image-placeholder {
@@ -2251,6 +2260,7 @@ body {
     font-weight: normal;
     opacity: 0.8;
 }
+
 
 
 

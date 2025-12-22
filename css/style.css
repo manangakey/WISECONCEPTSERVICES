@@ -1352,6 +1352,31 @@ body {
     position: relative;
     height: 250px;
     overflow: hidden;
+    border-radius: 12px 12px 0 0;
+}
+
+.portfolio-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recadre l'image pour remplir le cadre sans la déformer */
+    object-position: center;
+    display: block; /* Élimine l'espace sous l'image */
+    
+    /* Optimisations spécifiques pour iOS/Safari */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    image-rendering: -webkit-optimize-contrast; /* Meilleur rendu */
+    image-rendering: crisp-edges;
+}
+
+/* Correction POUR IPHONE SEULEMENT */
+@supports (-webkit-touch-callout: none) {
+    .portfolio-img {
+        min-height: 100%;
+        min-width: 100%;
+        /* Alternative si 'cover' pose problème : */
+        /* object-fit: contain; */ /* Montre toute l'image sans la couper */
+    }
 }
 
 .image-container {
@@ -2258,6 +2283,7 @@ body {
     font-weight: normal;
     opacity: 0.8;
 }
+
 
 
 

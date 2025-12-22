@@ -41,6 +41,21 @@ function openLightbox(projectId) {
     // Mettre à jour le contenu de la lightbox
     document.getElementById('lightbox-title').textContent = projectData.title;
     document.getElementById('lightbox-description').textContent = projectData.description;
+
+        // Afficher l'image du projet
+    const lightboxImageContainer = document.querySelector('.lightbox-image');
+    lightboxImageContainer.innerHTML = ''; // Vider le contenu existant
+    if (projectData.imageUrl) {
+        const img = document.createElement('img');
+        img.src = projectData.imageUrl;
+        img.alt = `Présentation du projet: ${projectData.title}`;
+        img.style.width = '100%';
+        img.style.borderRadius = '10px';
+        lightboxImageContainer.appendChild(img);
+    } else {
+        // Fallback si pas d'image
+        lightboxImageContainer.innerHTML = '<div class="lightbox-placeholder">Aperçu du projet</div>';
+    }
     
     // Mettre à jour les tags
     const tagsContainer = document.getElementById('lightbox-tags');
@@ -92,6 +107,7 @@ function getProjectData(projectId) {
         title: 'Projet Créatif',
         description: 'Une réalisation unique alliant créativité et expertise technique.',
         tags: ['Design', 'Créatif']
+        imageUrl: ''
     };
 }
 

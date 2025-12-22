@@ -65,10 +65,11 @@ function closeLightbox() {
 // Données des projets (à remplacer par vos vraies données)
 function getProjectData(projectId) {
     const projects = {
-        'logo1': {
-            title: 'Logo "Gusto Italiano"',
-            description: 'Création d\'une identité visuelle complète pour un restaurant italien authentique. Le logo combine élégance et convivialité.',
-            tags: ['Logo', 'Restaurant', 'Identité Visuelle']
+        'logo1': { // Cet ID doit correspondre à celui dans onclick="openLightbox('logo1')"
+            title: 'Logo "Ducky restaurant"', // Titre de votre projet
+            description: 'Identité visuelle complète pour un restaurant. Création d\'un logo qui allie modernité et chaleur, avec une charte graphique adaptée à tous supports.',
+            tags: ['Logo', 'Restauration', 'Identité visuelle'],
+            imageUrl: '/assets/images/portfolio/logos/logo1.png'
         },
         'affiche1': {
             title: 'Affiche Concert Jazz',

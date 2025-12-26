@@ -39,10 +39,10 @@ function getProjectData(projectId) {
             imageUrl: '/assets/images/portfolio/logos/logo1.png'
         },
         'affiche1': {
-            title: 'Affiche Concert Jazz',
-            description: 'Design rétro moderne pour un festival de jazz. Typographie expressive et palette de couleurs vibrante.',
-            tags: ['Affiche', 'Événement', 'Musique'],
-            imageUrl: '/assets/images/portfolio/affiches/affiche-concert.jpg' // AJOUTEZ LE CHEMIN
+            title: 'Carte de visite professionnelle',
+            description: 'Rendez-vous évenementiel - Verte de création, dorée d’ambition.',
+            tags: ['Affiche', 'Carte de visite', 'Événement'],
+            imageUrl: '/assets/images/portfolio/affiches/affiche1.png' // AJOUTEZ LE CHEMIN
         },
         'flyer1': {
             title: 'Flyer Soldes d\'Été',

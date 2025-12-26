@@ -45,10 +45,10 @@ function getProjectData(projectId) {
             imageUrl: '/assets/images/portfolio/affiches/affiche1.png' // AJOUTEZ LE CHEMIN
         },
         'flyer1': {
-            title: 'Flyer Soldes d\'Été',
-            description: 'Flyer promotionnel pour une boutique de mode. Design attractif mettant en valeur les promotions saisonnières.',
+            title: 'Dépliant pour une structure Digital',
+            description: 'Crédit | Virement à partir de votre téléphone - Tout en un!',
             tags: ['Flyer', 'Commercial', 'Promotion'],
-            imageUrl: '/assets/images/portfolio/flyers/flyer-soldes.jpg' // AJOUTEZ LE CHEMIN
+            imageUrl: '/assets/images/portfolio/flyers/flyer1.png' // AJOUTEZ LE CHEMIN
         },
         'video1': {
             title: 'Vidéo Corporate TechStart',

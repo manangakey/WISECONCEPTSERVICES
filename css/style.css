@@ -2297,6 +2297,74 @@ body {
     opacity: 0.8;
 }
 
+/* LOADER - VERSION GIF */
+/* ============================================= */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; /* Fond blanc pur pour un rendu GIF optimal */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* Classe qui cache le loader quand la page est chargée */
+.page-loader.loaded {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Conteneur du logo GIF */
+.loader-logo {
+    margin-bottom: 1.5rem;
+    width: 180px; /* Largeur du conteneur */
+    height: 180px; /* Hauteur du conteneur */
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Le GIF lui-même */
+.loader-gif {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    /* Pour un rendu plus net sur certains navigateurs */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Texte sous le loader */
+.loader-text {
+    color: var(--blue-dark);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    opacity: 0.8;
+}
+
+/* Animation de fondu pour le texte (optionnel) */
+@keyframes textPulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+.loader-text {
+    animation: textPulse 2s infinite ease-in-out;
+}
 
 
 

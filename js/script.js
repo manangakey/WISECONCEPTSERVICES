@@ -97,3 +97,38 @@ function initBackToTop() {
 document.addEventListener('DOMContentLoaded', function() {
     initBackToTop();
 });
+
+// GESTION DU LOADER (GIF)
+// =============================================
+function initPageLoader() {
+    const pageLoader = document.getElementById('page-loader');
+    
+    if (!pageLoader) return;
+    
+    // Cache le loader quand la page est complètement chargée
+    window.addEventListener('load', function() {
+        // Délai minimum pour que le GIF soit vu (au moins 2 cycles)
+        setTimeout(function() {
+            // Ajoute la classe qui déclenche le fondu
+            pageLoader.classList.add('loaded');
+            
+            // Optionnel : Supprime complètement l'élément après le fondu
+            setTimeout(function() {
+                pageLoader.style.display = 'none';
+                
+                // Pour économiser des ressources : stopper le GIF
+                // (Note : un GIF ne peut pas être "mis en pause" via JS)
+                // Vous pouvez cacher l'image ou la remplacer par une version statique
+                const gif = document.querySelector('.loader-gif');
+                if (gif) {
+                    // Remplacer le GIF par une image statique (logo.png) pour économiser
+                    gif.style.display = 'none';
+                    // Ou charger une image statique en arrière-plan
+                }
+            }, 500); // Correspond à la durée de la transition CSS (0.5s)
+        }, 2000); // Délai MINIMUM d'affichage (2 secondes)
+    });
+}
+
+// Initialiser le loader au chargement du DOM
+document.addEventListener('DOMContentLoaded', initPageLoader);

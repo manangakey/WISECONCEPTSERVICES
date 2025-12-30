@@ -2327,8 +2327,8 @@ body {
 /* Conteneur du logo GIF */
 .loader-logo {
     margin-bottom: 1.5rem;
-    width: 180px; /* Largeur du conteneur */
-    height: 180px; /* Hauteur du conteneur */
+    width: 90px; /* Largeur du conteneur */
+    height: 90px; /* Hauteur du conteneur */
     margin: 0 auto 1.5rem;
     display: flex;
     align-items: center;
@@ -2346,26 +2346,6 @@ body {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
 }
-
-/* Texte sous le loader */
-.loader-text {
-    color: var(--blue-dark);
-    font-size: 1rem;
-    font-weight: 500;
-    margin-top: 1rem;
-    opacity: 0.8;
-}
-
-/* Animation de fondu pour le texte (optionnel) */
-@keyframes textPulse {
-    0%, 100% { opacity: 0.7; }
-    50% { opacity: 1; }
-}
-
-.loader-text {
-    animation: textPulse 2s infinite ease-in-out;
-}
-
 
 
 

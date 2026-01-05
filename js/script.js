@@ -278,7 +278,7 @@ function setupOrderForm(form) {
         try {
             console.log('📤 Envoi commande...');
             
-            const response = await fetch('send_order.php', {
+            const response = await fetch('send_commande.php', {
                 method: 'POST',
                 body: formData
             });

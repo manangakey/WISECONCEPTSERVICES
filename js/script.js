@@ -133,3 +133,67 @@ function initPageLoader() {
 // Initialiser le loader au chargement du DOM
 document.addEventListener('DOMContentLoaded', initPageLoader);
 
+// Gestion des deux formulaires
+document.addEventListener('DOMContentLoaded', function() {
+    // Sélection des deux formulaires
+    const formationForm = document.getElementById('formation-form');
+    const serviceForm = document.getElementById('service-form');
+    
+    if (formationForm) setupForm(formationForm, 'formation');
+    if (serviceForm) setupForm(serviceForm, 'service');
+});
+
+function setupForm(form, formType) {
+    const submitBtn = form.querySelector('.btn-submit');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        // Validation frontale
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        
+        // Préparation des données
+        const formData = new FormData(form);
+        formData.append('form_type', formType); // Ajout du type de formulaire
+        
+        // UI Loading state
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline';
+        submitBtn.disabled = true;
+        
+        try {
+            const response = await fetch('send_contact.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Succès - afficher message et reset
+                alert(result.message); // Vous pouvez remplacer par un toast plus élégant
+                form.reset();
+                
+                // Redirection optionnelle vers une page de remerciement
+                // window.location.href = 'merci.html';
+            } else {
+                // Erreur
+                alert('Erreur: ' + result.message);
+            }
+            
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert('Erreur de connexion. Veuillez réessayer.');
+        } finally {
+            // Reset UI
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    });
+}

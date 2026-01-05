@@ -197,3 +197,138 @@ function setupForm(form, formType) {
         }
     });
 }
+
+// ===== GESTION DU POPUP DE COMMANDE =====
+
+// Ouvrir le popup
+document.addEventListener('DOMContentLoaded', function() {
+    const openPopupBtn = document.getElementById('open-order-popup');
+    const popup = document.getElementById('order-popup');
+    const closePopupBtn = document.getElementById('close-popup');
+    const orderForm = document.getElementById('order-form');
+    
+    if (openPopupBtn && popup) {
+        // Ouvrir popup
+        openPopupBtn.addEventListener('click', function() {
+            popup.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Bloquer le scroll
+        });
+        
+        // Fermer popup
+        closePopupBtn.addEventListener('click', closePopup);
+        
+        // Fermer en cliquant en dehors
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                closePopup();
+            }
+        });
+        
+        // Fermer avec Échap
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && popup.classList.contains('active')) {
+                closePopup();
+            }
+        });
+        
+        // Gestion du formulaire
+        if (orderForm) {
+            setupOrderForm(orderForm);
+        }
+    }
+    
+    function closePopup() {
+        const popup = document.getElementById('order-popup');
+        if (popup) {
+            popup.classList.remove('active');
+            document.body.style.overflow = ''; // Réactiver le scroll
+        }
+    }
+});
+
+// Configuration du formulaire de commande
+function setupOrderForm(form) {
+    const submitBtn = form.querySelector('.btn-primary');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+    
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        // Validation
+        if (!form.checkValidity()) {
+            // Afficher les messages d'erreur
+            const invalidFields = form.querySelectorAll(':invalid');
+            if (invalidFields.length > 0) {
+                invalidFields[0].focus();
+                alert('Veuillez remplir tous les champs obligatoires correctement.');
+            }
+            return;
+        }
+        
+        // Préparation données
+        const formData = new FormData(form);
+        formData.append('form_type', 'commande'); // Important pour PHP
+        
+        // UI Loading
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline';
+        submitBtn.disabled = true;
+        
+        try {
+            console.log('📤 Envoi commande...');
+            
+            const response = await fetch('../private_config/send_commande.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            console.log('📊 Résultat:', result);
+            
+            if (result.success) {
+                // Succès
+                alert('✅ ' + result.message);
+                form.reset();
+                
+                // Fermer le popup après 2 secondes
+                setTimeout(() => {
+                    const popup = document.getElementById('order-popup');
+                    if (popup) {
+                        popup.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                }, 2000);
+                
+            } else {
+                // Erreur
+                alert('❌ ' + result.message);
+            }
+            
+        } catch (error) {
+            console.error('💥 Erreur:', error);
+            alert('Erreur de connexion. Veuillez réessayer.');
+        } finally {
+            // Reset UI
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    });
+    
+    // Validation en temps réel
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+    });
+    
+    function validateField(field) {
+        if (!field.checkValidity()) {
+            field.style.borderColor = '#e74c3c';
+        } else {
+            field.style.borderColor = '#2ecc71';
+        }
+    }
+}

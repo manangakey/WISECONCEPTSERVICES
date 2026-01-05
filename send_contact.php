@@ -69,8 +69,8 @@ if ($formType === 'formation') {
         $lastId = $pdo->lastInsertId();
         
         // Email de notification
-        $to = 'votre-email@wiseconceptservices.com';
-        $subject = "📚 Nouvelle inscription formation: $formation";
+        $to = 'contact@wiseconceptservices.com';
+        $subject = "Nouvelle inscription formation: $formation";
         $emailMessage = "
         NOUVELLE INSCRIPTION À UNE FORMATION (B2C)
         ===========================================
@@ -165,8 +165,8 @@ if ($formType === 'formation') {
         $lastId = $pdo->lastInsertId();
         
         // Email de notification
-        $to = 'votre-email@wiseconceptservices.com';
-        $subject = "💼 Nouvelle demande service B2B: $serviceType";
+        $to = 'contact@wiseconceptservices.com';
+        $subject = "Nouvelle demande service: $serviceType";
         $emailMessage = "
         NOUVELLE DEMANDE DE SERVICE PROFESSIONNEL (B2B)
         ==============================================
@@ -200,7 +200,7 @@ if ($formType === 'formation') {
         mail($to, $subject, $emailMessage, $headers);
         
         $response['success'] = true;
-        $response['message'] = 'Votre demande a été envoyée avec succès ! Notre équipe B2B vous contactera sous 24h.';
+        $response['message'] = 'Votre demande a été envoyée avec succès ! Notre équipe vous contactera sous 24h.';
         
     } catch (PDOException $e) {
         error_log("Erreur DB Service: " . $e->getMessage());
@@ -211,3 +211,4 @@ if ($formType === 'formation') {
 echo json_encode($response);
 
 ?>
+

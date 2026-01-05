@@ -2347,6 +2347,184 @@ body {
     image-rendering: crisp-edges;
 }
 
+/* ===== FORMULAIRE POPUP STYLES ===== */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.popup-overlay.active {
+    display: flex;
+    opacity: 1;
+    animation: fadeIn 0.3s ease;
+}
+
+.popup-container {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.popup-overlay.active .popup-container {
+    transform: translateY(0);
+}
+
+.popup-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #2c3e50, #4a6491);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.popup-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.popup-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.popup-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.order-form {
+    padding: 24px;
+}
+
+.order-form .form-group {
+    margin-bottom: 20px;
+}
+
+.order-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.order-form input[type="text"],
+.order-form input[type="email"],
+.order-form input[type="tel"],
+.order-form select,
+.order-form textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.order-form input:focus,
+.order-form select:focus,
+.order-form textarea:focus {
+    outline: none;
+    border-color: #4a6491;
+    box-shadow: 0 0 0 3px rgba(74, 100, 145, 0.1);
+}
+
+.order-form textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.checkbox-group label {
+    margin: 0;
+    cursor: pointer;
+}
+
+.popup-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #eee;
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    background: #f9f9f9;
+    border-radius: 0 0 12px 12px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .popup-container {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .popup-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .order-form {
+        padding: 20px;
+    }
+}
+
+/* Style pour les champs obligatoires */
+.order-form input:required,
+.order-form select:required,
+.order-form textarea:required {
+    border-left: 3px solid #4a6491;
+}
+
+.order-form input:invalid:not(:focus):not(:placeholder-shown),
+.order-form select:invalid:not(:focus) {
+    border-color: #e74c3c;
+}
+
 
 
 

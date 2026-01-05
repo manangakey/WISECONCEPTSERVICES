@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once 'config.php';
+require_once '../private_config/config.php';
 
 $response = ['success' => false, 'message' => 'Une erreur est survenue.'];
 
@@ -209,4 +209,5 @@ if ($formType === 'formation') {
 }
 
 echo json_encode($response);
+
 ?>

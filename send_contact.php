@@ -70,35 +70,57 @@ if ($formType === 'formation') {
         
         // Email de notification
         $to = 'contact@wiseconceptservices.com';
-        $subject = "Nouvelle inscription formation: $formation";
-        $emailMessage = "
-        NOUVELLE INSCRIPTION À UNE FORMATION (B2C)
-        ===========================================
-        
-        Détails de l'inscription :
-        --------------------------
-        Formation : $formation
-        Nom : $nom
-        Email : $email
-        Téléphone : $telephone
-        " . (!empty($entreprise) ? "Entreprise : $entreprise\n" : "") . "
-        Newsletter acceptée : " . ($newsletter ? 'Oui' : 'Non') . "
-        
-        Message :
-        ---------
-        " . (!empty($message) ? $message : '(Aucun message)') . "
-        
-        --------------------------
-        ID : #$lastId
-        Date : " . date('d/m/Y H:i') . "
-        Type : Formation (B2C)
-        ";
-        
-        $headers = "From: noreply@wiseconceptservices.com\r\n";
-        $headers .= "Reply-To: $email\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion();
-        
-        mail($to, $subject, $emailMessage, $headers);
+
+        // 1. Construire le sujet avec emoji et décodage HTML
+        $subjectText = "📚 Nouvelle inscription formation: " . html_entity_decode($formation ?? '', ENT_QUOTES, 'UTF-8');
+
+        // 2. Construire le corps du message
+        $emailMessage = "NOUVELLE INSCRIPTION À UNE FORMATION (B2C)\n";
+        $emailMessage .= "===========================================\n\n";
+        $emailMessage .= "DÉTAILS DE L'INSCRIPTION :\n";
+        $emailMessage .= "--------------------------\n";
+        $emailMessage .= "Formation : " . $formation . "\n";
+        $emailMessage .= "Nom : " . $nom . "\n";
+        $emailMessage .= "Email : " . $email . "\n";
+        $emailMessage .= "Téléphone : " . $telephone . "\n";
+        if (!empty($entreprise)) {
+            $emailMessage .= "Entreprise : " . $entreprise . "\n";
+        }
+        $emailMessage .= "Newsletter acceptée : " . ($newsletter ? 'Oui' : 'Non') . "\n\n";
+
+        if (!empty($message)) {
+            $emailMessage .= "MESSAGE DU CLIENT :\n";
+            $emailMessage .= "-------------------\n";
+            $emailMessage .= $message . "\n\n";
+        }
+
+        $emailMessage .= "--------------------------\n";
+        $emailMessage .= "ID : #" . $lastId . "\n";
+        $emailMessage .= "Date : " . date('d/m/Y H:i') . "\n";
+        $emailMessage .= "Type : Formation (B2C)\n";
+
+        // 3. Headers CORRIGÉS pour UTF-8
+        $headers = "From: WiseConcept Services <contact@wiseconceptservices.com>\r\n";
+        $headers .= "Reply-To: " . $email . "\r\n";
+        $headers .= "Return-Path: contact@wiseconceptservices.com\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/plain; charset=\"UTF-8\"\r\n";
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+        $headers .= "X-Priority: 3\r\n";
+        $headers .= "X-MSMail-Priority: Normal\r\n";
+
+        // 4. Encoder le sujet pour UTF-8 (TRÈS IMPORTANT)
+        $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
+
+        // 5. Envoi
+        if (mail($to, $subject, $emailMessage, $headers)) {
+            error_log("✅ Email formation envoyé - ID #" . $lastId);
+            $emailSent = true;
+        } else {
+            error_log("❌ Échec envoi email formation - ID #" . $lastId);
+            $emailSent = false;
+        }
         
         $response['success'] = true;
         $response['message'] = 'Votre inscription a été envoyée avec succès ! Nous vous contacterons sous 24h pour confirmer.';
@@ -166,38 +188,58 @@ if ($formType === 'formation') {
         
         // Email de notification
         $to = 'contact@wiseconceptservices.com';
-        $subject = "Nouvelle demande service: $serviceType";
-        $emailMessage = "
-        NOUVELLE DEMANDE DE SERVICE PROFESSIONNEL (B2B)
-        ==============================================
-        
-        Détails de la demande :
-        -----------------------
-        Entreprise : $entreprise
-        Contact : $nom
-        Poste : " . (!empty($poste) ? $poste : 'Non précisé') . "
-        Email : $email
-        Téléphone : $telephone
-        " . (!empty($siteweb) ? "Site web : $siteweb\n" : "") . "
-        Type de service : $serviceType
-        Budget estimé : " . (!empty($budget) ? $budget : 'Non précisé') . "
-        Demande devis : " . ($devis ? 'Oui' : 'Non') . "
-        
-        Description du projet :
-        -----------------------
-        $description
-        
-        -----------------------
-        ID : #$lastId
-        Date : " . date('d/m/Y H:i') . "
-        Type : Service B2B
-        ";
-        
-        $headers = "From: noreply@wiseconceptservices.com\r\n";
-        $headers .= "Reply-To: $email\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion();
-        
-        mail($to, $subject, $emailMessage, $headers);
+
+        // 1. Construire le sujet
+        $subjectText = "💼 Nouvelle demande service: " . html_entity_decode($serviceType ?? '', ENT_QUOTES, 'UTF-8');
+
+        // 2. Construire le corps du message
+        $emailMessage = "NOUVELLE DEMANDE DE SERVICE PROFESSIONNEL (B2B)\n";
+        $emailMessage .= "==============================================\n\n";
+        $emailMessage .= "DÉTAILS DE LA DEMANDE :\n";
+        $emailMessage .= "-----------------------\n";
+        $emailMessage .= "Entreprise : " . $entreprise . "\n";
+        $emailMessage .= "Contact : " . $nom . "\n";
+        $emailMessage .= "Poste : " . (!empty($poste) ? $poste : 'Non précisé') . "\n";
+        $emailMessage .= "Email : " . $email . "\n";
+        $emailMessage .= "Téléphone : " . $telephone . "\n";
+        if (!empty($siteweb)) {
+            $emailMessage .= "Site web : " . $siteweb . "\n";
+        }
+        $emailMessage .= "Type de service : " . $serviceType . "\n";
+        $emailMessage .= "Budget estimé : " . (!empty($budget) ? $budget : 'Non précisé') . "\n";
+        $emailMessage .= "Demande devis : " . ($devis ? 'Oui' : 'Non') . "\n\n";
+
+        $emailMessage .= "DESCRIPTION DU PROJET :\n";
+        $emailMessage .= "------------------------\n";
+        $emailMessage .= $description . "\n\n";
+
+        $emailMessage .= "-----------------------\n";
+        $emailMessage .= "ID : #" . $lastId . "\n";
+        $emailMessage .= "Date : " . date('d/m/Y H:i') . "\n";
+        $emailMessage .= "Type : Service B2B\n";
+
+        // 3. Headers CORRIGÉS pour UTF-8
+        $headers = "From: WiseConcept Services <contact@wiseconceptservices.com>\r\n";
+        $headers .= "Reply-To: " . $email . "\r\n";
+        $headers .= "Return-Path: contact@wiseconceptservices.com\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/plain; charset=\"UTF-8\"\r\n";
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+        $headers .= "X-Priority: 3\r\n";
+        $headers .= "X-MSMail-Priority: Normal\r\n";
+
+        // 4. Encoder le sujet pour UTF-8
+        $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
+
+        // 5. Envoi
+        if (mail($to, $subject, $emailMessage, $headers)) {
+            error_log("✅ Email service envoyé - ID #" . $lastId);
+            $emailSent = true;
+        } else {
+            error_log("❌ Échec envoi email service - ID #" . $lastId);
+            $emailSent = false;
+        }
         
         $response['success'] = true;
         $response['message'] = 'Votre demande a été envoyée avec succès ! Notre équipe vous contactera sous 24h.';
@@ -211,4 +253,5 @@ if ($formType === 'formation') {
 echo json_encode($response);
 
 ?>
+
 

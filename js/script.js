@@ -200,116 +200,175 @@ function setupForm(form, formType) {
 
 // ===== GESTION DU POPUP DE COMMANDE =====
 
-// Ouvrir le popup
 document.addEventListener('DOMContentLoaded', function() {
-    const openPopupBtn = document.getElementById('open-order-popup');
+    console.log('🚀 Initialisation popup commande...');
+    
+    // Éléments
+    const openBtn = document.getElementById('commander-main');
     const popup = document.getElementById('order-popup');
-    const closePopupBtn = document.getElementById('close-popup');
+    const closeBtn = document.getElementById('close-order-popup');
     const orderForm = document.getElementById('order-form');
     
-    if (openPopupBtn && popup) {
-        // Ouvrir popup
-        openPopupBtn.addEventListener('click', function() {
-            popup.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Bloquer le scroll
-        });
-        
-        // Fermer popup
-        closePopupBtn.addEventListener('click', closePopup);
-        
-        // Fermer en cliquant en dehors
-        popup.addEventListener('click', function(e) {
-            if (e.target === popup) {
-                closePopup();
-            }
-        });
-        
-        // Fermer avec Échap
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && popup.classList.contains('active')) {
-                closePopup();
-            }
-        });
-        
-        // Gestion du formulaire
-        if (orderForm) {
-            setupOrderForm(orderForm);
-        }
+    // Vérifier que les éléments existent
+    if (!openBtn) {
+        console.error('❌ Bouton "commander-main" non trouvé');
+        return;
     }
     
-    function closePopup() {
-        const popup = document.getElementById('order-popup');
-        if (popup) {
-            popup.classList.remove('active');
-            document.body.style.overflow = ''; // Réactiver le scroll
+    if (!popup) {
+        console.error('❌ Popup "order-popup" non trouvé');
+        return;
+    }
+    
+    console.log('✅ Éléments trouvés');
+    
+    // 1. Ouvrir le popup
+    openBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('🎯 Bouton cliqué - ouverture popup');
+        
+        // Afficher le popup
+        popup.style.display = 'flex';
+        
+        // Animation douce
+        setTimeout(() => {
+            popup.style.opacity = '1';
+            popup.querySelector('.popup-container').style.transform = 'translateY(0)';
+        }, 10);
+        
+        // Bloquer le scroll de la page
+        document.body.style.overflow = 'hidden';
+    });
+    
+    // 2. Fermer le popup
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closePopup);
+    }
+    
+    // 3. Fermer en cliquant en dehors
+    popup.addEventListener('click', function(e) {
+        if (e.target === popup) {
+            closePopup();
         }
+    });
+    
+    // 4. Fermer avec Échap
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && popup.style.display === 'flex') {
+            closePopup();
+        }
+    });
+    
+    // 5. Gérer le formulaire
+    if (orderForm) {
+        setupOrderForm(orderForm, popup);
+    }
+    
+    // Fonction pour fermer le popup
+    function closePopup() {
+        console.log('🔒 Fermeture popup');
+        
+        // Animation de fermeture
+        popup.style.opacity = '0';
+        popup.querySelector('.popup-container').style.transform = 'translateY(20px)';
+        
+        // Cacher après animation
+        setTimeout(() => {
+            popup.style.display = 'none';
+            document.body.style.overflow = ''; // Réactiver scroll
+        }, 300);
     }
 });
 
-// Configuration du formulaire de commande
-function setupOrderForm(form) {
-    const submitBtn = form.querySelector('.btn-primary');
+// Configuration du formulaire
+function setupOrderForm(form, popup) {
+    const submitBtn = form.querySelector('.btn-submit-order');
+    if (!submitBtn) {
+        console.error('❌ Bouton submit non trouvé');
+        return;
+    }
+    
     const btnText = submitBtn.querySelector('.btn-text');
     const btnLoading = submitBtn.querySelector('.btn-loading');
     
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
+        console.log('📝 Formulaire soumis');
         
-        // Validation
-        if (!form.checkValidity()) {
-            // Afficher les messages d'erreur
-            const invalidFields = form.querySelectorAll(':invalid');
-            if (invalidFields.length > 0) {
-                invalidFields[0].focus();
-                alert('Veuillez remplir tous les champs obligatoires correctement.');
+        // Validation simple
+        const requiredFields = form.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.style.borderColor = '#e74c3c';
+                isValid = false;
+            } else {
+                field.style.borderColor = '#2ecc71';
             }
+        });
+        
+        if (!isValid) {
+            alert('⚠️ Veuillez remplir tous les champs obligatoires.');
             return;
         }
         
-        // Préparation données
+        // Préparation des données
         const formData = new FormData(form);
-        formData.append('form_type', 'commande'); // Important pour PHP
+        formData.append('form_type', 'commande');
         
-        // UI Loading
+        // Afficher les données en console (debug)
+        console.log('📤 Données envoyées:');
+        for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}: ${value}`);
+        }
+        
+        // État de chargement
         btnText.style.display = 'none';
         btnLoading.style.display = 'inline';
         submitBtn.disabled = true;
         
         try {
-            console.log('📤 Envoi commande...');
-            
+            // Envoi au serveur
             const response = await fetch('send_commande.php', {
                 method: 'POST',
                 body: formData
             });
             
+            console.log('📥 Réponse reçue - Status:', response.status);
+            
+            // Lire la réponse
             const result = await response.json();
             console.log('📊 Résultat:', result);
             
             if (result.success) {
-                // Succès
+                // SUCCÈS
                 alert('✅ ' + result.message);
+                
+                // Réinitialiser le formulaire
                 form.reset();
                 
-                // Fermer le popup après 2 secondes
+                // Fermer le popup après 1.5 secondes
                 setTimeout(() => {
-                    const popup = document.getElementById('order-popup');
-                    if (popup) {
-                        popup.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                }, 2000);
+                    popup.style.display = 'none';
+                    document.body.style.overflow = '';
+                    
+                    // Réinitialiser l'animation
+                    popup.style.opacity = '1';
+                    popup.querySelector('.popup-container').style.transform = 'translateY(0)';
+                }, 1500);
                 
             } else {
-                // Erreur
+                // ERREUR
                 alert('❌ ' + result.message);
             }
             
         } catch (error) {
-            console.error('💥 Erreur:', error);
+            console.error('💥 Erreur réseau:', error);
             alert('Erreur de connexion. Veuillez réessayer.');
+            
         } finally {
-            // Reset UI
+            // Réinitialiser l'UI
             btnText.style.display = 'inline';
             btnLoading.style.display = 'none';
             submitBtn.disabled = false;
@@ -317,18 +376,18 @@ function setupOrderForm(form) {
     });
     
     // Validation en temps réel
-    const inputs = form.querySelectorAll('input, select, textarea');
+    const inputs = form.querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.checkValidity()) {
+                this.style.borderColor = '#2ecc71';
+            }
+        });
+        
         input.addEventListener('blur', function() {
-            validateField(this);
+            if (!this.checkValidity()) {
+                this.style.borderColor = '#e74c3c';
+            }
         });
     });
-    
-    function validateField(field) {
-        if (!field.checkValidity()) {
-            field.style.borderColor = '#e74c3c';
-        } else {
-            field.style.borderColor = '#2ecc71';
-        }
-    }
 }

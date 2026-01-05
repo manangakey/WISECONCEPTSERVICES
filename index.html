@@ -25,7 +25,7 @@
                 <a href="contact.html" class="nav-link">Contact</a>
             </div>
             <div class="nav-cta">
-                <a href="contact.html" class="btn btn-primary">Commencer</a>
+                <button class="btn btn-primary" id="open-order-popup">Commander</button>
             </div>
             <div class="hamburger">
                 <span></span>
@@ -225,7 +225,76 @@
     </footer>
 
     <script src="js/script.js"></script>
-<!-- Bouton Retour en haut -->
+
+<!-- Popup de commande -->
+<div class="popup-overlay" id="order-popup">
+    <div class="popup-container">
+        <div class="popup-header">
+            <h2>Demande de service rapide</h2>
+            <button class="popup-close" id="close-popup">&times;</button>
+        </div>
+        
+        <form id="order-form" class="order-form">
+            <div class="form-group">
+                <label for="order-nom">Nom complet *</label>
+                <input type="text" id="order-nom" name="nom" required minlength="2">
+            </div>
+            
+            <div class="form-group">
+                <label for="order-email">Adresse e-mail</label>
+                <input type="email" id="order-email" name="email">
+            </div>
+            
+            <div class="form-group">
+                <label for="order-telephone">Numéro de téléphone *</label>
+                <input type="tel" id="order-telephone" name="telephone" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="order-commande">Type de commande *</label>
+                <select id="order-commande" name="commande" required>
+                    <option value="">Choisissez un service</option>
+                    <option value="logo-simple">Logo simple</option>
+                    <option value="logo-charte">Logo & charte graphique</option>
+                    <option value="branding-complet">Branding complet</option>
+                    <option value="affiche">Affiche</option>
+                    <option value="flyers">Flyers ou Roll-up</option>
+                    <option value="brochure">Brochures</option>
+                    <option value="catalogue">Catalogues</option>
+                    <option value="carte-visite">Carte de visite</option>
+                    <option value="video-promo">Vidéos promotionnelles</option>
+                    <option value="montage-pro">Montages professionnels</option>
+                    <option value="motion-design">Motion design (animation)</option>
+                    <option value="autre">Autre</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="order-description">Description de la demande *</label>
+                <textarea id="order-description" name="description" rows="4" required 
+                          placeholder="Décrivez votre projet, vos besoins spécifiques, délais souhaités..."></textarea>
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="order-devis" name="devis" checked>
+                <label for="order-devis">Je souhaite recevoir un devis détaillé</label>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-large">
+                    <span class="btn-text">Soumettre la demande</span>
+                    <span class="btn-loading">Envoi en cours...</span>
+                </button>
+            </div>
+        </form>
+        
+        <div class="popup-footer">
+            <p>Vous recevrez une réponse sous 24h maximum</p>
+        </div>
+    </div>
+</div>
+	
+	<!-- Bouton Retour en haut -->
 <button id="back-to-top" class="back-to-top" aria-label="Retour en haut">
     <i class="fas fa-chevron-up"></i> <!-- Pour Font Awesome -->
 </button>
@@ -242,6 +311,7 @@
 </div>
 
 </html>
+
 
 
 

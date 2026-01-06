@@ -199,194 +199,204 @@ function setupForm(form, formType) {
 }
 
 // ===== GESTION DU POPUP DE COMMANDE =====
+// Fonction globale pour ouvrir le popup
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Initialisation popup commande...');
-    
-    // Éléments
-    const openBtn = document.getElementById('commander-main');
+function ouvrirPopupCommande() {
     const popup = document.getElementById('order-popup');
-    const closeBtn = document.getElementById('close-order-popup');
-    const orderForm = document.getElementById('order-form');
-    
-    // Vérifier que les éléments existent
-    if (!openBtn) {
-        console.error('❌ Bouton "commander-main" non trouvé');
-        return;
-    }
-    
     if (!popup) {
-        console.error('❌ Popup "order-popup" non trouvé');
+        console.error('Popup non trouvé');
         return;
     }
     
-    console.log('✅ Éléments trouvés');
+    // Afficher le popup
+    popup.style.display = 'flex';
     
-    // 1. Ouvrir le popup
-    openBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        console.log('🎯 Bouton cliqué - ouverture popup');
-        
-        // Afficher le popup
-        popup.style.display = 'flex';
-        
-        // Animation douce
-        setTimeout(() => {
-            popup.style.opacity = '1';
-            popup.querySelector('.popup-container').style.transform = 'translateY(0)';
-        }, 10);
-        
-        // Bloquer le scroll de la page
-        document.body.style.overflow = 'hidden';
-    });
+    // Animation
+    setTimeout(() => {
+        popup.style.opacity = '1';
+        const container = popup.querySelector('.popup-container');
+        if (container) {
+            container.style.transform = 'translateY(0)';
+            container.style.opacity = '1';
+        }
+    }, 10);
     
-    // 2. Fermer le popup
+    // Bloquer le scroll
+    document.body.style.overflow = 'hidden';
+}
+
+// Fonction pour fermer le popup
+function fermerPopupCommande() {
+    const popup = document.getElementById('order-popup');
+    if (!popup) return;
+    
+    // Animation de fermeture
+    popup.style.opacity = '0';
+    const container = popup.querySelector('.popup-container');
+    if (container) {
+        container.style.transform = 'translateY(30px)';
+    }
+    
+    // Cacher après animation
+    setTimeout(() => {
+        popup.style.display = 'none';
+        document.body.style.overflow = '';
+    }, 300);
+}
+
+// Initialisation au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔧 Initialisation popup commande...');
+    
+    // 1. Configurer le bouton "Commencer"
+    const commanderBtn = document.getElementById('commander-main');
+    if (commanderBtn) {
+        commanderBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('🎯 Bouton "Commencer" cliqué');
+            ouvrirPopupCommande();
+        });
+    } else {
+        console.warn('⚠️ Bouton "commander-main" non trouvé. Vérifiez votre HTML.');
+    }
+    
+    // 2. Configurer le bouton fermer
+    const closeBtn = document.getElementById('close-order-popup');
     if (closeBtn) {
-        closeBtn.addEventListener('click', closePopup);
+        closeBtn.addEventListener('click', fermerPopupCommande);
     }
     
     // 3. Fermer en cliquant en dehors
-    popup.addEventListener('click', function(e) {
-        if (e.target === popup) {
-            closePopup();
-        }
-    });
+    const popup = document.getElementById('order-popup');
+    if (popup) {
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                fermerPopupCommande();
+            }
+        });
+    }
     
     // 4. Fermer avec Échap
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && popup.style.display === 'flex') {
-            closePopup();
+        if (e.key === 'Escape' && popup && popup.style.display === 'flex') {
+            fermerPopupCommande();
         }
     });
     
-    // 5. Gérer le formulaire
+    // 5. Configurer le formulaire
+    const orderForm = document.getElementById('order-form');
     if (orderForm) {
-        setupOrderForm(orderForm, popup);
-    }
-    
-    // Fonction pour fermer le popup
-    function closePopup() {
-        console.log('🔒 Fermeture popup');
-        
-        // Animation de fermeture
-        popup.style.opacity = '0';
-        popup.querySelector('.popup-container').style.transform = 'translateY(20px)';
-        
-        // Cacher après animation
-        setTimeout(() => {
-            popup.style.display = 'none';
-            document.body.style.overflow = ''; // Réactiver scroll
-        }, 300);
+        configurerFormulaireCommande(orderForm);
     }
 });
 
 // Configuration du formulaire
-function setupOrderForm(form, popup) {
+function configurerFormulaireCommande(form) {
     const submitBtn = form.querySelector('.btn-submit-order');
     if (!submitBtn) {
-        console.error('❌ Bouton submit non trouvé');
+        console.error('❌ Bouton submit non trouvé dans le formulaire');
         return;
     }
     
     const btnText = submitBtn.querySelector('.btn-text');
     const btnLoading = submitBtn.querySelector('.btn-loading');
     
+    // Événement de soumission
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
-        console.log('📝 Formulaire soumis');
+        console.log('📝 Soumission du formulaire...');
         
-        // Validation simple
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
-        
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                field.style.borderColor = '#e74c3c';
-                isValid = false;
-            } else {
-                field.style.borderColor = '#2ecc71';
+        // Validation
+        if (!this.checkValidity()) {
+            // Trouver le premier champ invalide
+            const invalidField = this.querySelector(':invalid');
+            if (invalidField) {
+                invalidField.focus();
+                invalidField.style.borderColor = '#ff4757';
+                invalidField.style.backgroundColor = '#fff5f5';
             }
-        });
-        
-        if (!isValid) {
-            alert('⚠️ Veuillez remplir tous les champs obligatoires.');
+            alert('⚠️ Veuillez remplir correctement tous les champs obligatoires.');
             return;
         }
         
         // Préparation des données
-        const formData = new FormData(form);
+        const formData = new FormData(this);
         formData.append('form_type', 'commande');
         
-        // Afficher les données en console (debug)
-        console.log('📤 Données envoyées:');
-        for (let [key, value] of formData.entries()) {
-            console.log(`  ${key}: ${value}`);
-        }
-        
-        // État de chargement
-        btnText.style.display = 'none';
-        btnLoading.style.display = 'inline';
+        // Mode chargement
+        if (btnText) btnText.style.display = 'none';
+        if (btnLoading) btnLoading.style.display = 'inline';
         submitBtn.disabled = true;
         
         try {
             // Envoi au serveur
+            console.log('📤 Envoi des données...');
             const response = await fetch('send_commande.php', {
                 method: 'POST',
                 body: formData
             });
             
-            console.log('📥 Réponse reçue - Status:', response.status);
+            console.log('📥 Statut réponse:', response.status);
             
-            // Lire la réponse
-            const result = await response.json();
+            // Vérifier si la réponse est du JSON
+            const responseText = await response.text();
+            let result;
+            
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                console.error('❌ Réponse non-JSON:', responseText);
+                throw new Error('Format de réponse invalide');
+            }
+            
             console.log('📊 Résultat:', result);
             
             if (result.success) {
-                // SUCCÈS
+                // Succès
                 alert('✅ ' + result.message);
                 
                 // Réinitialiser le formulaire
-                form.reset();
+                this.reset();
                 
-                // Fermer le popup après 1.5 secondes
+                // Fermer le popup après délai
                 setTimeout(() => {
-                    popup.style.display = 'none';
-                    document.body.style.overflow = '';
-                    
-                    // Réinitialiser l'animation
-                    popup.style.opacity = '1';
-                    popup.querySelector('.popup-container').style.transform = 'translateY(0)';
+                    fermerPopupCommande();
                 }, 1500);
                 
             } else {
-                // ERREUR
+                // Erreur
                 alert('❌ ' + result.message);
             }
             
         } catch (error) {
-            console.error('💥 Erreur réseau:', error);
-            alert('Erreur de connexion. Veuillez réessayer.');
+            console.error('💥 Erreur:', error);
+            alert('🚨 Erreur de connexion ou serveur. Veuillez réessayer.');
             
         } finally {
-            // Réinitialiser l'UI
-            btnText.style.display = 'inline';
-            btnLoading.style.display = 'none';
+            // Réinitialiser UI
+            if (btnText) btnText.style.display = 'inline';
+            if (btnLoading) btnLoading.style.display = 'none';
             submitBtn.disabled = false;
         }
     });
     
     // Validation en temps réel
-    const inputs = form.querySelectorAll('input, textarea, select');
-    inputs.forEach(input => {
-        input.addEventListener('input', function() {
+    const champs = form.querySelectorAll('input, select, textarea');
+    champs.forEach(champ => {
+        champ.addEventListener('input', function() {
             if (this.checkValidity()) {
-                this.style.borderColor = '#2ecc71';
+                this.style.borderColor = '#dce1f0';
+                this.style.backgroundColor = '#f8f9fc';
             }
         });
         
-        input.addEventListener('blur', function() {
+        champ.addEventListener('blur', function() {
             if (!this.checkValidity()) {
-                this.style.borderColor = '#e74c3c';
+                this.style.borderColor = '#ff4757';
+                this.style.backgroundColor = '#fff5f5';
+            } else {
+                this.style.borderColor = '#2ecc71';
+                this.style.backgroundColor = '#f8f9fc';
             }
         });
     });

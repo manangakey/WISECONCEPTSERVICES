@@ -230,6 +230,79 @@
 </button>
 
 <script src="js/script.js"></script>
+
+	<!-- ========== MODAL DE COMMANDE ========== -->
+<div id="commandeOverlay" class="modal-overlay"></div>
+
+<div id="commandeModal" class="modal-commande">
+    <div class="modal-header">
+        <button class="modal-close" aria-label="Fermer">&times;</button>
+        <h2>📋 Commander un service</h2>
+        <p>Remplissez ce formulaire pour passer commande. Notre équipe vous répondra sous 24h.</p>
+    </div>
+    
+    <div class="modal-body">
+        <form id="commandeForm" class="modal-form">
+            <div class="form-group">
+                <label for="commandeNom">Nom complet *</label>
+                <input type="text" id="commandeNom" name="nom" required minlength="2" placeholder="Votre nom et prénom">
+            </div>
+            
+            <div class="form-group">
+                <label for="commandeEmail">Adresse e-mail <span class="optional">(Facultatif)</span></label>
+                <input type="email" id="commandeEmail" name="email" placeholder="exemple@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="commandeTelephone">Numéro de téléphone *</label>
+                <input type="tel" id="commandeTelephone" name="telephone" required placeholder="+243 XXX XX XX XX">
+            </div>
+            
+            <div class="form-group">
+                <label for="commandeService">Commande *</label>
+                <select id="commandeService" name="service" required>
+                    <option value="">Choisissez un service</option>
+                    <optgroup label="Identité visuelle">
+                        <option value="logo_simple">Logo simple</option>
+                        <option value="logo_charte">Logo & charte graphique</option>
+                        <option value="branding_complet">Branding complet</option>
+                    </optgroup>
+                    <optgroup label="Impression sur Support">
+                        <option value="affiche">Affiche</option>
+                        <option value="flyer_rollup">Flyers ou Roll-up</option>
+                        <option value="brochure">Brochures</option>
+                        <option value="catalogue">Catalogues</option>
+                        <option value="carte_visite">Carte de visite</option>
+						<option value="t_shirt">T-shirt</option>
+                    </optgroup>
+                    <optgroup label="🎥 Audiovisuel">
+                        <option value="video_promo">Vidéos promotionnelles</option>
+                        <option value="montage_pro">Montages professionnels</option>
+                        <option value="motion_design">Motion design (animation)</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="commandeDescription">Description de la demande *</label>
+                <textarea id="commandeDescription" name="description" required 
+                          placeholder="Décrivez votre demande en détail : objectifs, style souhaité, délais, etc."></textarea>
+            </div>
+            
+            <div class="modal-checkbox">
+                <input type="checkbox" id="commandeDevis" name="devis" checked>
+                <label for="commandeDevis">Je souhaite recevoir un devis détaillé</label>
+            </div>
+            
+            <div id="commandeMessage" class="modal-message"></div>
+            
+            <button type="submit" class="modal-submit-btn">
+                <span class="btn-text">📤 Soumettre ma commande</span>
+                <span class="btn-loading">⏳ Traitement en cours...</span>
+            </button>
+        </form>
+    </div>
+</div>
 </body>
 	<!-- Loader animé -->
 <div id="page-loader" class="page-loader">
@@ -243,6 +316,7 @@
 </div>
 
 </html>
+
 
 
 

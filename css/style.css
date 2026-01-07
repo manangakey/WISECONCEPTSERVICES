@@ -2356,7 +2356,7 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.85);
-    z-index: 9998;
+    z-index: 10010;
     backdrop-filter: blur(5px);
     animation: fadeIn 0.3s ease;
 }
@@ -2374,7 +2374,7 @@ body {
     background: white;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
+    z-index: 10011;
     animation: slideIn 0.4s ease;
 }
 
@@ -2618,8 +2618,8 @@ body {
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background: rgba(0, 0, 0, 0.85) !important; /* Plus opaque */
-    z-index: 9998 !important;
+    background: rgba(0, 0, 0, 0.60) !important; /* Plus opaque */
+    z-index: 10010 !important;
     display: none; /* Caché par défaut */
     backdrop-filter: blur(5px);
 }
@@ -2636,7 +2636,7 @@ body {
     background: white !important;
     border-radius: 20px !important;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
-    z-index: 9999 !important; /* PLUS HAUT que l'overlay */
+    z-index: 10011 !important; /* PLUS HAUT que l'overlay */
     display: none; /* Caché par défaut */
     animation: modalAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
 }
@@ -2670,7 +2670,7 @@ body.modal-open {
 
 /* 5. Bouton fermer bien visible */
 #commandeModal .modal-close {
-    z-index: 10001 !important;
+    z-index: 10012 !important;
 }
 
 /* 6. Correction pour mobile */
@@ -2681,4 +2681,5 @@ body.modal-open {
         border-radius: 15px !important;
     }
 }
+
 

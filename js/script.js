@@ -197,3 +197,115 @@ function setupForm(form, formType) {
         }
     });
 }
+
+// ========== GESTION COMMANDE POPUP ==========
+document.addEventListener('DOMContentLoaded', function() {
+    // Éléments du modal
+    const modal = document.getElementById('commandeModal');
+    const overlay = document.getElementById('commandeOverlay');
+    const closeBtn = modal?.querySelector('.modal-close');
+    const commanderBtns = document.querySelectorAll('.btn-commander');
+    const form = document.getElementById('commandeForm');
+    const submitBtn = form?.querySelector('.modal-submit-btn');
+    const messageDiv = document.getElementById('commandeMessage');
+    
+    // 1. Ouvrir le modal
+    commanderBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (modal && overlay) {
+                modal.style.display = 'block';
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Empêcher le scroll
+                // Focus sur le premier champ
+                setTimeout(() => {
+                    document.getElementById('commandeNom')?.focus();
+                }, 300);
+            }
+        });
+    });
+    
+    // 2. Fermer le modal
+    function closeModal() {
+        if (modal && overlay) {
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Réactiver le scroll
+            // Réinitialiser le formulaire après un délai
+            setTimeout(() => {
+                if (form) form.reset();
+                messageDiv.style.display = 'none';
+                submitBtn?.classList.remove('loading');
+            }, 300);
+        }
+    }
+    
+    // Fermer avec le bouton X
+    closeBtn?.addEventListener('click', closeModal);
+    
+    // Fermer en cliquant sur l'overlay
+    overlay?.addEventListener('click', closeModal);
+    
+    // Fermer avec la touche Echap
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal?.style.display === 'block') {
+            closeModal();
+        }
+    });
+    
+    // 3. Gestion du formulaire
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validation
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Récupérer les données
+            const formData = new FormData(form);
+            formData.append('form_type', 'commande');
+            
+            // UI loading
+            submitBtn?.classList.add('loading');
+            messageDiv.style.display = 'none';
+            
+            try {
+                // Envoyer les données
+                const response = await fetch('send_commande.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                // Afficher le message
+                messageDiv.textContent = result.message;
+                messageDiv.className = 'modal-message ' + (result.success ? 'success' : 'error');
+                messageDiv.style.display = 'block';
+                
+                if (result.success) {
+                    // Réinitialiser le formulaire après succès
+                    form.reset();
+                    // Fermer automatiquement après 3 secondes
+                    setTimeout(closeModal, 3000);
+                }
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                messageDiv.textContent = 'Erreur de connexion. Veuillez réessayer.';
+                messageDiv.className = 'modal-message error';
+                messageDiv.style.display = 'block';
+            } finally {
+                // Reset UI
+                submitBtn?.classList.remove('loading');
+                
+                // Scroll vers le message
+                if (messageDiv.style.display === 'block') {
+                    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    }
+});

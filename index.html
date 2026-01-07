@@ -303,6 +303,46 @@
         </form>
     </div>
 </div>
+<script>
+// TEST RAPIDE - À mettre TEMPORAIREMENT
+console.log('=== TEST MODAL COMMANDE ===');
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('1. DOM chargé');
+    
+    // Vérifier les boutons
+    const commanderBtns = document.querySelectorAll('.btn-commander');
+    console.log('2. Boutons trouvés:', commanderBtns.length);
+    
+    // Vérifier le modal
+    const modal = document.getElementById('commandeModal');
+    const overlay = document.getElementById('commandeOverlay');
+    console.log('3. Modal trouvé:', !!modal);
+    console.log('4. Overlay trouvé:', !!overlay);
+    
+    // Test simple : ouvrir au clic
+    commanderBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            console.log('🎯 Bouton cliqué !');
+            if (modal && overlay) {
+                modal.style.display = 'block';
+                overlay.style.display = 'block';
+                console.log('✅ Modal ouvert');
+            }
+        });
+    });
+    
+    // Test fermeture
+    const closeBtn = document.querySelector('.modal-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+            console.log('✅ Modal fermé');
+        });
+    }
+});
+</script>
 </body>
 	<!-- Loader animé -->
 <div id="page-loader" class="page-loader">
@@ -316,6 +356,7 @@
 </div>
 
 </html>
+
 
 
 

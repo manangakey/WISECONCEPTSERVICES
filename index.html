@@ -224,8 +224,6 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-
 <!-- Popup de commande -->
 <div class="popup-overlay" id="order-popup" style="display: none;">
     <div class="popup-container">
@@ -298,6 +296,149 @@
 <button id="back-to-top" class="back-to-top" aria-label="Retour en haut">
     <i class="fas fa-chevron-up"></i> <!-- Pour Font Awesome -->
 </button>
+
+<script>
+// ===== POPUP - FORMULAIRE =====
+console.log('🚨 CODE URGENCE CHARGÉ');
+
+// Attendre que la page soit complètement chargée
+window.addEventListener('load', function() {
+    console.log('✅ Page complètement chargée');
+    
+    // 1. TROUVER LE BOUTON "COMMANDER"
+    let commanderBtn = document.getElementById('commander-main');
+    
+    // Si pas trouvé par ID, chercher par texte
+    if (!commanderBtn) {
+        console.log('🔍 Recherche alternative du bouton...');
+        const allButtons = document.querySelectorAll('.btn, button, a.btn');
+        allButtons.forEach(btn => {
+            if (btn.textContent.includes('Commander') || 
+                btn.textContent.includes('commencer') ||
+                btn.classList.contains('btn-primary')) {
+                commanderBtn = btn;
+                console.log('🎯 Bouton trouvé par texte/classe:', btn);
+            }
+        });
+    }
+    
+    // 2. TROUVER LE POPUP
+    const popup = document.getElementById('order-popup');
+    
+    if (!commanderBtn) {
+        console.error('❌ CRITIQUE: Bouton "Commencer" non trouvé !');
+        alert('ERREUR: Bouton non trouvé. Contactez le support.');
+        return;
+    }
+    
+    if (!popup) {
+        console.error('❌ CRITIQUE: Popup non trouvé !');
+        return;
+    }
+    
+    console.log('✅ Éléments trouvés:', {btn: commanderBtn, popup: popup});
+    
+    // 3. FONCTION OUVERTURE
+    function ouvrirPopupDirect() {
+        console.log('🎯 OUVERTURE POPUP DIRECTE');
+        popup.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Animation
+        setTimeout(() => {
+            popup.style.opacity = '1';
+            const container = popup.querySelector('.popup-container');
+            if (container) {
+                container.style.transform = 'translateY(0)';
+                container.style.opacity = '1';
+            }
+        }, 10);
+    }
+    
+    // 4. FONCTION FERMETURE
+    function fermerPopupDirect() {
+        console.log('🔒 FERMETURE POPUP DIRECTE');
+        popup.style.opacity = '0';
+        const container = popup.querySelector('.popup-container');
+        if (container) {
+            container.style.transform = 'translateY(20px)';
+        }
+        
+        setTimeout(() => {
+            popup.style.display = 'none';
+            document.body.style.overflow = '';
+        }, 300);
+    }
+    
+    // 5. CONFIGURATION DU BOUTON
+    console.log('⚙️ Configuration bouton...');
+    
+    // Enlever tout comportement existant
+    commanderBtn.replaceWith(commanderBtn.cloneNode(true));
+    commanderBtn = document.getElementById('commander-main') || 
+                   document.querySelector('.btn-primary, .nav-cta button, .nav-cta a');
+    
+    // Ajouter l'événement
+    commanderBtn.addEventListener('click', function(e) {
+        console.log('🎯 CLIC SUR BOUTON DÉTECTÉ !');
+        e.preventDefault();
+        e.stopPropagation();
+        ouvrirPopupDirect();
+    });
+    
+    // Ajouter aussi onclick au cas où
+    commanderBtn.onclick = function(e) {
+        e.preventDefault();
+        ouvrirPopupDirect();
+    };
+    
+    // 6. CONFIGURER LA FERMETURE
+    const closeBtn = document.getElementById('close-order-popup');
+    if (closeBtn) {
+        closeBtn.onclick = fermerPopupDirect;
+    }
+    
+    // Fermer en cliquant en dehors
+    popup.addEventListener('click', function(e) {
+        if (e.target === this) {
+            fermerPopupDirect();
+        }
+    });
+    
+    // Fermer avec Échap
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && popup.style.display === 'flex') {
+            fermerPopupDirect();
+        }
+    });
+    
+    console.log('✅ Configuration urgence terminée');
+    
+    // TEST AUTOMATIQUE (optionnel)
+    setTimeout(() => {
+        console.log('🧪 Test automatique dans 2s...');
+    }, 2000);
+});
+
+// En cas d'urgence absolue, créer un bouton test
+setTimeout(() => {
+    if (!document.getElementById('commander-main')) {
+        console.warn('⚠️ Création bouton test d\'urgence');
+        const testBtn = document.createElement('button');
+        testBtn.textContent = 'TEST POPUP URGENCE';
+        testBtn.style.cssText = 'position:fixed; top:10px; right:10px; z-index:99999; background:red; color:white; padding:10px;';
+        testBtn.onclick = function() {
+            const p = document.getElementById('order-popup');
+            if (p) {
+                p.style.display = 'flex';
+                alert('Popup ouvert via bouton test');
+            }
+        };
+        document.body.appendChild(testBtn);
+    }
+}, 3000);
+</script>
+<script src="js/script.js"></script>
 </body>
 	<!-- Loader animé -->
 <div id="page-loader" class="page-loader">
@@ -311,6 +452,7 @@
 </div>
 
 </html>
+
 
 
 

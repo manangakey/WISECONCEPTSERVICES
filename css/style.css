@@ -2612,5 +2612,73 @@ body {
     padding-left: 20px;
 }
 
+#commandeOverlay.modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.85) !important; /* Plus opaque */
+    z-index: 9998 !important;
+    display: none; /* Caché par défaut */
+    backdrop-filter: blur(5px);
+}
 
+#commandeModal.modal-commande {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 90% !important;
+    max-width: 600px !important;
+    max-height: 85vh !important;
+    overflow-y: auto !important;
+    background: white !important;
+    border-radius: 20px !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
+    z-index: 9999 !important; /* PLUS HAUT que l'overlay */
+    display: none; /* Caché par défaut */
+    animation: modalAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+/* Animation d'apparition */
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* 3. EMPÊCHER le scroll du body quand modal ouvert */
+body.modal-open {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
+/* 4. S'assurer que les inputs sont cliquables */
+#commandeModal input,
+#commandeModal select,
+#commandeModal textarea,
+#commandeModal button {
+    z-index: 10000 !important;
+    position: relative !important;
+}
+
+/* 5. Bouton fermer bien visible */
+#commandeModal .modal-close {
+    z-index: 10001 !important;
+}
+
+/* 6. Correction pour mobile */
+@media (max-width: 768px) {
+    #commandeModal.modal-commande {
+        width: 95% !important;
+        max-height: 90vh !important;
+        border-radius: 15px !important;
+    }
+}
 

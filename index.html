@@ -25,7 +25,10 @@
                 <a href="contact.html" class="nav-link">Contact</a>
             </div>
             <div class="nav-cta">
-                <button class="btn btn-primary" id="commander-main">Commander</button>
+                <button type="button" class="btn btn-primary" id="commander-main" 
+            		onclick="event.preventDefault(); document.getElementById('order-popup').style.display='flex';">
+        			Commencer
+    			</button>
             </div>
             <div class="hamburger">
                 <span></span>
@@ -452,6 +455,7 @@ setTimeout(() => {
 </div>
 
 </html>
+
 
 
 

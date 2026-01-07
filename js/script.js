@@ -200,57 +200,81 @@ function setupForm(form, formType) {
 
 // ========== GESTION COMMANDE POPUP ==========
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Initialisation commande modal...');
+    console.log('🚀 Initialisation modal commande...');
     
-    // 1. S'ASSURER que le modal est caché au départ
     const modal = document.getElementById('commandeModal');
     const overlay = document.getElementById('commandeOverlay');
-    
-    if (modal) modal.style.display = 'none';
-    if (overlay) overlay.style.display = 'none';
-    
-    // 2. Trouver TOUS les boutons "Commander"
     const commanderBtns = document.querySelectorAll('.btn-commander');
-    console.log(`🔍 ${commanderBtns.length} bouton(s) "Commander" trouvé(s)`);
     
-    if (commanderBtns.length === 0) {
-        console.error('❌ AUCUN bouton avec la classe .btn-commander trouvé !');
-        console.error('Vérifiez que vos boutons ont bien: class="btn btn-primary btn-commander"');
-        return;
+    // FORCER le display: none au départ
+    if (modal) {
+        modal.style.display = 'none';
+        modal.style.position = 'fixed';
+        modal.style.top = '50%';
+        modal.style.left = '50%';
+        modal.style.transform = 'translate(-50%, -50%)';
+        modal.style.zIndex = '9999';
     }
     
-    // 3. Ouvrir le modal
+    if (overlay) {
+        overlay.style.display = 'none';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100vw';
+        overlay.style.height = '100vh';
+        overlay.style.zIndex = '9998';
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+    }
+    
+    // Ouvrir le modal
     commanderBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
-            console.log('🎯 Ouverture modal commande');
+            e.stopPropagation();
+            console.log('🎯 Ouverture modal');
             
             if (modal && overlay) {
+                // Afficher
                 modal.style.display = 'block';
                 overlay.style.display = 'block';
+                
+                // Bloquer le scroll du body
                 document.body.style.overflow = 'hidden';
+                document.body.classList.add('modal-open');
                 
                 // Focus sur le premier champ
                 setTimeout(() => {
                     const firstInput = document.getElementById('commandeNom');
-                    if (firstInput) firstInput.focus();
-                }, 300);
+                    if (firstInput) {
+                        firstInput.focus();
+                        firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 100);
+                
+                // Debug
+                console.log('Modal position:', modal.getBoundingClientRect());
+                console.log('Modal display:', modal.style.display);
             }
         });
     });
     
-    // 4. Fermer le modal
+    // Fermer le modal
     function closeModal() {
         console.log('🔒 Fermeture modal');
-        if (modal && overlay) {
-            modal.style.display = 'none';
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            
-            // Réinitialiser après fermeture
-            const form = document.getElementById('commandeForm');
+        
+        if (modal) modal.style.display = 'none';
+        if (overlay) overlay.style.display = 'none';
+        
+        // Réactiver le scroll
+        document.body.style.overflow = 'auto';
+        document.body.classList.remove('modal-open');
+        
+        // Réinitialiser le formulaire
+        const form = document.getElementById('commandeForm');
+        if (form) {
+            form.reset();
             const messageDiv = document.getElementById('commandeMessage');
-            if (form) form.reset();
             if (messageDiv) {
                 messageDiv.style.display = 'none';
                 messageDiv.className = 'modal-message';
@@ -258,22 +282,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Bouton fermer
-    const closeBtn = document.querySelector('.modal-close');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', closeModal);
-    }
+    // Événements de fermeture
+    document.querySelector('.modal-close')?.addEventListener('click', closeModal);
+    overlay?.addEventListener('click', closeModal);
     
-    // Overlay fermer
-    if (overlay) {
-        overlay.addEventListener('click', closeModal);
-    }
-    
-    // Touche Echap
+    // Échap pour fermer
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal && modal.style.display === 'block') {
+        if (e.key === 'Escape' && modal?.style.display === 'block') {
             closeModal();
         }
+    });
+    
+    // Empêcher la fermeture quand on clique dans le modal
+    modal?.addEventListener('click', function(e) {
+        e.stopPropagation();
     });
     
     // 5. Gestion formulaire

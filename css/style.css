@@ -2348,342 +2348,62 @@ body {
 }
 
 /* ========== POPUP COMMANDE ========== */
+/* OVERLAY */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    z-index: 10010;
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.3s ease;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 1000;
 }
 
+/* MODAL */
 .modal-commande {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background: #fff;
     width: 90%;
-    max-width: 600px;
-    max-height: 85vh;
-    overflow-y: auto;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    z-index: 10011;
-    animation: slideIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-.modal-header {
-    background: linear-gradient(135deg, #151b54 0%, #324499 100%);
-    color: white;
-    padding: 25px 30px;
-    border-radius: 20px 20px 0 0;
-    position: relative;
-}
-
-.modal-header h2 {
-    margin: 0;
-    font-size: 1.8rem;
-    font-weight: 700;
-}
-
-.modal-header p {
-    margin: 10px 0 0;
-    opacity: 0.9;
-    font-size: 1rem;
-}
-
-.modal-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.modal-close:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: rotate(90deg);
-}
-
-.modal-body {
-    padding: 30px;
-}
-
-/* Formulaire dans le modal */
-.modal-form .form-group {
-    margin-bottom: 20px;
-}
-
-.modal-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #333;
-    font-size: 0.95rem;
-}
-
-.modal-form label span.optional {
-    color: #666;
-    font-weight: normal;
-    font-size: 0.85rem;
-}
-
-.modal-form input,
-.modal-form select,
-.modal-form textarea {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e1e5f1;
+    max-width: 400px;
+    padding: 20px;
     border-radius: 10px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-}
-
-.modal-form input:focus,
-.modal-form select:focus,
-.modal-form textarea:focus {
-    outline: none;
-    border-color: #324499;
-    box-shadow: 0 0 0 3px rgba(50, 68, 153, 0.1);
-}
-
-.modal-form textarea {
-    min-height: 120px;
-    resize: vertical;
-    font-family: inherit;
-}
-
-/* Checkbox style */
-.modal-checkbox {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin: 25px 0;
-}
-
-.modal-checkbox input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-top: 2px;
-    accent-color: #faaa03;
-}
-
-.modal-checkbox label {
-    font-weight: normal;
-    line-height: 1.5;
-    cursor: pointer;
-}
-
-/* Bouton submit */
-.modal-submit-btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #faaa03 0%, #8f6101 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.modal-submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(250, 170, 3, 0.3);
-}
-
-.modal-submit-btn:active {
-    transform: translateY(0);
-}
-
-.modal-submit-btn.loading .btn-loading {
-    display: block;
-}
-
-/* Message de confirmation */
-.modal-message {
-    padding: 15px;
-    margin: 15px 0;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: 600;
-}
-
-.modal-message.success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.modal-message.error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .modal-commande {
-        width: 95%;
-        max-height: 90vh;
-    }
-    
-    .modal-header {
-        padding: 20px;
-    }
-    
-    .modal-body {
-        padding: 20px;
-    }
-}
-
-/* Amélioration du select */
-.modal-form select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23324499' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    background-size: 16px;
-    padding-right: 45px;
-    cursor: pointer;
-}
-
-/* Style des optgroups */
-.modal-form optgroup {
-    font-weight: 600;
-    color: #151b54;
-    background: #f8f9fa;
-}
-
-.modal-form optgroup option {
-    font-weight: normal;
-    color: #333;
-    padding-left: 20px;
-}
-
-#commandeOverlay.modal-overlay {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    background: rgba(0, 0, 0, 0.60) !important; /* Plus opaque */
-    z-index: 10010 !important;
-    backdrop-filter: blur(5px);
-}
-
-#commandeModal.modal-commande {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 90% !important;
-    max-width: 600px !important;
-    max-height: 85vh !important;
-    overflow-y: auto !important;
-    background: white !important;
-    border-radius: 20px !important;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5) !important;
-    z-index: 10011 !important; /* PLUS HAUT que l'overlay */
-    animation: modalAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-}
-
-/* Animation d'apparition */
-@keyframes modalAppear {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
-/* 3. EMPÊCHER le scroll du body quand modal ouvert */
-body.modal-open {
-    overflow: hidden !important;
-    height: 100vh !important;
-}
-
-/* 4. S'assurer que les inputs sont cliquables */
-#commandeModal input,
-#commandeModal select,
-#commandeModal textarea,
-#commandeModal button {
-    z-index: 10000 !important;
-    position: relative !important;
-}
-
-/* 5. Bouton fermer bien visible */
-#commandeModal .modal-close {
-    z-index: 10012 !important;
-}
-
-/* 6. Correction pour mobile */
-@media (max-width: 768px) {
-    #commandeModal.modal-commande {
-        width: 95% !important;
-        max-height: 90vh !important;
-        border-radius: 15px !important;
-    }
-}
-
-.modal-overlay,
-.modal-commande {
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
-    transition: all 0.3s ease;
+    transition: 0.3s;
+    z-index: 1001;
 }
 
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
+/* ACTIVE */
+.modal-overlay.active,
 .modal-commande.active {
     opacity: 1;
     visibility: visible;
-    pointer-events: auto;
 }
+
+/* CLOSE */
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* FORM */
+#commandeForm input,
+#commandeForm textarea,
+#commandeForm button {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+
 
 
 

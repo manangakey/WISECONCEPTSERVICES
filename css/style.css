@@ -2685,17 +2685,21 @@ body.modal-open {
 .modal-overlay,
 .modal-commande {
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
     transition: all 0.3s ease;
 }
 
 .modal-overlay.active {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
 
 .modal-commande.active {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
 }
+
 

@@ -25,7 +25,7 @@
                 <a href="contact.html" class="nav-link">Contact</a>
             </div>
             <div class="nav-cta">
-    			<button class="btn-commander">Commander</button>
+    			<button class="btn-commander">Passer une commande</button>
 			</div>
             <div class="hamburger">
                 <span></span>
@@ -229,25 +229,24 @@
     <i class="fas fa-chevron-up"></i> <!-- Pour Font Awesome -->
 </button>
 
-<script src="js/script.js"></script>
-
 	<!-- ========== MODAL DE COMMANDE ========== -->
-<!-- OVERLAY -->
-<div id="commandeOverlay" class="modal-overlay"></div>
+<div id="overlay"></div>
 
-<!-- MODAL -->
-<div id="commandeModal" class="modal-commande">
-    <button class="modal-close">&times;</button>
+<div id="modal">
+    <button id="close">&times;</button>
 
     <h2>Passer une commande</h2>
+    <p class="subtitle">Remplissez le formulaire, nous vous contacterons rapidement</p>
 
     <form id="commandeForm">
         <input type="text" name="nom" placeholder="Votre nom" required>
         <input type="email" name="email" placeholder="Votre email" required>
-        <textarea name="message" placeholder="Votre message"></textarea>
-        <button type="submit">Envoyer</button>
+        <textarea name="message" placeholder="Décrivez votre besoin..." required></textarea>
+        <button type="submit">Envoyer la commande</button>
+        <p id="result"></p>
     </form>
 </div>
+<script src="js/script.js"></script>
 </body>
 	<!-- Loader animé -->
 <div id="page-loader" class="page-loader">
@@ -261,6 +260,7 @@
 </div>
 
 </html>
+
 
 
 

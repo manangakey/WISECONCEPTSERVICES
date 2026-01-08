@@ -201,27 +201,23 @@ function setupForm(form, formType) {
 // ========== GESTION COMMANDE POPUP ==========
 document.addEventListener("DOMContentLoaded", function () {
 
-    // OUVERTURE
-    document.addEventListener("click", function (event) {
-        const bouton = event.target.closest(".btn-commander");
-        if (!bouton) return;
+    const btn = document.querySelector(".btn-commander");
+    const modal = document.getElementById("commandeModal");
+    const overlay = document.getElementById("commandeOverlay");
+    const closeBtn = document.querySelector(".modal-close");
 
-        event.preventDefault();
-
-        document.getElementById("commandeModal").classList.add("active");
-        document.getElementById("commandeOverlay").classList.add("active");
-        document.body.classList.add("modal-open");
+    btn.addEventListener("click", function () {
+        modal.classList.add("active");
+        overlay.classList.add("active");
     });
 
-    // FERMETURE
-    function fermerPopup() {
-        document.getElementById("commandeModal").classList.remove("active");
-        document.getElementById("commandeOverlay").classList.remove("active");
-        document.body.classList.remove("modal-open");
-    }
+    closeBtn.addEventListener("click", fermer);
+    overlay.addEventListener("click", fermer);
 
-    document.querySelector(".modal-close")?.addEventListener("click", fermerPopup);
-    document.getElementById("commandeOverlay")?.addEventListener("click", fermerPopup);
+    function fermer() {
+        modal.classList.remove("active");
+        overlay.classList.remove("active");
+    }
 
 });
     

@@ -95,7 +95,7 @@ try {
     $to = 'contact@wiseconceptservices.com'; 
     
     // Sujet avec encodage UTF-8
-    $subjectText = "🛒 Nouvelle commande: " . $serviceNom;
+    $subjectText = "Nouvelle commande: " . $serviceNom;
     $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
     
     // Construction du message
@@ -149,3 +149,4 @@ try {
 
 echo json_encode($response);
 ?>
+

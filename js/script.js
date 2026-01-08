@@ -202,105 +202,43 @@ function setupForm(form, formType) {
 document.addEventListener("DOMContentLoaded", function () {
 
     const btn = document.querySelector(".btn-commander");
-    const modal = document.getElementById("commandeModal");
-    const overlay = document.getElementById("commandeOverlay");
-    const closeBtn = document.querySelector(".modal-close");
+    const modal = document.getElementById("modal");
+    const overlay = document.getElementById("overlay");
+    const close = document.getElementById("close");
+    const form = document.getElementById("commandeForm");
+    const result = document.getElementById("result");
 
-    btn.addEventListener("click", function () {
-        modal.classList.add("active");
-        overlay.classList.add("active");
-    });
+    btn.onclick = () => {
+        modal.style.display = "block";
+        overlay.style.display = "block";
+    };
 
-    closeBtn.addEventListener("click", fermer);
-    overlay.addEventListener("click", fermer);
+    close.onclick = fermer;
+    overlay.onclick = fermer;
 
     function fermer() {
-        modal.classList.remove("active");
-        overlay.classList.remove("active");
+        modal.style.display = "none";
+        overlay.style.display = "none";
+        result.textContent = "";
     }
 
-});
-    
-    // 5. Gestion formulaire
-    const form = document.getElementById('commandeForm');
-    if (form) {
-        console.log('✅ Formulaire trouvé');
-        
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            console.log('📤 Soumission formulaire commande');
-            
-            // Validation
-            if (!form.checkValidity()) {
-                console.log('⚠️ Validation échouée');
-                form.reportValidity();
-                return;
-            }
-            
-            // Récupération données
-            const formData = new FormData(form);
-            formData.append('form_type', 'commande');
-            
-            // UI loading
-            const submitBtn = form.querySelector('.modal-submit-btn');
-            const messageDiv = document.getElementById('commandeMessage');
-            
-            if (submitBtn) submitBtn.classList.add('loading');
-            if (messageDiv) {
-                messageDiv.style.display = 'none';
-                messageDiv.className = 'modal-message';
-            }
-            
-            try {
-                // Envoi
-                console.log('📍 Envoi à send_commande.php');
-                const response = await fetch('send_commande.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                console.log('📥 Réponse reçue, status:', response.status);
-                const result = await response.json();
-                console.log('📊 Résultat:', result);
-                
-                // Afficher message
-                if (messageDiv) {
-                    messageDiv.textContent = result.message || 'Réponse serveur invalide';
-                    messageDiv.className = 'modal-message ' + (result.success ? 'success' : 'error');
-                    messageDiv.style.display = 'block';
-                    
-                    // Scroll vers message
-                    setTimeout(() => {
-                        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
-                }
-                
-                // Succès
-                if (result.success) {
-                    console.log('✅ Commande réussie');
-                    form.reset();
-                    
-                    // Fermer après 3 secondes
-                    setTimeout(() => {
-                        closeModal();
-                    }, 3000);
-                }
-                
-            } catch (error) {
-                console.error('💥 Erreur:', error);
-                if (messageDiv) {
-                    messageDiv.textContent = 'Erreur de connexion. Veuillez réessayer.';
-                    messageDiv.className = 'modal-message error';
-                    messageDiv.style.display = 'block';
-                }
-            } finally {
-                // Reset UI
-                if (submitBtn) submitBtn.classList.remove('loading');
-            }
+    form.onsubmit = function (e) {
+        e.preventDefault();
+
+        const data = new FormData(form);
+
+        fetch("send_commande.php", {
+            method: "POST",
+            body: data
+        })
+        .then(res => res.text())
+        .then(msg => {
+            result.textContent = msg;
+            form.reset();
+        })
+        .catch(() => {
+            result.textContent = "Erreur lors de l'envoi.";
         });
-    } else {
-        console.error('❌ Formulaire #commandeForm non trouvé !');
-    }
-    
-    console.log('✅ Modal commande initialisé avec succès');
+    };
+
 });

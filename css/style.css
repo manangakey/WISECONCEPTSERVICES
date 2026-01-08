@@ -2348,60 +2348,95 @@ body {
 }
 
 /* ========== POPUP COMMANDE ========== */
+/* BOUTON */
+.btn-commander {
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #faaa03, #8f6101);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 /* OVERLAY */
-.modal-overlay {
+#overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.7);
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
+    display: none;
     z-index: 1000;
 }
 
 /* MODAL */
-.modal-commande {
+#modal {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -60%);
     background: #fff;
     width: 90%;
-    max-width: 400px;
-    padding: 20px;
-    border-radius: 10px;
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
+    max-width: 450px;
+    padding: 30px;
+    border-radius: 20px;
+    display: none;
     z-index: 1001;
+    animation: popup 0.4s ease forwards;
 }
 
-/* ACTIVE */
-.modal-overlay.active,
-.modal-commande.active {
-    opacity: 1;
-    visibility: visible;
+@keyframes popup {
+    from { opacity: 0; transform: translate(-50%, -70%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
 /* CLOSE */
-.modal-close {
+#close {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    border: none;
-    background: none;
+    top: 15px;
+    right: 20px;
     font-size: 24px;
+    background: none;
+    border: none;
     cursor: pointer;
+}
+
+/* TEXTE */
+#modal h2 {
+    margin: 0;
+    color: #151b54;
+}
+
+.subtitle {
+    margin-bottom: 20px;
+    color: #666;
 }
 
 /* FORM */
 #commandeForm input,
-#commandeForm textarea,
+#commandeForm textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
 #commandeForm button {
     width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
+    padding: 14px;
+    background: #151b54;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
 }
+
+#result {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
 
 
 

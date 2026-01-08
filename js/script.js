@@ -199,28 +199,31 @@ function setupForm(form, formType) {
 }
 
 // ========== GESTION COMMANDE POPUP ==========
-document.addEventListener("click", function (event) {
-    const bouton = event.target.closest(".btn-commander");
+document.addEventListener("DOMContentLoaded", function () {
 
-    if (!bouton) return; 
+    // OUVERTURE
+    document.addEventListener("click", function (event) {
+        const bouton = event.target.closest(".btn-commander");
+        if (!bouton) return;
 
-    event.preventDefault();
+        event.preventDefault();
 
-    document.getElementById("commandeModal").classList.add("active");
-    document.getElementById("commandeOverlay").classList.add("active");
+        document.getElementById("commandeModal").classList.add("active");
+        document.getElementById("commandeOverlay").classList.add("active");
+        document.body.classList.add("modal-open");
+    });
 
-    document.body.classList.add("modal-open");
+    // FERMETURE
+    function fermerPopup() {
+        document.getElementById("commandeModal").classList.remove("active");
+        document.getElementById("commandeOverlay").classList.remove("active");
+        document.body.classList.remove("modal-open");
+    }
+
+    document.querySelector(".modal-close")?.addEventListener("click", fermerPopup);
+    document.getElementById("commandeOverlay")?.addEventListener("click", fermerPopup);
+
 });
-
-function fermerPopup() {
-    document.getElementById("commandeModal").classList.remove("active");
-    document.getElementById("commandeOverlay").classList.remove("active");
-    document.body.classList.remove("modal-open");
-}
-
-document.querySelector(".modal-close").addEventListener("click", fermerPopup);
-
-document.getElementById("commandeOverlay").addEventListener("click", fermerPopup);
     
     // 5. Gestion formulaire
     const form = document.getElementById('commandeForm');

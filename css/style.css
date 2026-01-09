@@ -2381,8 +2381,8 @@ body {
 
 /* LOGO CONTAINER */
 .logo-container {
-    height: 30px;
-    max-height: 30px;
+    height: 60px;
+    max-height: 60px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -2395,9 +2395,9 @@ body {
 
 /* LOGO IMAGE */
 .logo-img {
-    height: 30px;
+    height: 60px;
     width: auto;
-    max-height: 30px;
+    max-height: 60px;
     max-width: 150px;
     object-fit: contain;
     display: block;
@@ -2436,13 +2436,13 @@ body {
     
     /* LOGO TOUJOURS 30px */
     .logo-container {
-        height: 30px;
-        max-height: 30px;
+        height: 50px;
+        max-height: 50px;
         margin-bottom: 8px;
     }
     
     .logo-img {
-        height: 30px;
+        height: 50px;
         max-width: 140px;
     }
 }
@@ -2458,12 +2458,13 @@ body {
     
     /* LOGO TOUJOURS 30px */
     .logo-container {
-        height: 30px;
+        height: 50px;
         margin-bottom: 5px;
     }
     
     .logo-img {
-        height: 30px;
+        height: 50px;
         max-width: 120px;
     }
 }
+

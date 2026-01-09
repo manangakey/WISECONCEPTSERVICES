@@ -327,9 +327,23 @@
             
             <!-- Message de succès -->
             <div class="success-message" id="successMessage">
-                <h3>✅ Commande envoyée avec succès !</h3>
+                <div class="success-icon">✅</div>
+                <h3>Commande envoyée avec succès !</h3>
                 <p>Nous avons bien reçu votre demande. Notre équipe vous contactera très rapidement.</p>
-                <p><strong>Merci pour votre confiance !</strong></p>
+                <p class="success-id">ID de commande: <strong id="commandeId"></strong></p>
+    
+                <div class="success-actions">
+                    <button class="success-btn success-ok" id="okButton">
+                        OK
+                    </button>
+                    <button class="success-btn success-new" id="newCommandButton" style="display: none;">
+                        Nouvelle commande
+                    </button>
+                </div>
+    
+                <p class="success-note">
+                    Cette fenêtre se fermera automatiquement dans <span id="countdown">10</span> secondes.
+                </p>
             </div>
         </form>
         
@@ -373,6 +387,7 @@ if (window.opener) {
 </body>
 
 </html>
+
 
 
 

@@ -53,27 +53,59 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('📊 Résultat:', result);
             
             if (result.success) {
-                // Succès
-                form.style.display = 'none';
-                successMessage.style.display = 'block';
-                successMessage.style.animation = 'fadeIn 0.5s ease-out';
+            // Succès
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+            successMessage.style.animation = 'fadeIn 0.5s ease-out';
+
+            // 1. Créer un bouton "OK" dans le message
+            const okButton = document.createElement('button');
+            okButton.textContent = 'OK';
+            okButton.style.cssText = `
+                display: block;
+                margin: 20px auto 0;
+                padding: 12px 30px;
+                background: linear-gradient(90deg, #faaa03, #8f6101);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+            `;
     
-                // Fermer la fenêtre après 3 secondes
-                setTimeout(() => {
-                    // Vérifier si c'est une pop-up
-            if (window.opener) {
-                    // Rediriger la page parent si besoin
-                    // window.opener.location.href = 'index.html';
-            
-                    // Fermer cette fenêtre
+            // 2. Ajouter un effet hover
+            okButton.addEventListener('mouseenter', () => {
+                okButton.style.transform = 'translateY(-2px)';
+                okButton.style.boxShadow = '0 5px 15px rgba(250, 170, 3, 0.3)';
+            });
+    
+            okButton.addEventListener('mouseleave', () => {
+                okButton.style.transform = 'translateY(0)';
+                okButton.style.boxShadow = 'none';
+            });
+    
+            // 3. Gérer le clic sur OK
+            okButton.addEventListener('click', function() {
+                if (window.opener && !window.opener.closed) {
+                    // Si c'est une pop-up, la fermer
                     window.close();
-            } else {
-                    // Si pas une pop-up, rediriger après message
-                    setTimeout(() => {
+                } else {
+                    // Sinon, rediriger vers l'accueil
                     window.location.href = 'index.html';
-                    }, 2000);
                 }
-            }, 3000);
+            });
+    
+            // 4. Ajouter le bouton au message
+            successMessage.appendChild(okButton);
+    
+            // 5. Optionnel : Fermer automatiquement après 10s (sécurité)
+            setTimeout(() => {
+                if (!document.hidden && window.opener) {
+                    window.close();
+                }
+            }, 10000); // 10 secondes max
         }
             
         } catch (error) {
@@ -129,4 +161,5 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Formulaire de commande initialisé');
 
 });
+
 

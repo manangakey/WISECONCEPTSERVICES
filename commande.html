@@ -337,31 +337,6 @@
     margin-top: 20px;
     font-style: italic;
 }
-
-#successMessage {
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    position: relative !important;
-    z-index: 9999 !important;
-    background: linear-gradient(135deg, #4CAF50, #2E7D32) !important;
-    color: white !important;
-    padding: 30px !important;
-    border-radius: 15px !important;
-    text-align: center !important;
-    margin-top: 20px !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
-}
-
-/* Cachez le formulaire quand le succès s'affiche */
-body.success #commandeForm {
-    display: none !important;
-}
-
-/* Affichez le message quand la classe success est sur body */
-body.success #successMessage {
-    display: block !important;
-}
     </style>
 </head>
 <body>
@@ -506,6 +481,7 @@ if (window.opener) {
 </body>
 
 </html>
+
 
 
 

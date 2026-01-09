@@ -53,60 +53,61 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('📊 Résultat:', result);
             
             if (result.success) {
-            // Succès
-            form.style.display = 'none';
-            successMessage.style.display = 'block';
-            successMessage.style.animation = 'fadeIn 0.5s ease-out';
-
-            // 1. Créer un bouton "OK" dans le message
-            const okButton = document.createElement('button');
-            okButton.textContent = 'OK';
-            okButton.style.cssText = `
-                display: block;
-                margin: 20px auto 0;
-                padding: 12px 30px;
-                background: linear-gradient(90deg, #faaa03, #8f6101);
-                color: white;
-                border: none;
-                border-radius: 8px;
-                font-size: 1rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.3s;
-            `;
+                // 1. Cacher le formulaire
+                form.style.display = 'none';
     
-            // 2. Ajouter un effet hover
-            okButton.addEventListener('mouseenter', () => {
-                okButton.style.transform = 'translateY(-2px)';
-                okButton.style.boxShadow = '0 5px 15px rgba(250, 170, 3, 0.3)';
-            });
+                // 2. Afficher le message de succès
+                const successMessage = document.getElementById('successMessage');
+                const commandeIdElement = document.getElementById('commandeId');
+                const okButton = document.getElementById('okButton');
+                const newCommandButton = document.getElementById('newCommandButton');
+                const countdownElement = document.getElementById('countdown');
     
-            okButton.addEventListener('mouseleave', () => {
-                okButton.style.transform = 'translateY(0)';
-                okButton.style.boxShadow = 'none';
-            });
+                // 3. Remplir les informations
+                commandeIdElement.textContent = '#' + (result.commande_id || '0000');
+                successMessage.style.display = 'block';
     
-            // 3. Gérer le clic sur OK
-            okButton.addEventListener('click', function() {
-                if (window.opener && !window.opener.closed) {
-                    // Si c'est une pop-up, la fermer
-                    window.close();
-                } else {
-                    // Sinon, rediriger vers l'accueil
-                    window.location.href = 'index.html';
+                // 4. Compte à rebours (10 secondes)
+                let countdown = 10;
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+        
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        closePopupOrRedirect();
+                    }
+                }, 1000);
+    
+                // 5. Fonction pour fermer/rediriger
+                function closePopupOrRedirect() {
+                    clearInterval(countdownInterval);
+        
+                    if (window.opener && !window.opener.closed) {
+                        // Si c'est une pop-up
+                        try {
+                            window.close();
+                        } catch (e) {
+                            // Si la fermeture échoue, rediriger
+                            window.location.href = 'index.html';
+                        }
+                    } else {
+                        // Si c'est un onglet normal
+                        window.location.href = 'index.html';
+                    }
                 }
-            });
     
-            // 4. Ajouter le bouton au message
-            successMessage.appendChild(okButton);
+                // 6. Bouton OK
+                okButton.addEventListener('click', closePopupOrRedirect);
     
-            // 5. Optionnel : Fermer automatiquement après 10s (sécurité)
-            setTimeout(() => {
-                if (!document.hidden && window.opener) {
-                    window.close();
+                // 7. Optionnel : Bouton "Nouvelle commande" (pour les non-popups)
+                if (!window.opener) {
+                    newCommandButton.style.display = 'inline-block';
+                    newCommandButton.addEventListener('click', function() {
+                        location.reload(); // Recharge la page pour nouvelle commande
+                    });
                 }
-            }, 10000); // 10 secondes max
-        }
+            }
             
         } catch (error) {
             console.error('💥 Erreur:', error);
@@ -161,5 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Formulaire de commande initialisé');
 
 });
+
 
 

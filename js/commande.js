@@ -53,76 +53,84 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('📨 Réponse:', result);
             
             if (result.success) {
-                // SUCCÈS
-                console.log('🎉 Succès - Affichage message');
+    // SUPPRIMEZ le formulaire
+    document.getElementById('commandeForm').remove();
+    
+    // CRÉEZ un nouveau message visible
+    const successHTML = `
+        <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #151b54, #324499);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 99999;
+        ">
+            <div style="
+                background: white;
+                padding: 40px;
+                border-radius: 20px;
+                max-width: 500px;
+                width: 100%;
+                text-align: center;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            ">
+                <div style="font-size: 4rem; color: #4CAF50; margin-bottom: 20px;">✅</div>
+                <h2 style="color: #151b54; margin-bottom: 15px;">Commande Confirmée !</h2>
+                <p style="color: #666; margin-bottom: 10px;">
+                    Votre commande <strong>#${result.commande_id}</strong> a été enregistrée.
+                </p>
+                <p style="color: #666; margin-bottom: 25px;">
+                    Notre équipe vous contactera dans les 24h.
+                </p>
                 
-                // Cacher le formulaire
-                form.style.opacity = '0';
-                form.style.transition = 'opacity 0.3s';
+                <button onclick="window.close() || (window.location.href='index.html')" 
+                        style="
+                            padding: 15px 40px;
+                            background: linear-gradient(90deg, #faaa03, #8f6101);
+                            color: white;
+                            border: none;
+                            border-radius: 10px;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            margin-top: 20px;
+                        ">
+                    OK - Fermer
+                </button>
                 
-                setTimeout(() => {
-                    form.style.display = 'none';
-                    
-                    // Afficher message de succès
-                    commandeIdElement.textContent = '#' + (result.commande_id || '0000');
-                    successMessage.style.display = 'block';
-                    successMessage.style.opacity = '0';
-                    
-                    // Animation d'apparition
-                    setTimeout(() => {
-                        successMessage.style.opacity = '1';
-                        successMessage.style.transition = 'opacity 0.5s';
-                    }, 10);
-                    
-                    // Compte à rebours
-                    let countdown = 10;
-                    const countdownInterval = setInterval(() => {
-                        countdown--;
-                        countdownElement.textContent = countdown;
-                        
-                        if (countdown <= 0) {
-                            clearInterval(countdownInterval);
-                            closePopup();
-                        }
-                    }, 1000);
-                    
-                    // Fonction de fermeture
-                    function closePopup() {
-                        clearInterval(countdownInterval);
-                        
-                        if (window.opener && !window.opener.closed) {
-                            // Animation de fermeture
-                            successMessage.style.opacity = '0';
-                            successMessage.style.transition = 'opacity 0.3s';
-                            
-                            setTimeout(() => {
-                                try {
-                                    window.close();
-                                } catch (e) {
-                                    window.location.href = 'index.html';
-                                }
-                            }, 300);
-                        } else {
-                            window.location.href = 'index.html';
-                        }
-                    }
-                    
-                    // Bouton OK
-                    okButton.onclick = closePopup;
-                    
-                    // Bouton nouvelle commande (si pas popup)
-                    if (!window.opener) {
-                        newCommandButton.style.display = 'inline-block';
-                        newCommandButton.onclick = () => location.reload();
-                    }
-                    
-                }, 300);
-                
+                <p style="font-size: 0.9rem; color: #999; margin-top: 20px;">
+                    Cette fenêtre se fermera dans <span id="autoCloseCount">10</span> secondes
+                </p>
+            </div>
+        </div>
+    `;
+    
+    // Ajoutez au body
+    document.body.innerHTML = successHTML;
+    
+    // Compte à rebours
+    let count = 10;
+    const interval = setInterval(() => {
+        count--;
+        const span = document.getElementById('autoCloseCount');
+        if (span) span.textContent = count;
+        
+        if (count <= 0) {
+            clearInterval(interval);
+            if (window.opener) {
+                window.close();
             } else {
-                // ÉCHEC
-                alert('Erreur: ' + result.message);
-                resetFormUI();
+                window.location.href = 'index.html';
             }
+        }
+    }, 1000);
+}
             
         } catch (error) {
             console.error('💥 Erreur:', error);
@@ -194,3 +202,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+

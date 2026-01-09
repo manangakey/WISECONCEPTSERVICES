@@ -5,96 +5,156 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Commander - WiseConcept Services</title>
     <link rel="stylesheet" href="css/commande.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="commande-container">
-        <div class="commande-header">
+    <div class="commande-container" id="commande-popup">
+        <!-- En-tête avec logo -->
+        <header class="commande-header">
             <div class="logo-container">
-                <img src="assets/images/logo_form.png" alt="WiseConcept Services">
+                <img src="assets/images/logo_form.png" alt="WiseConcept Services Logo" class="commande-logo">
+                <h1>Formulaire de Commande</h1>
+                <p class="subtitle">Remplissez ce formulaire pour passer votre commande</p>
             </div>
-            <h1>Passer une commande</h1>
-            <p>Remplissez ce formulaire pour commander votre projet créatif</p>
-        </div>
-        
-        <form id="commandeForm" class="commande-form">
-            <div class="form-grid">
-                <div>
-                    <div class="form-group">
-                        <label for="nom_complet" class="required">Nom complet</label>
-                        <input type="text" id="nom_complet" name="nom_complet" required placeholder="Votre nom et prénom">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Adresse e-mail</label>
-                        <input type="email" id="email" name="email" placeholder="exemple@email.com">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="telephone" class="required">Numéro de téléphone</label>
-                        <input type="tel" id="telephone" name="telephone" required placeholder="+243 XXX XX XX XX">
-                    </div>
-                </div>
-                
-                <div>
-                    <div class="form-group">
-                        <label for="commande" class="required">Type de commande</label>
-                        <select id="commande" name="commande" required>
-                            <option value="">Sélectionnez une option</option>
-                            <option value="logo_simple">Logo simple</option>
-                            <option value="logo_charte">Logo & charte graphique</option>
-                            <option value="branding_complet">Branding complet</option>
-                            <option value="affiche">Affiche</option>
-                            <option value="flyers_rollup">Flyers ou Roll-up</option>
-                            <option value="brochures">Brochures</option>
-                            <option value="catalogues">Catalogues</option>
-                            <option value="carte_visite">Carte de visite</option>
-                            <option value="tshirt">T-shirt</option>
-                            <option value="videos_promo">Vidéos promotionnelles</option>
-                            <option value="montages_pro">Montages professionnels</option>
-                            <option value="motion_design">Motion design (animation)</option>
-                            <option value="autre">Autre projet</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="description" class="required">Description de la demande</label>
-                        <textarea id="description" name="description" required placeholder="Décrivez votre projet en détail..."></textarea>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="checkbox-group">
-                <input type="checkbox" id="devis" name="devis" checked>
-                <label for="devis">
-                    <strong>Je souhaite recevoir un devis détaillé</strong>
-                    <span>Notre équipe vous contactera dans les 24h pour discuter de votre projet.</span>
-                </label>
-            </div>
-            
-            <button type="submit" class="submit-btn" id="submitBtn">
-                <span class="btn-text">Soumettre la commande</span>
-                <div class="spinner"></div>
-            </button>
-        </form>
-        
-        <div class="commande-footer">
-            <p>© 2026 WiseConcept Services. Tous droits réservés.</p>
-            <p>Contact : contact@wiseconceptservices.com | Tél: +243 822 229 286</p>
-        </div>
-    </div>
+            <button class="close-btn" id="close-commande">&times;</button>
+        </header>
 
-    <div id="successMessage" class="success-overlay">
-        <div class="success-card">
-            <div class="success-icon">✅</div>
-            <h2>Commande Confirmée !</h2>
-            <p>Votre commande <strong id="commandeId">#0000</strong> a été enregistrée.</p>
-            <p>Notre équipe vous contactera dans les 24h pour discuter de votre projet.</p>
-            
-            <button id="okButton" class="success-btn">OK - Fermer</button>
-            
-            <p class="success-note">
-                Cette fenêtre se fermera dans <span id="countdown">10</span> secondes
-            </p>
+        <!-- Formulaire -->
+        <form id="commande-form" class="commande-form">
+            <div class="form-grid">
+                <!-- Nom complet -->
+                <div class="form-group">
+                    <label for="nom_complet">
+                        <i class="fas fa-user"></i> Nom complet *
+                    </label>
+                    <input type="text" id="nom_complet" name="nom_complet" required 
+                           placeholder="Votre nom et prénom">
+                    <div class="error-message" id="error-nom"></div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i> Adresse e-mail
+                    </label>
+                    <input type="email" id="email" name="email" 
+                           placeholder="exemple@email.com (facultatif)">
+                    <div class="error-message" id="error-email"></div>
+                </div>
+
+                <!-- Téléphone -->
+                <div class="form-group">
+                    <label for="telephone">
+                        <i class="fas fa-phone"></i> Numéro de téléphone *
+                    </label>
+                    <input type="tel" id="telephone" name="telephone" required 
+                           placeholder="+33 1 23 45 67 89">
+                    <div class="error-message" id="error-telephone"></div>
+                </div>
+
+                <!-- Type de commande -->
+                <div class="form-group full-width">
+                    <label for="type_commande">
+                        <i class="fas fa-clipboard-list"></i> Type de commande *
+                    </label>
+                    <select id="type_commande" name="type_commande" required>
+                        <option value="">Sélectionnez votre commande</option>
+                        <option value="logo_simple">Logo simple</option>
+                        <option value="logo_charte">Logo & charte graphique</option>
+                        <option value="branding_complet">Branding complet</option>
+                        <option value="affiche">Affiche</option>
+                        <option value="flyers_rollup">Flyers ou Roll-up</option>
+                        <option value="brochures">Brochures</option>
+                        <option value="catalogues">Catalogues</option>
+                        <option value="carte_visite">Carte de visite</option>
+                        <option value="tshirt">T-shirt</option>
+                        <option value="videos_promo">Vidéos promotionnelles</option>
+                        <option value="montages_pro">Montages professionnels</option>
+                        <option value="motion_design">Motion design (animation)</option>
+                        <option value="autre">Autre demande</option>
+                    </select>
+                    <div class="error-message" id="error-type"></div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group full-width">
+                    <label for="description">
+                        <i class="fas fa-edit"></i> Description de la demande *
+                    </label>
+                    <textarea id="description" name="description" rows="4" required 
+                              placeholder="Décrivez votre projet en détail : dimensions, couleurs, style, délais, spécifications techniques..."></textarea>
+                    <div class="error-message" id="error-description"></div>
+                </div>
+
+                <!-- Quantité (optionnel) -->
+                <div class="form-group">
+                    <label for="quantite">
+                        <i class="fas fa-hashtag"></i> Quantité
+                    </label>
+                    <input type="number" id="quantite" name="quantite" min="1" value="1" 
+                           placeholder="Ex: 100 pour flyers">
+                </div>
+
+                <!-- Date souhaitée -->
+                <div class="form-group">
+                    <label for="date_souhaitee">
+                        <i class="fas fa-calendar-alt"></i> Date souhaitée
+                    </label>
+                    <input type="date" id="date_souhaitee" name="date_souhaitee" 
+                           min="<?php echo date('Y-m-d'); ?>">
+                </div>
+
+                <!-- Devis -->
+                <div class="form-group full-width checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="demande_devis" name="demande_devis" checked>
+                        <span class="checkmark"></span>
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Je souhaite recevoir un devis détaillé
+                    </label>
+                </div>
+
+                <!-- Conditions -->
+                <div class="form-group full-width checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="conditions" name="conditions" required>
+                        <span class="checkmark"></span>
+                        <i class="fas fa-check-circle"></i>
+                        J'accepte les conditions générales de vente *
+                    </label>
+                    <div class="error-message" id="error-conditions"></div>
+                </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    <span class="btn-text">
+                        <i class="fas fa-paper-plane"></i> Soumettre la commande
+                    </span>
+                    <span class="btn-loading">
+                        <i class="fas fa-spinner fa-spin"></i> Traitement...
+                    </span>
+                </button>
+                
+                <button type="button" class="btn-secondary" id="reset-form">
+                    <i class="fas fa-redo"></i> Réinitialiser
+                </button>
+            </div>
+        </form>
+
+        <!-- Message de succès (caché initialement) -->
+        <div id="success-message" class="success-message">
+            <div class="success-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Commande Envoyée !</h2>
+                <p>Votre commande a été soumise avec succès. Notre équipe vous contactera sous 24h.</p>
+                <p class="success-id">Référence : <span id="commande-ref">#0000</span></p>
+                <button class="btn-ok" id="close-success">OK</button>
+                <p class="auto-close">Cette fenêtre se fermera automatiquement dans <span id="countdown">10</span> secondes</p>
+            </div>
         </div>
     </div>
 

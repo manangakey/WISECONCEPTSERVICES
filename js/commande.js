@@ -56,23 +56,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Succès
                 form.style.display = 'none';
                 successMessage.style.display = 'block';
-                
-                // Animation de succès
                 successMessage.style.animation = 'fadeIn 0.5s ease-out';
-                
-                // Optionnel : Redirection après 5 secondes
+    
+                // Fermer la fenêtre après 3 secondes
                 setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 5000);
-                
+                    // Vérifier si c'est une pop-up
+            if (window.opener) {
+                    // Rediriger la page parent si besoin
+                    // window.opener.location.href = 'index.html';
+            
+                    // Fermer cette fenêtre
+                    window.close();
             } else {
-                // Erreur
-                alert('Erreur: ' + result.message);
-                submitBtn.classList.remove('loading');
-                btnText.textContent = 'Soumettre la commande';
-                spinner.style.display = 'none';
-                submitBtn.disabled = false;
-            }
+                    // Si pas une pop-up, rediriger après message
+                    setTimeout(() => {
+                    window.location.href = 'index.html';
+                    }, 2000);
+                }
+            }, 3000);
+        }
             
         } catch (error) {
             console.error('💥 Erreur:', error);
@@ -127,3 +129,4 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Formulaire de commande initialisé');
 
 });
+

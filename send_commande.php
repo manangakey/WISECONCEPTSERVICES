@@ -96,4 +96,61 @@ try {
     
     $message .= "**INFORMATIONS CLIENT**\n";
     $message .= "Nom : " . $nom . "\n";
-    if (!empty($email))
+    if (!empty($email)) {
+        $message .= "Email : " . $email . "\n";
+    }
+    $message .= "Téléphone : " . $telephone . "\n\n";
+    
+    $message .= "**DÉTAILS DE LA COMMANDE**\n";
+    $message .= "Type : " . $typeText . "\n";
+    $message .= "Quantité : " . $quantite . "\n";
+    if (!empty($date_souhaitee)) {
+        $message .= "Date souhaitée : " . date('d/m/Y', strtotime($date_souhaitee)) . "\n";
+    }
+    $message .= "Devis demandé : " . ($demande_devis ? 'Oui' : 'Non') . "\n\n";
+    
+    $message .= "**DESCRIPTION**\n";
+    $message .= wordwrap($description, 70) . "\n\n";
+    
+    $message .= "**INFORMATIONS SYSTÈME**\n";
+    $message .= "Référence : CMD-" . str_pad($lastId, 6, '0', STR_PAD_LEFT) . "\n";
+    $message .= "Date : " . date('d/m/Y à H:i') . "\n";
+    $message .= "IP : " . ($_SERVER['REMOTE_ADDR'] ?? 'N/A') . "\n\n";
+    
+    $message .= "--\n";
+    $message .= "Cet email a été généré automatiquement.\n";
+    $message .= "WiseConcept Services - Création & Formation\n";
+    
+    // Headers optimisés
+    $headers = [];
+    $headers[] = "From: WiseConcept Commande <contact@wiseconceptservices.com>";
+    $headers[] = "Reply-To: " . ($email ?: 'contact@wiseconceptservices.com');
+    $headers[] = "Return-Path: contact@wiseconceptservices.com";
+    $headers[] = "MIME-Version: 1.0";
+    $headers[] = "Content-Type: text/plain; charset=UTF-8";
+    $headers[] = "Content-Transfer-Encoding: 8bit";
+    $headers[] = "X-Mailer: WiseConcept-Commande/1.0";
+    $headers[] = "X-Priority: 1"; // Haute priorité
+    
+    // Envoi
+    if (mail($to, $subject, $message, implode("\r\n", $headers))) {
+        error_log("✅ Commande #$lastId - Email envoyé");
+    } else {
+        error_log("⚠️ Commande #$lastId - Email non envoyé");
+    }
+    
+    $response['success'] = true;
+    $response['message'] = 'Votre commande a été soumise avec succès ! Notre équipe vous contactera sous 24h.';
+    $response['reference'] = 'CMD-' . str_pad($lastId, 6, '0', STR_PAD_LEFT);
+    
+} catch (PDOException $e) {
+    error_log("❌ Erreur DB Commande: " . $e->getMessage());
+    $response['message'] = 'Erreur technique. Veuillez réessayer ou nous contacter directement.';
+} catch (Exception $e) {
+    error_log("❌ Erreur Commande: " . $e->getMessage());
+    $response['message'] = 'Erreur inattendue.';
+}
+
+echo json_encode($response);
+?>
+

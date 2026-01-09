@@ -4,10 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnText = submitBtn.querySelector('.btn-text');
     const spinner = submitBtn.querySelector('.spinner');
     const successOverlay = document.getElementById('successMessage');
-    const commandeId = document.getElementById('commandeId');
     const countdownElem = document.getElementById('countdown');
     const okButton = document.getElementById('okButton');
-    const descriptionTextarea = document.getElementById('description');
     
     if (!form) return;
     
@@ -39,19 +37,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     form.style.display = 'none';
                     
-                    commandeId.textContent = '#' + result.commande_id;
+                    // CORRECTION : Vérifier que l'élément existe
+                    const commandeIdElement = document.getElementById('commandeId');
+                    if (commandeIdElement) {
+                        commandeIdElement.textContent = '#' + result.commande_id;
+                    }
+                    
                     successOverlay.style.display = 'flex';
                     
                     setTimeout(() => {
                         successOverlay.style.opacity = '1';
                         const successCard = successOverlay.querySelector('.success-card');
-                        successCard.style.transform = 'translateY(0)';
+                        if (successCard) {
+                            successCard.style.transform = 'translateY(0)';
+                        }
                     }, 10);
                     
                     let countdown = 10;
                     const countdownInterval = setInterval(() => {
                         countdown--;
-                        countdownElem.textContent = countdown;
+                        if (countdownElem) {
+                            countdownElem.textContent = countdown;
+                        }
                         
                         if (countdown <= 0) {
                             clearInterval(countdownInterval);
@@ -72,7 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         }, 300);
                     }
                     
-                    okButton.onclick = closeWindow;
+                    if (okButton) {
+                        okButton.onclick = closeWindow;
+                    }
                     
                 }, 300);
                 
@@ -92,15 +101,4 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = false;
         }
     });
-    
-    const commandeSelect = document.getElementById('commande');
-    if (commandeSelect && descriptionTextarea) {
-        commandeSelect.addEventListener('change', function() {
-            if (this.value === 'autre') {
-                descriptionTextarea.placeholder = "Décrivez précisément votre projet : type de design, utilisations prévues...";
-            } else {
-                descriptionTextarea.placeholder = "Décrivez votre projet en détail : objectifs, dimensions, couleurs, délais...";
-            }
-        });
-    }
 });

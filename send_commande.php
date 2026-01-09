@@ -14,12 +14,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Récupération et nettoyage des données
-$nom = trim(htmlspecialchars($_POST['nom_complet'] ?? ''));
+$nom = trim($_POST['nom_complet'] ?? '');
 $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
-$telephone = trim(htmlspecialchars($_POST['telephone'] ?? ''));
-$commande = trim(htmlspecialchars($_POST['commande'] ?? ''));
-$description = trim(htmlspecialchars($_POST['description'] ?? ''));
+$telephone = trim($_POST['telephone'] ?? '');
+$commande = trim($_POST['commande'] ?? '');
+$description = trim($_POST['description'] ?? '');
 $devis = isset($_POST['devis']) ? 1 : 0;
+
+// Nettoyage pour sécurité (mais garde les accents)
+$nom = mb_convert_encoding($nom, 'UTF-8', 'UTF-8');
+$description = mb_convert_encoding($description, 'UTF-8', 'UTF-8');
+
+// Pour la base de données, on garde htmlspecialchars
+$nom_db = htmlspecialchars($nom, ENT_QUOTES, 'UTF-8');
+$description_db = htmlspecialchars($description, ENT_QUOTES, 'UTF-8');
 
 // Validation
 if (empty($nom) || empty($telephone) || empty($commande) || empty($description)) {
@@ -85,11 +93,11 @@ try {
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
-        ':nom' => $nom,
+        ':nom' => $nom_db,          // Version sécurisée pour DB
         ':email' => $email ?: null,
-        ':telephone' => $telephone,
-        ':commande' => $commandeLibelle,
-        ':description' => $description,
+        ':telephone' => htmlspecialchars($telephone, ENT_QUOTES, 'UTF-8'),
+        ':commande' => htmlspecialchars($commandeLibelle, ENT_QUOTES, 'UTF-8'),
+        ':description' => $description_db, // Version sécurisée pour DB
         ':devis' => $devis
     ]);
     
@@ -101,34 +109,36 @@ try {
     
     // Corps de l'email
     $emailBody = "NOUVELLE COMMANDE - WISECONCEPT SERVICES\n";
-    $emailBody .= "===========================================\n\n";
+    $emailBody .= str_repeat("=", 50) . "\n\n";
     $emailBody .= "INFORMATIONS CLIENT\n";
     $emailBody .= str_repeat("-", 30) . "\n";
-    $emailBody .= "Nom : $nom\n";
+    $emailBody .= "Nom : " . $nom . "\n"; // Utilisez $nom, pas $nom_db
     if (!empty($email)) {
-        $emailBody .= "Email : $email\n";
+        $emailBody .= "Email : " . $email . "\n";
     }
-    $emailBody .= "Téléphone : $telephone\n";
+    $emailBody .= "Téléphone : " . $telephone . "\n";
     $emailBody .= "Demande devis : " . ($devis ? 'OUI' : 'NON') . "\n\n";
-    
+
     $emailBody .= "DÉTAILS DE LA COMMANDE\n";
     $emailBody .= str_repeat("-", 30) . "\n";
-    $emailBody .= "Type : $commandeLibelle\n";
-    $emailBody .= "ID Commande : #$lastId\n\n";
-    
+    $emailBody .= "Type : " . $commandeLibelle . "\n";
+    $emailBody .= "ID Commande : #" . $lastId . "\n\n";
+
     $emailBody .= "DESCRIPTION DU PROJET\n";
     $emailBody .= str_repeat("-", 30) . "\n";
-    $emailBody .= wordwrap($description, 70) . "\n\n";
-    
+    $emailBody .= wordwrap($description, 70) . "\n\n"; // Utilisez $description, pas $description_db
+
     $emailBody .= "INFORMATIONS SYSTÈME\n";
     $emailBody .= str_repeat("-", 30) . "\n";
     $emailBody .= "Date : " . date('d/m/Y à H:i') . "\n";
-    $emailBody .= "IP : " . ($_SERVER['REMOTE_ADDR'] ?? 'N/A') . "\n";
-    $emailBody .= "Navigateur : " . ($_SERVER['HTTP_USER_AGENT'] ?? 'N/A') . "\n\n";
-    
-    $emailBody .= "--\n";
+    $emailBody .= "IP : " . ($_SERVER['REMOTE_ADDR'] ?? 'N/A') . "\n\n";
+
+    $emailBody .= str_repeat("-", 50) . "\n";
     $emailBody .= "WiseConcept Services - Création & Design\n";
     $emailBody .= "Cet email a été généré automatiquement.\n";
+
+    // ENCODAGE CORRECT pour l'email
+    $emailBody = mb_convert_encoding($emailBody, 'UTF-8', 'UTF-8');
     
     // Headers optimisés
     $headers = [];
@@ -193,3 +203,4 @@ try {
 
 echo json_encode($response);
 ?>
+

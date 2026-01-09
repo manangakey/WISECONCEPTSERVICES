@@ -339,8 +339,37 @@
     </div>
     
     <!-- JavaScript -->
+    <script>
+// Vérifier si on est dans une pop-up
+if (window.opener) {
+    // Ajouter un bouton de fermeture
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('.commande-header');
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f00;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+        `;
+        closeBtn.onclick = () => window.close();
+        header.appendChild(closeBtn);
+    });
+}
+</script>
+    
     <script src="js/commande.js"></script>
 </body>
 
 </html>
+
 

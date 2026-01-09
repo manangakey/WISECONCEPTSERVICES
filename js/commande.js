@@ -36,7 +36,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 setTimeout(() => {
                     form.style.display = 'none';
-                    
+                    let commandeIdElement = document.getElementById('commandeId');
+            if (!commandeIdElement) {
+                // Créer l'élément
+                const successCard = document.querySelector('.success-card');
+                if (successCard) {
+                    const p = successCard.querySelector('p');
+                    if (p) {
+                        p.innerHTML = p.innerHTML.replace('#0000', '<strong id="commandeId">#' + result.commande_id + '</strong>');
+                    }
+                }
+            } else {
+                commandeIdElement.textContent = '#' + result.commande_id;
+            }
                     // CORRECTION : Vérifier que l'élément existe
                     const commandeIdElement = document.getElementById('commandeId');
                     if (commandeIdElement) {
@@ -102,3 +114,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+

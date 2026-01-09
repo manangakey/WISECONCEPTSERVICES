@@ -1,44 +1,29 @@
-// Gestion du formulaire
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Formulaire de commande initialisé');
-    
-    // Éléments
     const form = document.getElementById('commandeForm');
     const submitBtn = document.getElementById('submitBtn');
     const btnText = submitBtn.querySelector('.btn-text');
     const spinner = submitBtn.querySelector('.spinner');
-    const successMessage = document.getElementById('successMessage');
+    const successOverlay = document.getElementById('successMessage');
+    const commandeId = document.getElementById('commandeId');
+    const countdownElem = document.getElementById('countdown');
+    const okButton = document.getElementById('okButton');
+    const descriptionTextarea = document.getElementById('description');
     
-    // Vérifications
-    if (!form) {
-        console.error('❌ Formulaire non trouvé');
-        return;
-    }
+    if (!form) return;
     
-    // Initialisation : cacher le message de succès (sécurité)
-    if (successMessage) {
-        successMessage.style.display = 'none';
-        successMessage.style.opacity = '0';
-        successMessage.classList.remove('show');
-    }
-    
-    // Soumission
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
         
-        // Validation
         if (!form.checkValidity()) {
             form.reportValidity();
             return;
         }
         
-        // État chargement
         btnText.style.display = 'none';
         spinner.style.display = 'block';
         submitBtn.disabled = true;
         
         try {
-            // Envoi
             const formData = new FormData(form);
             const response = await fetch('send_commande.php', {
                 method: 'POST',
@@ -46,105 +31,76 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
             const result = await response.json();
-            console.log('📊 Résultat:', result);
             
             if (result.success) {
-                // ========== SUCCÈS ==========
-                console.log('✅ Commande réussie #' + result.commande_id);
-                
-                // 1. Animation de disparition du formulaire
-                form.style.transition = 'opacity 0.5s ease';
                 form.style.opacity = '0';
+                form.style.transition = 'opacity 0.3s';
                 
                 setTimeout(() => {
-                    // 2. Cacher complètement le formulaire
                     form.style.display = 'none';
                     
-                    // 3. AFFICHER le message de succès
-                    if (successMessage) {
-                        // Remplir l'ID
-                        const commandeIdElem = document.getElementById('commandeId');
-                        if (commandeIdElem) {
-                            commandeIdElem.textContent = '#' + result.commande_id;
-                        }
-                        
-                        // Forcer l'affichage
-                        successMessage.style.display = 'block';
-                        successMessage.classList.add('show');
-                        
-                        // Animation d'apparition
-                        setTimeout(() => {
-                            successMessage.style.opacity = '1';
-                        }, 10);
-                        
-                        console.log('🎉 Message de succès affiché');
-                    }
+                    commandeId.textContent = '#' + result.commande_id;
+                    successOverlay.style.display = 'flex';
                     
-                    // 4. Compte à rebours
-                    const countdownElem = document.getElementById('countdown');
+                    setTimeout(() => {
+                        successOverlay.style.opacity = '1';
+                        const successCard = successOverlay.querySelector('.success-card');
+                        successCard.style.transform = 'translateY(0)';
+                    }, 10);
+                    
                     let countdown = 10;
+                    const countdownInterval = setInterval(() => {
+                        countdown--;
+                        countdownElem.textContent = countdown;
+                        
+                        if (countdown <= 0) {
+                            clearInterval(countdownInterval);
+                            closeWindow();
+                        }
+                    }, 1000);
                     
-                    if (countdownElem) {
-                        const countdownInterval = setInterval(() => {
-                            countdown--;
-                            countdownElem.textContent = countdown;
-                            
-                            if (countdown <= 0) {
-                                clearInterval(countdownInterval);
-                                fermerFenetre();
+                    function closeWindow() {
+                        clearInterval(countdownInterval);
+                        successOverlay.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            if (window.opener && !window.opener.closed) {
+                                window.close();
+                            } else {
+                                window.location.href = 'index.html';
                             }
-                        }, 1000);
+                        }, 300);
                     }
                     
-                    // 5. Bouton OK
-                    const okButton = document.getElementById('okButton');
-                    if (okButton) {
-                        okButton.onclick = fermerFenetre;
-                    }
+                    okButton.onclick = closeWindow;
                     
-                    // 6. Bouton nouvelle commande
-                    const newCommandButton = document.getElementById('newCommandButton');
-                    if (newCommandButton && !window.opener) {
-                        newCommandButton.style.display = 'inline-block';
-                        newCommandButton.onclick = () => location.reload();
-                    }
-                    
-                }, 500); // Délai pour l'animation
+                }, 300);
                 
             } else {
-                // ÉCHEC
-                alert('❌ ' + result.message);
-                reinitialiserUI();
+                alert('Erreur: ' + result.message);
+                resetUI();
             }
             
         } catch (error) {
-            console.error('💥 Erreur:', error);
-            alert('❌ Erreur de connexion');
-            reinitialiserUI();
+            alert('Erreur de connexion');
+            resetUI();
         }
         
-        function reinitialiserUI() {
+        function resetUI() {
             btnText.style.display = 'inline';
             spinner.style.display = 'none';
             submitBtn.disabled = false;
         }
-        
-        function fermerFenetre() {
-            if (window.opener && !window.opener.closed) {
-                window.close();
-            } else {
-                window.location.href = 'index.html';
-            }
-        }
     });
     
-    // Animations des champs (optionnel)
-    const inputs = form.querySelectorAll('input, select, textarea');
-    inputs.forEach((input, index) => {
-        setTimeout(() => {
-            input.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            input.style.opacity = '1';
-            input.style.transform = 'translateY(0)';
-        }, 100 + index * 50);
-    });
+    const commandeSelect = document.getElementById('commande');
+    if (commandeSelect && descriptionTextarea) {
+        commandeSelect.addEventListener('change', function() {
+            if (this.value === 'autre') {
+                descriptionTextarea.placeholder = "Décrivez précisément votre projet : type de design, utilisations prévues...";
+            } else {
+                descriptionTextarea.placeholder = "Décrivez votre projet en détail : objectifs, dimensions, couleurs, délais...";
+            }
+        });
+    }
 });

@@ -1,4 +1,4 @@
-// commande.js - Gestion du formulaire de commande
+// Gestion du formulaire de commande
 
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('commandeForm');
@@ -125,4 +125,5 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Log pour debug
     console.log('✅ Formulaire de commande initialisé');
+
 });

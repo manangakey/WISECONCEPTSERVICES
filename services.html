@@ -27,9 +27,7 @@
                 <a href="contact.html" class="nav-link">Contact</a>
             </div>
             <div class="nav-cta">
-    			<button onclick="openCommandePopup()" class="btn btn-primary">
-    				Passer une commande
-				</button>
+    			<a href="#" class="btn btn-primary" id="open-commande-btn">Passer une commande</a>
 			</div>
             <div class="hamburger">
                 <span></span>
@@ -312,38 +310,21 @@
         </div>
     </footer>
 
-	<script>
-function openCommandePopup() {
-    const width = 900;
-    const height = 800;
-    const left = (window.screen.width - width) / 2;
-    const top = (window.screen.height - height) / 2;
-    
-    // Ouvrir la pop-up
-    const popup = window.open(
-        'commande.html',
-        'CommandeWiseConcept',
-        `width=${width},height=${height},top=${top},left=${left},
-         scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no`
-    );
-    
-    if (popup) {
-        popup.focus();
-    } else {
-        // Fallback : ouvrir dans un nouvel onglet
-        alert('Veuillez autoriser les pop-ups pour une meilleure expérience.');
-        window.open('commande.html', '_blank');
-    }
-}
-</script>
-	
-    <script src="js/script.js"></script>
+	<!-- Pop-up de commande -->
+	<div id="commande-modal" class="commande-modal">
+    	<div class="commande-modal-content">
+        	<!-- Le contenu sera chargé dynamiquement depuis commande.html -->
+    	</div>
+	</div>
 	
 	<!-- Bouton Retour en haut -->
 	<button id="back-to-top" class="back-to-top" aria-label="Retour en haut">
     	<i class="fas fa-chevron-up"></i> <!-- Pour Font Awesome -->
 	</button>
 
+    <script src="js/script.js"></script>
+	<script src="js/commande.js"></script>
+	
 </body>
 		<!-- Loader animé -->
 <div id="page-loader" class="page-loader">

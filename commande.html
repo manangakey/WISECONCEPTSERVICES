@@ -195,7 +195,14 @@
             border-radius: 10px;
             text-align: center;
             margin-top: 20px;
-            display: none;
+            display: none !important;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .success-message.show {
+            display: block !important;
+            opacity: 1 !important;
         }
         
         .success-message h3 {
@@ -499,6 +506,7 @@ if (window.opener) {
 </body>
 
 </html>
+
 
 
 

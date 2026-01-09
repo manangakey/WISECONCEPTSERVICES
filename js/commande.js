@@ -1,96 +1,129 @@
 // Gestion du formulaire de commande
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ DOM chargé');
+    
     const form = document.getElementById('commandeForm');
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
     const spinner = document.getElementById('spinner');
     
-    // DÉCLARATION UNIQUE des éléments de succès
+    // Éléments de succès
     const successMessage = document.getElementById('successMessage');
     const commandeIdElement = document.getElementById('commandeId');
     const okButton = document.getElementById('okButton');
     const newCommandButton = document.getElementById('newCommandButton');
     const countdownElement = document.getElementById('countdown');
-
-    console.log('=== DEBUG SUCCÈS ===');
-    console.log('Result:', result);
-    console.log('successMessage existe?:', document.getElementById('successMessage'));
-    console.log('Form display:', form.style.display);
     
-    if (!form) return;
+    console.log('📋 Éléments trouvés:');
+    console.log('- Formulaire:', !!form);
+    console.log('- Message succès:', !!successMessage);
+    console.log('- Bouton OK:', !!okButton);
+    
+    if (!form) {
+        console.error('❌ Formulaire non trouvé!');
+        return;
+    }
     
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
+        console.log('🖱️ Formulaire soumis');
         
         // Validation
         if (!form.checkValidity()) {
+            console.warn('⚠️ Validation échouée');
             form.reportValidity();
             return;
         }
         
-        // Préparation données
+        // Préparation
         const formData = new FormData(form);
+        console.log('📦 Données:', Object.fromEntries(formData));
         
         // UI Loading
         btnText.style.display = 'none';
         spinner.style.display = 'block';
         submitBtn.disabled = true;
+        console.log('⏳ Chargement affiché');
         
         try {
+            console.log('🌐 Envoi vers send_commande.php...');
             const response = await fetch('send_commande.php', {
                 method: 'POST',
                 body: formData
             });
             
+            console.log('📥 Réponse reçue, status:', response.status);
             const result = await response.json();
+            console.log('📊 Résultat JSON:', result);
             
             if (result.success) {
-                // SUCCÈS - CORRECTION APPLIQUÉE ICI
+                console.log('🎉 SUCCÈS DÉTECTÉ');
+                console.log('1. Cacher formulaire...');
                 form.style.display = 'none';
                 
-                // Afficher le message de succès
+                console.log('2. Afficher message succès...');
+                console.log('   - successMessage avant:', successMessage.style.display);
                 commandeIdElement.textContent = '#' + (result.commande_id || '0000');
                 successMessage.style.display = 'block';
+                console.log('   - successMessage après:', successMessage.style.display);
                 
-                // Compte à rebours
+                console.log('3. Vérifier CSS...');
+                console.log('   - Classe:', successMessage.className);
+                console.log('   - CSS display:', window.getComputedStyle(successMessage).display);
+                
+                // Compte à rebours (DEBUG - pas de fermeture)
                 let countdown = 10;
+                console.log('4. Démarrer compte à rebours:', countdown + 's');
+                
                 const countdownInterval = setInterval(() => {
                     countdown--;
                     countdownElement.textContent = countdown;
+                    console.log('   Countdown:', countdown);
                     
                     if (countdown <= 0) {
                         clearInterval(countdownInterval);
-                        closePopupOrRedirect();
+                        console.log('⏰ Temps écoulé (fermeture désactivée pour debug)');
+                        // closePopupOrRedirect(); // DÉSACTIVÉ
                     }
                 }, 1000);
                 
-                // Fonction de fermeture
+                // Fonction de fermeture (désactivée)
                 function closePopupOrRedirect() {
+                    console.log('🔄 closePopupOrRedirect appelée');
+                    console.log('   window.opener:', !!window.opener);
+                    console.log('   window.opener fermé?:', window.opener ? window.opener.closed : 'N/A');
+                    
                     clearInterval(countdownInterval);
                     
                     if (window.opener && !window.opener.closed) {
-                        try {
-                            window.close();
-                        } catch (e) {
-                            window.location.href = 'index.html';
-                        }
+                        console.log('   Tentative fermeture popup...');
+                        // window.close(); // DÉSACTIVÉ
                     } else {
-                        window.location.href = 'index.html';
+                        console.log('   Tentative redirection...');
+                        // window.location.href = 'index.html'; // DÉSACTIVÉ
                     }
                 }
                 
-                // Gestion des boutons
-                okButton.addEventListener('click', closePopupOrRedirect);
+                // Bouton OK
+                okButton.addEventListener('click', function() {
+                    console.log('🆗 Bouton OK cliqué');
+                    closePopupOrRedirect();
+                });
                 
+                // Bouton nouvelle commande
                 if (!window.opener) {
                     newCommandButton.style.display = 'inline-block';
                     newCommandButton.addEventListener('click', function() {
+                        console.log('🔄 Bouton nouvelle commande');
                         location.reload();
                     });
                 }
                 
+                // Afficher un message pour l'utilisateur
+                alert('DEBUG MODE: Vérifiez la console F12 pour les logs');
+                
             } else {
-                // ÉCHEC
+                console.error('❌ Échec du serveur:', result.message);
                 alert('Erreur: ' + result.message);
                 btnText.style.display = 'inline';
                 spinner.style.display = 'none';
@@ -98,14 +131,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
         } catch (error) {
-            console.error('Erreur:', error);
-            alert('Erreur de connexion');
+            console.error('💥 Erreur fetch:', error);
+            alert('Erreur réseau: ' + error.message);
             btnText.style.display = 'inline';
             spinner.style.display = 'none';
             submitBtn.disabled = false;
         }
     });
+    
+    console.log('✅ Formulaire initialisé avec succès');
 });
+
+console.log('✨ commande.js prêt');
     
     // Animation d'entrée pour les champs
     const inputs = form.querySelectorAll('input, select, textarea');
@@ -148,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Formulaire de commande initialisé');
 
 });
+
 
 
 

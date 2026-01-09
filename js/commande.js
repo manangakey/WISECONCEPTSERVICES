@@ -36,25 +36,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 setTimeout(() => {
                     form.style.display = 'none';
+                    
+                    // Gestion de l'ID de commande
                     let commandeIdElement = document.getElementById('commandeId');
-            if (!commandeIdElement) {
-                // Créer l'élément
-                const successCard = document.querySelector('.success-card');
-                if (successCard) {
-                    const p = successCard.querySelector('p');
-                    if (p) {
-                        p.innerHTML = p.innerHTML.replace('#0000', '<strong id="commandeId">#' + result.commande_id + '</strong>');
+                    
+                    if (!commandeIdElement) {
+                        const successCard = document.querySelector('.success-card');
+                        if (successCard) {
+                            const pElements = successCard.querySelectorAll('p');
+                            for (let p of pElements) {
+                                if (p.textContent.includes('#0000')) {
+                                    p.innerHTML = p.innerHTML.replace('#0000', '<strong id="commandeId">#' + result.commande_id + '</strong>');
+                                    commandeIdElement = document.getElementById('commandeId');
+                                    break;
+                                }
+                            }
+                        }
                     }
-                }
-            } else {
-                commandeIdElement.textContent = '#' + result.commande_id;
-            }
-                    // CORRECTION : Vérifier que l'élément existe
-                    const commandeIdElement = document.getElementById('commandeId');
+                    
                     if (commandeIdElement) {
                         commandeIdElement.textContent = '#' + result.commande_id;
                     }
                     
+                    // Afficher le message de succès
                     successOverlay.style.display = 'flex';
                     
                     setTimeout(() => {
@@ -65,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }, 10);
                     
+                    // Compte à rebours
                     let countdown = 10;
                     const countdownInterval = setInterval(() => {
                         countdown--;
@@ -78,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }, 1000);
                     
+                    // Fonction de fermeture
                     function closeWindow() {
                         clearInterval(countdownInterval);
                         successOverlay.style.opacity = '0';
@@ -91,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }, 300);
                     }
                     
+                    // Bouton OK
                     if (okButton) {
                         okButton.onclick = closeWindow;
                     }
@@ -114,4 +121,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-

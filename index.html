@@ -25,9 +25,9 @@
                 <a href="contact.html" class="nav-link">Contact</a>
             </div>
             <div class="nav-cta">
-    			<a href="commande.html" class="btn btn-primary" target="_blank" rel="noopener">
+    			<button onclick="openCommandePopup()" class="btn btn-primary">
     				Passer une commande
-				</a>
+				</button>
 			</div>
             <div class="hamburger">
                 <span></span>
@@ -231,7 +231,33 @@
     <i class="fas fa-chevron-up"></i> <!-- Pour Font Awesome -->
 </button>
 
+<script>
+function openCommandePopup() {
+    const width = 900;
+    const height = 800;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+    
+    // Ouvrir la pop-up
+    const popup = window.open(
+        'commande.html',
+        'CommandeWiseConcept',
+        `width=${width},height=${height},top=${top},left=${left},
+         scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=no,status=no`
+    );
+    
+    if (popup) {
+        popup.focus();
+    } else {
+        // Fallback : ouvrir dans un nouvel onglet
+        alert('Veuillez autoriser les pop-ups pour une meilleure expérience.');
+        window.open('commande.html', '_blank');
+    }
+}
+</script>
+	
 <script src="js/script.js"></script>
+	
 </body>
 	<!-- Loader animé -->
 <div id="page-loader" class="page-loader">
@@ -245,6 +271,7 @@
 </div>
 
 </html>
+
 
 
 

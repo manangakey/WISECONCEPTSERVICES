@@ -198,3 +198,99 @@ function setupForm(form, formType) {
     });
 }
 
+// ========== GESTION DU BOUTON "PASSER UNE COMMANDE" ==========
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestion des boutons "Passer une commande"
+    const commandeButtons = document.querySelectorAll('.open-commande-modal');
+    
+    commandeButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Option 1 : Ouvrir dans une nouvelle fenêtre pop-up
+            const popup = window.open(
+                'commande.html',
+                'CommandeWiseConcept',
+                'width=900,height=800,scrollbars=yes,resizable=yes,top=100,left=100'
+            );
+            
+            if (popup) {
+                popup.focus();
+            } else {
+                // Option 2 : Si pop-up bloqué, ouvrir dans un nouvel onglet
+                window.open('commande.html', '_blank');
+            }
+            
+            // Option 3 : Vous pouvez aussi utiliser un modal JS si vous préférez
+            // createCommandeModal(); // À implémenter si vous voulez un vrai modal
+        });
+    });
+    
+    // Log pour debug
+    console.log(`✅ ${commandeButtons.length} bouton(s) "Passer une commande" initialisé(s)`);
+});
+
+// Fonction pour créer un modal (optionnel - plus avancé)
+function createCommandeModal() {
+    // Créer l'overlay
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #151b54ee, #324499ee);
+        z-index: 9998;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    `;
+    
+    // Créer l'iframe
+    const iframe = document.createElement('iframe');
+    iframe.src = 'commande.html';
+    iframe.style.cssText = `
+        width: 90%;
+        max-width: 800px;
+        height: 90vh;
+        border: none;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    `;
+    
+    // Bouton de fermeture
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '×';
+    closeBtn.style.cssText = `
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #faaa03;
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 9999;
+    `;
+    closeBtn.onclick = () => document.body.removeChild(overlay);
+    
+    overlay.appendChild(iframe);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+    
+    // Empêcher le scroll sur le body
+    document.body.style.overflow = 'hidden';
+    
+    // Restaurer le scroll à la fermeture
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            document.body.removeChild(overlay);
+            document.body.style.overflow = '';
+        }
+    });
+}

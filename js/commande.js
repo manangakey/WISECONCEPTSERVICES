@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const okButton = document.getElementById('okButton');
     const newCommandButton = document.getElementById('newCommandButton');
     const countdownElement = document.getElementById('countdown');
+
+    console.log('=== DEBUG SUCCÈS ===');
+    console.log('Result:', result);
+    console.log('successMessage existe?:', document.getElementById('successMessage'));
+    console.log('Form display:', form.style.display);
     
     if (!form) return;
     
@@ -143,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Formulaire de commande initialisé');
 
 });
+
 
 
 

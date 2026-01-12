@@ -1,5 +1,4 @@
-// Gestion du formulaire de commande
-
+// Gestion de formulaire
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('commandeForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -7,67 +6,95 @@ document.addEventListener('DOMContentLoaded', function() {
     const spinner = document.getElementById('spinner');
     const successMessage = document.getElementById('successMessage');
     
-    if (!form) return;
+    if (!form) {
+        console.error('❌ Formulaire non trouvé !');
+        return;
+    }
+    
+    console.log('✅ Formulaire trouvé, initialisation...');
     
     // Gestion de la soumission
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
+        console.log('🟢 Submit détecté');
         
-        // Validation du formulaire
-        if (!form.checkValidity()) {
-            // Trouver le premier champ invalide
-            const invalidField = form.querySelector(':invalid');
-            if (invalidField) {
-                invalidField.focus();
-                invalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // Animation d'erreur
-                invalidField.style.borderColor = '#f00';
-                setTimeout(() => {
-                    invalidField.style.borderColor = '';
-                }, 2000);
+        // Validation basique
+        let isValid = true;
+        const requiredFields = form.querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.style.borderColor = '#ff0000';
+                field.focus();
+                console.warn('⚠️ Champ requis vide:', field.name);
             }
+        });
+        
+        if (!isValid) {
+            alert('Veuillez remplir tous les champs obligatoires (*)');
             return;
         }
+        
+        // UI Loading state
+        submitBtn.classList.add('loading');
+        btnText.textContent = 'Envoi en cours...';
+        spinner.style.display = 'block';
+        submitBtn.disabled = true;
         
         // Préparer les données
         const formData = new FormData(form);
         
-        // UI Loading state
-        submitBtn.classList.add('loading');
-        btnText.textContent = 'Traitement en cours...';
-        spinner.style.display = 'block';
-        submitBtn.disabled = true;
+        // DEBUG : Afficher les données envoyées
+        console.log('📤 Données envoyées:');
+        for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}: ${value}`);
+        }
         
         try {
-            console.log('📤 Envoi de la commande...');
+            console.log('🚀 Envoi à send_commande.php...');
             
-            const response = await fetch('send_commande.php', {
+            // IMPORTANT : Chemin ABSOLU pour éviter les problèmes
+            const response = await fetch('/send_commande.php', {
                 method: 'POST',
                 body: formData
             });
             
-            console.log('📥 Réponse reçue:', response.status);
+            console.log('📥 Status:', response.status, response.statusText);
+            
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
             
             const result = await response.json();
-            console.log('📊 Résultat:', result);
+            console.log('📊 Réponse JSON:', result);
             
             if (result.success) {
-                // Succès
-                form.style.display = 'none';
-                successMessage.style.display = 'block';
+                // SUCCÈS
+                console.log('✅ Commande réussie! ID:', result.commande_id);
                 
-                // Animation de succès
-                successMessage.style.animation = 'fadeIn 0.5s ease-out';
+                // Cacher le formulaire
+                form.style.opacity = '0';
+                form.style.transition = 'opacity 0.5s ease';
                 
-                // Optionnel : Redirection après 5 secondes
                 setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 5000);
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    successMessage.style.animation = 'fadeIn 0.5s ease-out';
+                    
+                    // Optionnel : Fermer la fenêtre après 5 secondes
+                    setTimeout(() => {
+                        window.close(); // Ferme le pop-up
+                    }, 3000);
+                    
+                }, 500);
                 
             } else {
-                // Erreur
+                // ERREUR
+                console.error('❌ Erreur serveur:', result.message);
                 alert('Erreur: ' + result.message);
+                
+                // Réinitialiser UI
                 submitBtn.classList.remove('loading');
                 btnText.textContent = 'Soumettre la commande';
                 spinner.style.display = 'none';
@@ -75,10 +102,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
         } catch (error) {
-            console.error('💥 Erreur:', error);
-            alert('Erreur de connexion. Veuillez réessayer.');
+            console.error('💥 Erreur fetch:', error);
             
-            // Reset UI
+            // Messages d'erreur spécifiques
+            let errorMessage = 'Erreur de connexion. ';
+            
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage += 'Vérifiez votre connexion internet.';
+            } else if (error.message.includes('HTTP')) {
+                errorMessage += 'Le serveur ne répond pas.';
+            } else {
+                errorMessage += 'Détails: ' + error.message;
+            }
+            
+            alert(errorMessage);
+            
+            // Réinitialiser UI
             submitBtn.classList.remove('loading');
             btnText.textContent = 'Soumettre la commande';
             spinner.style.display = 'none';
@@ -86,43 +125,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Animation d'entrée pour les champs
+    // Réinitialiser les bordures d'erreur quand l'utilisateur tape
     const inputs = form.querySelectorAll('input, select, textarea');
-    inputs.forEach((input, index) => {
-        input.style.opacity = '0';
-        input.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-            input.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            input.style.opacity = '1';
-            input.style.transform = 'translateY(0)';
-        }, 100 + index * 50);
-    });
-    
-    // Effet de focus amélioré
     inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.02)';
-            this.parentElement.style.transition = 'transform 0.3s ease';
-        });
-        
-        input.addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
+        input.addEventListener('input', function() {
+            this.style.borderColor = '';
         });
     });
     
-    // Sélection dynamique pour "Autre projet"
-    const commandeSelect = document.getElementById('commande');
-    const descriptionTextarea = document.getElementById('description');
-    
-    commandeSelect.addEventListener('change', function() {
-        if (this.value === 'autre') {
-            descriptionTextarea.placeholder = "Décrivez précisément votre projet : type de design, utilisations prévues, spécifications techniques...";
-        } else {
-            descriptionTextarea.placeholder = "Décrivez votre projet en détail : objectifs, dimensions, couleurs, délais souhaités...";
-        }
-    });
-    
-    // Log pour debug
-    console.log('✅ Formulaire de commande initialisé');
+    console.log('🎯 Formulaire de commande prêt !');
 });

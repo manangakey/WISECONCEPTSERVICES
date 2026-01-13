@@ -241,6 +241,145 @@
                 border-radius: 15px;
             }
         }
+
+        /* Animation pour le message de succès */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Style pour le message de succès seul */
+.success-message.alone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #151b54 0%, #324499 100%);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.success-content {
+    background: white;
+    border-radius: 20px;
+    padding: 50px 40px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+.success-title {
+    color: #151b54;
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.success-text {
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.success-details {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    margin: 25px 0;
+    border-left: 4px solid #faaa03;
+    text-align: left;
+    animation: slideIn 0.5s ease-out 0.3s both;
+}
+
+.countdown-box {
+    display: inline-block;
+    background: #faaa03;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: 0 5px;
+    min-width: 40px;
+}
+
+.success-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-close {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 180px;
+}
+
+.btn-close:hover {
+    background: #388E3C;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+}
+
+.btn-new {
+    background: transparent;
+    color: #324499;
+    border: 2px solid #324499;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-new:hover {
+    background: #324499;
+    color: white;
+}
     </style>
 </head>
 <body>
@@ -342,6 +481,7 @@
     <script src="js/commande.js"></script>
 </body>
 </html>
+
 
 
 

@@ -1,137 +1,90 @@
 // Gestion du formulaire
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Initialisation commande.js');
+    
     const form = document.getElementById('commandeForm');
+    if (!form) {
+        console.error('FORMULAIRE NON TROUVÉ');
+        return;
+    }
+    
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
     const spinner = document.getElementById('spinner');
     const successMessage = document.getElementById('successMessage');
     
-    if (!form) {
-        console.error('❌ Formulaire non trouvé !');
-        return;
-    }
-    
-    console.log('✅ Formulaire trouvé, initialisation...');
-    
-    // Gestion de la soumission
-    form.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        console.log('🟢 Submit détecté');
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        console.log('📝 Soumission...');
         
-        // Validation basique
-        let isValid = true;
-        const requiredFields = form.querySelectorAll('[required]');
-        
-        requiredFields.forEach(field => {
+        // Validation visuelle
+        let valid = true;
+        document.querySelectorAll('[required]').forEach(field => {
             if (!field.value.trim()) {
-                isValid = false;
-                field.style.borderColor = '#ff0000';
-                field.focus();
-                console.warn('⚠️ Champ requis vide:', field.name);
+                field.style.borderColor = 'red';
+                valid = false;
+                if (valid) field.focus();
             }
         });
         
-        if (!isValid) {
-            alert('Veuillez remplir tous les champs obligatoires (*)');
+        if (!valid) {
+            alert('❌ Champs obligatoires manquants');
             return;
         }
         
-        // UI Loading state
-        submitBtn.classList.add('loading');
-        btnText.textContent = 'Envoi en cours...';
-        spinner.style.display = 'block';
+        // Loading
         submitBtn.disabled = true;
+        btnText.textContent = 'Envoi...';
+        spinner.style.display = 'block';
         
-        // Préparer les données
-        const formData = new FormData(form);
-        
-        // DEBUG : Afficher les données envoyées
-        console.log('📤 Données envoyées:');
-        for (let [key, value] of formData.entries()) {
-            console.log(`  ${key}: ${value}`);
-        }
-        
+        // Envoi
         try {
-            console.log('🚀 Envoi à send_commande.php...');
+            const formData = new FormData(form);
             
-            // IMPORTANT : Chemin ABSOLU pour éviter les problèmes
-            const response = await fetch('/send_commande.php', {
+            // DEBUG
+            console.log('Données:', Object.fromEntries(formData));
+            
+            const response = await fetch('send_commande.php', {
                 method: 'POST',
                 body: formData
             });
             
-            console.log('📥 Status:', response.status, response.statusText);
-            
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
-            }
-            
             const result = await response.json();
-            console.log('📊 Réponse JSON:', result);
+            console.log('Résultat:', result);
             
             if (result.success) {
                 // SUCCÈS
-                console.log('✅ Commande réussie! ID:', result.commande_id);
+                form.style.opacity = '0.3';
+                form.style.pointerEvents = 'none';
+                successMessage.style.display = 'block';
                 
-                // Cacher le formulaire
-                form.style.opacity = '0';
-                form.style.transition = 'opacity 0.5s ease';
-                
+                // Auto-fermeture
                 setTimeout(() => {
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
-                    successMessage.style.animation = 'fadeIn 0.5s ease-out';
-                    
-                    // Optionnel : Fermer la fenêtre après 5 secondes
-                    setTimeout(() => {
-                        window.close(); // Ferme le pop-up
-                    }, 3000);
-                    
-                }, 500);
+                    if (window.opener) {
+                        window.close();
+                    } else {
+                        successMessage.innerHTML += '<p>Vous pouvez fermer cette fenêtre.</p>';
+                    }
+                }, 3000);
                 
             } else {
-                // ERREUR
-                console.error('❌ Erreur serveur:', result.message);
                 alert('Erreur: ' + result.message);
-                
-                // Réinitialiser UI
-                submitBtn.classList.remove('loading');
-                btnText.textContent = 'Soumettre la commande';
-                spinner.style.display = 'none';
                 submitBtn.disabled = false;
+                btnText.textContent = 'Soumettre';
+                spinner.style.display = 'none';
             }
             
         } catch (error) {
-            console.error('💥 Erreur fetch:', error);
-            
-            // Messages d'erreur spécifiques
-            let errorMessage = 'Erreur de connexion. ';
-            
-            if (error.message.includes('Failed to fetch')) {
-                errorMessage += 'Vérifiez votre connexion internet.';
-            } else if (error.message.includes('HTTP')) {
-                errorMessage += 'Le serveur ne répond pas.';
-            } else {
-                errorMessage += 'Détails: ' + error.message;
-            }
-            
-            alert(errorMessage);
-            
-            // Réinitialiser UI
-            submitBtn.classList.remove('loading');
-            btnText.textContent = 'Soumettre la commande';
-            spinner.style.display = 'none';
+            console.error('Erreur:', error);
+            alert('Problème de connexion. Réessayez.');
             submitBtn.disabled = false;
+            btnText.textContent = 'Soumettre';
+            spinner.style.display = 'none';
         }
     });
     
-    // Réinitialiser les bordures d'erreur quand l'utilisateur tape
-    const inputs = form.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-        input.addEventListener('input', function() {
-            this.style.borderColor = '';
-        });
+    // Reset erreurs
+    form.querySelectorAll('input, textarea, select').forEach(el => {
+        el.addEventListener('input', () => el.style.borderColor = '');
     });
-    
-    console.log('🎯 Formulaire de commande prêt !');
 });

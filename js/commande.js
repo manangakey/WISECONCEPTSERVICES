@@ -1,6 +1,6 @@
-// Gestion du formulaire
+// Gestion formulaire
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Formulaire de commande initialisé');
+    console.log('🚀 Initialisation formulaire');
     
     const form = document.getElementById('commandeForm');
     if (!form) return;
@@ -9,44 +9,43 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnText = document.getElementById('btnText');
     const spinner = document.getElementById('spinner');
     const successMessage = document.getElementById('successMessage');
-    const commandeFooter = document.querySelector('.commande-footer');
     
-    // Assurer que le bouton est cliquable
-    submitBtn.type = 'submit';
+    // IMPORTANT: Éviter submitBtn.type = 'button' - Déjà fait dans HTML
     
-    // Gestion du clic
+    // Gestion du clic SUR LE BOUTON (pas sur le formulaire)
     submitBtn.addEventListener('click', async function(e) {
         e.preventDefault();
-        console.log('📝 Début de soumission');
+        console.log('🖱️ Bouton cliqué - Début traitement');
         
         // Validation
         const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
+        let hasError = false;
         
         requiredFields.forEach(field => {
             if (!field.value.trim()) {
                 field.style.borderColor = '#ff4444';
                 field.style.backgroundColor = '#fff8f8';
-                isValid = false;
-                if (isValid) field.focus();
+                hasError = true;
             }
         });
         
-        if (!isValid) {
+        if (hasError) {
             alert('⚠️ Veuillez remplir tous les champs obligatoires');
             return;
         }
         
-        // Préparation données
-        const formData = new FormData(form);
-        
-        // État "chargement"
+        // Chargement
         submitBtn.disabled = true;
-        btnText.textContent = 'Envoi en cours...';
+        btnText.textContent = 'Envoi...';
         if (spinner) spinner.style.display = 'inline-block';
-        submitBtn.style.opacity = '0.7';
         
         try {
+            // Données
+            const formData = new FormData(form);
+            
+            // Debug
+            console.log('📤 Données:', Object.fromEntries(formData));
+            
             // Envoi
             const response = await fetch('/send_commande.php', {
                 method: 'POST',
@@ -57,37 +56,32 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('📊 Réponse:', result);
             
             if (result.success) {
-                console.log('🎉 Commande réussie! ID:', result.commande_id);
+                // ========== SUCCÈS COMPLET ==========
+                console.log('✅ Commande réussie!');
                 
-                // 1. Masquer TOUT sauf le message de succès
+                // 1. MASQUER TOUT
                 form.style.display = 'none';
-                if (commandeFooter) commandeFooter.style.display = 'none';
+                document.querySelector('.commande-footer').style.display = 'none';
                 document.querySelector('.commande-header').style.display = 'none';
                 
-                // 2. Ajuster le style du conteneur pour le message seul
-                const container = document.querySelector('.commande-container');
-                if (container) {
-                    container.style.maxWidth = '600px';
-                    container.style.padding = '0';
-                }
-                
-                // 3. Afficher le message de succès (plein écran dans le conteneur)
+                // 2. AFFICHER SEUL le message de succès
+                successMessage.style.display = 'block';
+                successMessage.style.background = 'linear-gradient(135deg, #151b54 0%, #324499 100%)';
+                successMessage.style.color = 'white';
+                successMessage.style.padding = '60px 40px';
+                successMessage.style.borderRadius = '20px';
+                successMessage.style.minHeight = '500px';
                 successMessage.style.display = 'flex';
                 successMessage.style.flexDirection = 'column';
                 successMessage.style.justifyContent = 'center';
                 successMessage.style.alignItems = 'center';
-                successMessage.style.minHeight = '500px';
-                successMessage.style.padding = '40px';
                 successMessage.style.textAlign = 'center';
-                successMessage.style.borderRadius = '20px';
-                successMessage.style.background = 'linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%)';
-                successMessage.style.color = 'white';
-                successMessage.style.animation = 'fadeIn 0.5s ease-out';
+                successMessage.style.margin = '0';
                 
-                // 4. Contenu du message
+                // 3. Contenu amélioré
                 successMessage.innerHTML = `
-                    <div style="max-width: 500px;">
-                        <!-- Icône succès -->
+                    <div style="max-width: 500px; animation: fadeIn 0.5s ease-out;">
+                        <!-- Icône -->
                         <div style="
                             width: 80px;
                             height: 80px;
@@ -99,13 +93,14 @@ document.addEventListener('DOMContentLoaded', function() {
                             margin: 0 auto 25px;
                             font-size: 40px;
                             color: #4CAF50;
+                            animation: pulse 2s infinite;
                         ">
                             ✓
                         </div>
                         
                         <!-- Titre -->
                         <h2 style="
-                            font-size: 2rem;
+                            font-size: 2.2rem;
                             margin-bottom: 15px;
                             font-weight: 700;
                         ">
@@ -114,15 +109,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         <!-- Message -->
                         <p style="
-                            font-size: 1.1rem;
+                            font-size: 1.2rem;
                             line-height: 1.6;
                             margin-bottom: 30px;
                             opacity: 0.95;
                         ">
-                            ${result.message}
+                            ✅ Votre commande a été envoyée avec succès !
                         </p>
                         
-                        <!-- Carte de récapitulatif -->
+                        <!-- Détails -->
                         <div style="
                             background: rgba(255, 255, 255, 0.15);
                             border-radius: 12px;
@@ -130,118 +125,45 @@ document.addEventListener('DOMContentLoaded', function() {
                             margin: 25px 0;
                             border-left: 4px solid #faaa03;
                         ">
-                            <h3 style="
-                                margin-bottom: 15px;
-                                font-size: 1.2rem;
-                                display: flex;
-                                align-items: center;
-                                gap: 10px;
-                            ">
-                                <span>📋</span> Récapitulatif
-                            </h3>
-                            
-                            <div style="text-align: left; margin-bottom: 20px;">
-                                <p><strong>Référence :</strong> #${result.commande_id || 'WC-' + Date.now().toString().slice(-6)}</p>
-                                <p><strong>Date :</strong> ${new Date().toLocaleDateString('fr-FR', { 
-                                    weekday: 'long', 
-                                    year: 'numeric', 
-                                    month: 'long', 
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}</p>
-                                <p><strong>Statut :</strong> En attente de traitement</p>
-                            </div>
-                            
-                            <p style="
-                                font-style: italic;
-                                font-size: 0.95rem;
-                                padding: 10px;
-                                background: rgba(255, 255, 255, 0.1);
-                                border-radius: 6px;
-                            ">
-                                ⏱️ Notre équipe vous contactera dans les <strong>24 heures</strong>
-                            </p>
+                            <p><strong>Référence :</strong> #${result.commande_id || 'WC-' + Date.now().toString().slice(-6)}</p>
+                            <p><strong>Date :</strong> ${new Date().toLocaleDateString('fr-FR')}</p>
+                            <p>Notre équipe vous contactera sous 24h.</p>
                         </div>
                         
-                        <!-- Instructions -->
-                        <p style="margin: 25px 0 35px; font-size: 1rem;">
-                            <strong>Prochaine étape :</strong><br>
-                            Vérifiez votre téléphone et email pour nos communications.
-                        </p>
+                        <!-- Boutons -->
+                        <div style="margin-top: 40px;">
+                            <button onclick="window.close()" style="
+                                background: #faaa03;
+                                color: white;
+                                border: none;
+                                padding: 14px 35px;
+                                border-radius: 10px;
+                                font-weight: bold;
+                                cursor: pointer;
+                                font-size: 1.1rem;
+                                transition: all 0.3s;
+                                margin-right: 15px;
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(250, 170, 3, 0.3)'" 
+                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                Fermer la fenêtre
+                            </button>
+                        </div>
                         
                         <!-- Compte à rebours -->
-                        <div style="
-                            margin-top: 30px;
-                            padding-top: 20px;
-                            border-top: 1px solid rgba(255, 255, 255, 0.3);
-                        ">
-                            <p style="margin-bottom: 15px; font-size: 0.9rem;">
-                                ⏳ Fermeture automatique dans <span id="countdown" style="
-                                    font-weight: bold;
-                                    font-size: 1.1rem;
-                                    color: #faaa03;
-                                ">5</span> secondes
-                            </p>
-                            
-                            <!-- Boutons d'action -->
-                            <div style="display: flex; gap: 15px; justify-content: center;">
-                                <button onclick="window.close()" style="
-                                    background: white;
-                                    color: #2E7D32;
-                                    border: none;
-                                    padding: 12px 30px;
-                                    border-radius: 8px;
-                                    font-weight: bold;
-                                    cursor: pointer;
-                                    transition: all 0.3s;
-                                    min-width: 180px;
-                                " onmouseover="this.style.transform='translateY(-2px)'" 
-                                onmouseout="this.style.transform='translateY(0)'">
-                                    Fermer la fenêtre
-                                </button>
-                                
-                                <button onclick="location.reload()" style="
-                                    background: transparent;
-                                    color: white;
-                                    border: 2px solid rgba(255, 255, 255, 0.5);
-                                    padding: 10px 25px;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                    transition: all 0.3s;
-                                " onmouseover="this.style.background='rgba(255,255,255,0.1)'" 
-                                onmouseout="this.style.background='transparent'">
-                                    Nouvelle commande
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Logo/branding -->
-                        <div style="
-                            margin-top: 40px;
-                            padding-top: 20px;
-                            border-top: 1px solid rgba(255, 255, 255, 0.2);
-                        ">
-                            <p style="font-size: 0.85rem; opacity: 0.8;">
-                                WiseConcept Services © ${new Date().getFullYear()}<br>
-                                contact@wiseconceptservices.com
-                            </p>
-                        </div>
+                        <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.8;">
+                            Fermeture automatique dans <span id="countdown" style="font-weight: bold; color: #faaa03;">5</span>s
+                        </p>
                     </div>
                 `;
                 
-                // 5. Gestion du compte à rebours
-                let secondsLeft = 5;
+                // 4. Compte à rebours
+                let seconds = 5;
                 const countdownElement = document.getElementById('countdown');
-                
-                const countdownTimer = setInterval(() => {
-                    secondsLeft--;
-                    if (countdownElement) {
-                        countdownElement.textContent = secondsLeft;
-                    }
-                    
-                    if (secondsLeft <= 0) {
-                        clearInterval(countdownTimer);
+                const countdownInterval = setInterval(() => {
+                    seconds--;
+                    if (countdownElement) countdownElement.textContent = seconds;
+                    if (seconds <= 0) {
+                        clearInterval(countdownInterval);
                         if (window.opener && !window.opener.closed) {
                             window.close();
                         }
@@ -261,15 +183,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Fonction de réinitialisation
+    // Fonction reset
     function resetButton() {
         submitBtn.disabled = false;
         btnText.textContent = 'Soumettre la commande';
         if (spinner) spinner.style.display = 'none';
-        submitBtn.style.opacity = '1';
     }
     
-    // Réinitialiser les styles d'erreur
+    // Réinitialiser styles d'erreur
     const inputs = form.querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
         input.addEventListener('input', function() {

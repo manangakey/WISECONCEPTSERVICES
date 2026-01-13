@@ -1,70 +1,77 @@
-// Gestion formulaire
+// Gestion du formulaire
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Initialisation formulaire');
+    console.log('🚀 Initialisation formulaire commande');
     
-    const form = document.getElementById('commandeForm');
-    if (!form) return;
-    
+    // Éléments principaux
     const submitBtn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('btnText');
-    const spinner = document.getElementById('spinner');
+    const form = document.getElementById('commandeForm');
     const successMessage = document.getElementById('successMessage');
+    const container = document.querySelector('.commande-container');
     
-    // IMPORTANT: Éviter submitBtn.type = 'button' - Déjà fait dans HTML
+    if (!submitBtn || !form) {
+        console.error('❌ Éléments non trouvés');
+        return;
+    }
     
-    // Gestion du clic SUR LE BOUTON (pas sur le formulaire)
-    submitBtn.addEventListener('click', async function(e) {
-        e.preventDefault();
-        console.log('🖱️ Bouton cliqué - Début traitement');
+    // Gestion du clic sur le bouton
+    submitBtn.addEventListener('click', async function() {
+        console.log('🖱️ Bouton cliqué');
         
-        // Validation
-        const requiredFields = form.querySelectorAll('[required]');
-        let hasError = false;
+        // 1. Validation simple
+        const nom = document.getElementById('nom_complet').value.trim();
+        const tel = document.getElementById('telephone').value.trim();
+        const commande = document.getElementById('commande').value;
         
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                field.style.borderColor = '#ff4444';
-                field.style.backgroundColor = '#fff8f8';
-                hasError = true;
-            }
-        });
-        
-        if (hasError) {
-            alert('⚠️ Veuillez remplir tous les champs obligatoires');
+        if (!nom || !tel || !commande) {
+            alert('❌ Veuillez remplir : Nom, Téléphone et Type de commande');
             return;
         }
         
-        // Chargement
+        // 2. Préparer les données
+        const formData = new FormData();
+        formData.append('nom_complet', nom);
+        formData.append('telephone', tel);
+        formData.append('commande', commande);
+        formData.append('email', document.getElementById('email').value.trim());
+        formData.append('description', document.getElementById('description').value.trim());
+        formData.append('devis', document.getElementById('devis').checked ? '1' : '0');
+        
+        // 3. Afficher "chargement"
         submitBtn.disabled = true;
-        btnText.textContent = 'Envoi...';
+        const btnText = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+        
+        if (btnText) btnText.textContent = 'Envoi en cours...';
         if (spinner) spinner.style.display = 'inline-block';
         
         try {
-            // Données
-            const formData = new FormData(form);
+            console.log('📤 Envoi des données...');
             
-            // Debug
-            console.log('📤 Données:', Object.fromEntries(formData));
-            
-            // Envoi
+            // Envoyer au PHP
             const response = await fetch('/send_commande.php', {
                 method: 'POST',
                 body: formData
             });
             
             const result = await response.json();
-            console.log('📊 Réponse:', result);
+            console.log('📊 Résultat:', result);
             
             if (result.success) {
-                // ========== SUCCÈS COMPLET ==========
-                console.log('✅ Commande réussie!');
+                // ========== SUCCÈS ==========
+                console.log('✅ Commande réussie !');
                 
-                // 1. MASQUER TOUT
+                // A. MASQUER le formulaire
                 form.style.display = 'none';
-                document.querySelector('.commande-footer').style.display = 'none';
-                document.querySelector('.commande-header').style.display = 'none';
                 
-                // 2. AFFICHER SEUL le message de succès
+                // B. MASQUER le footer (optionnel)
+                const footer = document.querySelector('.commande-footer');
+                if (footer) footer.style.display = 'none';
+                
+                // C. MASQUER le header (optionnel)
+                const header = document.querySelector('.commande-header');
+                if (header) header.style.display = 'none';
+                
+                // D. AFFICHER le message de succès
                 successMessage.style.display = 'block';
                 successMessage.style.background = 'linear-gradient(135deg, #151b54 0%, #324499 100%)';
                 successMessage.style.color = 'white';
@@ -77,37 +84,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 successMessage.style.alignItems = 'center';
                 successMessage.style.textAlign = 'center';
                 successMessage.style.margin = '0';
+                successMessage.style.width = '100%';
                 
-                // 3. Contenu amélioré
+                // E. Contenu du message
                 successMessage.innerHTML = `
-                    <div style="max-width: 500px; animation: fadeIn 0.5s ease-out;">
-                        <!-- Icône -->
+                    <div style="max-width: 500px;">
+                        <!-- Grande icône de succès -->
                         <div style="
-                            width: 80px;
-                            height: 80px;
-                            background: white;
-                            border-radius: 50%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            margin: 0 auto 25px;
-                            font-size: 40px;
-                            color: #4CAF50;
-                            animation: pulse 2s infinite;
+                            font-size: 4rem;
+                            margin-bottom: 20px;
+                            animation: fadeIn 0.5s ease-out;
                         ">
-                            ✓
+                            🎉
                         </div>
                         
                         <!-- Titre -->
                         <h2 style="
                             font-size: 2.2rem;
-                            margin-bottom: 15px;
+                            margin-bottom: 20px;
                             font-weight: 700;
+                            color: white;
                         ">
                             Commande Confirmée !
                         </h2>
                         
-                        <!-- Message -->
+                        <!-- Message principal -->
                         <p style="
                             font-size: 1.2rem;
                             line-height: 1.6;
@@ -124,46 +125,71 @@ document.addEventListener('DOMContentLoaded', function() {
                             padding: 25px;
                             margin: 25px 0;
                             border-left: 4px solid #faaa03;
+                            text-align: left;
                         ">
                             <p><strong>Référence :</strong> #${result.commande_id || 'WC-' + Date.now().toString().slice(-6)}</p>
-                            <p><strong>Date :</strong> ${new Date().toLocaleDateString('fr-FR')}</p>
-                            <p>Notre équipe vous contactera sous 24h.</p>
+                            <p><strong>Date :</strong> ${new Date().toLocaleDateString('fr-FR', { 
+                                day: 'numeric', 
+                                month: 'long', 
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}</p>
+                            <p><strong>Statut :</strong> En attente de traitement</p>
                         </div>
                         
-                        <!-- Boutons -->
-                        <div style="margin-top: 40px;">
-                            <button onclick="window.close()" style="
-                                background: #faaa03;
-                                color: white;
-                                border: none;
-                                padding: 14px 35px;
-                                border-radius: 10px;
-                                font-weight: bold;
-                                cursor: pointer;
-                                font-size: 1.1rem;
-                                transition: all 0.3s;
-                                margin-right: 15px;
-                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 20px rgba(250, 170, 3, 0.3)'" 
-                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                                Fermer la fenêtre
-                            </button>
-                        </div>
+                        <!-- Instructions -->
+                        <p style="margin-bottom: 30px; font-size: 1.1rem;">
+                            <strong>Prochaine étape :</strong><br>
+                            Notre équipe vous contactera sous 24 heures.
+                        </p>
+                        
+                        <!-- Bouton de fermeture -->
+                        <button onclick="window.close()" style="
+                            background: #faaa03;
+                            color: white;
+                            border: none;
+                            padding: 16px 40px;
+                            border-radius: 10px;
+                            font-weight: bold;
+                            font-size: 1.1rem;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            margin-top: 20px;
+                            min-width: 200px;
+                        " 
+                        onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 25px rgba(250, 170, 3, 0.4)'"
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                            Fermer la fenêtre
+                        </button>
                         
                         <!-- Compte à rebours -->
                         <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.8;">
-                            Fermeture automatique dans <span id="countdown" style="font-weight: bold; color: #faaa03;">5</span>s
+                            ⏳ Fermeture automatique dans 
+                            <span id="countdown" style="
+                                font-weight: bold;
+                                color: #faaa03;
+                                font-size: 1.1rem;
+                                margin: 0 5px;
+                            ">5</span> 
+                            secondes
                         </p>
                     </div>
                 `;
                 
-                // 4. Compte à rebours
+                // F. Gérer le compte à rebours
                 let seconds = 5;
                 const countdownElement = document.getElementById('countdown');
+                
                 const countdownInterval = setInterval(() => {
                     seconds--;
-                    if (countdownElement) countdownElement.textContent = seconds;
+                    if (countdownElement) {
+                        countdownElement.textContent = seconds;
+                    }
+                    
                     if (seconds <= 0) {
                         clearInterval(countdownInterval);
+                        // Fermer la fenêtre si c'est une popup
                         if (window.opener && !window.opener.closed) {
                             window.close();
                         }
@@ -171,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 1000);
                 
             } else {
-                // ERREUR
+                // ERREUR du serveur
                 alert('❌ ' + result.message);
                 resetButton();
             }
@@ -183,21 +209,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Fonction reset
+    // Fonction pour réinitialiser le bouton
     function resetButton() {
         submitBtn.disabled = false;
-        btnText.textContent = 'Soumettre la commande';
+        const btnText = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+        
+        if (btnText) btnText.textContent = 'Soumettre la commande';
         if (spinner) spinner.style.display = 'none';
     }
-    
-    // Réinitialiser styles d'erreur
-    const inputs = form.querySelectorAll('input, textarea, select');
-    inputs.forEach(input => {
-        input.addEventListener('input', function() {
-            this.style.borderColor = '';
-            this.style.backgroundColor = '';
-        });
-    });
-    
-    console.log('✅ Formulaire prêt !');
 });

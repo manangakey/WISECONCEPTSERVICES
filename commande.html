@@ -339,9 +339,113 @@
     </div>
     
     <!-- JavaScript -->
-    <script src="js/commande.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Commande.html chargé');
+    
+    const form = document.getElementById('commandeForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const spinner = document.getElementById('spinner');
+    
+    if (!form || !submitBtn) {
+        console.error('Éléments manquants');
+        return;
+    }
+    
+    // Empêcher le comportement par défaut
+    submitBtn.type = 'submit';
+    
+    submitBtn.addEventListener('click', async function() {
+        console.log('📝 Soumission...');
+        
+        // Validation
+        let valid = true;
+        const inputs = form.querySelectorAll('[required]');
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                input.style.borderColor = 'red';
+                valid = false;
+            }
+        });
+        
+        if (!valid) {
+            alert('Remplissez les champs obligatoires');
+            return;
+        }
+        
+        // Loading
+        submitBtn.disabled = true;
+        btnText.textContent = 'Envoi...';
+        if (spinner) spinner.style.display = 'inline-block';
+        
+        try {
+            const formData = new FormData(form);
+            const response = await fetch('/send_commande.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            console.log('Result:', result);
+            
+            if (result.success) {
+                // SUCCÈS - REMPLACER TOUTE LA PAGE
+                document.querySelector('.commande-container').innerHTML = `
+                    <div style="
+                        min-height: 600px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                        padding: 40px;
+                        background: linear-gradient(135deg, #151b54 0%, #324499 100%);
+                        color: white;
+                        border-radius: 20px;
+                    ">
+                        <div style="font-size: 5rem; margin-bottom: 30px;">✅</div>
+                        <h1 style="font-size: 2.5rem; margin-bottom: 20px; color: #faaa03;">
+                            Commande Envoyée !
+                        </h1>
+                        <p style="font-size: 1.3rem; margin-bottom: 15px; max-width: 500px;">
+                            ${result.message}
+                        </p>
+                        <p style="margin-top: 25px; padding: 10px 20px; 
+                           background: rgba(255,255,255,0.1); border-radius: 10px;">
+                            <strong>ID: #${result.commande_id || 'XXXX'}</strong>
+                        </p>
+                        <p style="margin-top: 40px; font-size: 0.9rem; opacity: 0.8;">
+                            Fermeture dans 5 secondes...
+                        </p>
+                    </div>
+                `;
+                
+                // Fermer automatiquement
+                setTimeout(() => {
+                    if (window.opener) window.close();
+                }, 5000);
+                
+            } else {
+                alert('Erreur: ' + result.message);
+                submitBtn.disabled = false;
+                btnText.textContent = 'Soumettre';
+                if (spinner) spinner.style.display = 'none';
+            }
+            
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert('Erreur réseau');
+            submitBtn.disabled = false;
+            btnText.textContent = 'Soumettre';
+            if (spinner) spinner.style.display = 'none';
+        }
+    });
+});
+</script>
 </body>
 </html>
+
 
 
 

@@ -53,87 +53,101 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Résultat:', result);
             
             if (result.success) {
-    // SUCCÈS COMPLET
-    console.log('🎉 Commande réussie!');
+                // SUCCÈS - REMPLACER TOUT LE CONTENU PAR LE MESSAGE
+                const container = document.querySelector('.commande-container');
     
-    // 1. CACHER TOUT LE FORMULAIRE et le header
-    const commandeContainer = document.querySelector('.commande-container');
-    const commandeHeader = document.querySelector('.commande-header');
-    const commandeForm = document.getElementById('commandeForm');
-    const commandeFooter = document.querySelector('.commande-footer');
+                container.innerHTML = `
+                    <div class="success-fullscreen">
+                        <div class="success-icon">✅</div>
+                        <h1>Commande Envoyée !</h1>
+                        <p class="success-message">${result.message}</p>
+                        <p class="success-id">ID: #${result.commande_id || 'XXXX'}</p>
+                        <p class="success-note">Notre équipe vous contactera dans les 24h.</p>
+                        <button class="close-btn" onclick="window.close()">Fermer</button>
+                    </div>
+                `;
     
-    if (commandeHeader) commandeHeader.style.display = 'none';
-    if (commandeForm) commandeForm.style.display = 'none';
-    if (commandeFooter) commandeFooter.style.display = 'none';
-    
-    // 2. AFFICHER SEUL LE MESSAGE DE SUCCÈS
-    successMessage.style.display = 'block';
-    successMessage.style.margin = '0';
-    successMessage.style.borderRadius = '20px';
-    successMessage.style.height = '100%';
-    successMessage.style.display = 'flex';
-    successMessage.style.flexDirection = 'column';
-    successMessage.style.justifyContent = 'center';
-    successMessage.style.alignItems = 'center';
-    successMessage.style.textAlign = 'center';
-    successMessage.style.padding = '60px 40px';
-    
-    // 3. METTRE LE MESSAGE AU CENTRE DE L'ÉCRAN
-    successMessage.innerHTML = `
-        <div style="max-width: 500px;">
-            <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
-            <h3 style="font-size: 2rem; margin-bottom: 20px; color: white;">Commande Confirmée !</h3>
-            <p style="font-size: 1.2rem; margin-bottom: 10px; color: rgba(255,255,255,0.9);">
-                ${result.message}
-            </p>
-            <p style="font-size: 1rem; margin-top: 30px; color: rgba(255,255,255,0.8);">
-                <strong>ID Commande: #${result.commande_id || 'XXXX'}</strong>
-            </p>
-            <p style="font-size: 0.9rem; margin-top: 40px; color: rgba(255,255,255,0.7);">
-                Cette fenêtre se fermera automatiquement dans 5 secondes...
-            </p>
-        </div>
-    `;
-    
-    // 4. CHANGER LE STYLE DU CONTENEUR POUR CENTRER LE MESSAGE
-    if (commandeContainer) {
-        commandeContainer.style.display = 'flex';
-        commandeContainer.style.justifyContent = 'center';
-        commandeContainer.style.alignItems = 'center';
-        commandeContainer.style.minHeight = '500px';
-        commandeContainer.style.background = 'linear-gradient(135deg, #151b54 0%, #324499 100%)';
-    }
-    
-    // 5. Fermer après 5 secondes
-    setTimeout(() => {
-        if (window.opener && !window.opener.closed) {
-            window.close();
-        } else {
-            // Ajouter un bouton de fermeture manuelle
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = 'Fermer cette fenêtre';
-            closeBtn.style.cssText = `
-                margin-top: 30px;
-                padding: 12px 30px;
-                background: #faaa03;
-                color: white;
-                border: none;
-                border-radius: 10px;
-                font-size: 1rem;
-                cursor: pointer;
-                font-weight: bold;
+                // Ajouter le CSS pour le message plein écran
+                const style = document.createElement('style');
+                style.textContent = `
+                .success-fullscreen {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 600px;
+                    padding: 40px;
+                    text-align: center;
+                    background: linear-gradient(135deg, #151b54 0%, #324499 100%);
+                    color: white;
+                    border-radius: 20px;
+                }
+                .success-icon {
+                    font-size: 5rem;
+                    margin-bottom: 30px;
+                    animation: bounce 1s;
+                }
+                @keyframes bounce {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.2); }
+                }
+                .success-fullscreen h1 {
+                    font-size: 2.5rem;
+                    margin-bottom: 20px;
+                    color: #faaa03;
+                }
+                .success-message {
+                    font-size: 1.3rem;
+                    margin-bottom: 15px;
+                    max-width: 600px;
+                    line-height: 1.6;
+                }
+                .success-id {
+                    background: rgba(255,255,255,0.1);
+                    padding: 10px 20px;
+                    border-radius: 10px;
+                    margin: 20px 0;
+                    font-weight: bold;
+                    letter-spacing: 1px;
+                }
+                .success-note {
+                    font-size: 1rem;
+                    opacity: 0.9;
+                    margin-top: 30px;
+                }
+                .close-btn {
+                    margin-top: 40px;
+                    padding: 15px 40px;
+                    background: #faaa03;
+                    color: white;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 1.1rem;
+                    cursor: pointer;
+                    font-weight: bold;
+                    transition: all 0.3s;
+                }
+                .close-btn:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 20px rgba(250, 170, 3, 0.3);
+                }
             `;
-            closeBtn.onclick = () => window.close();
-            successMessage.querySelector('div').appendChild(closeBtn);
-        }
-    }, 5000);
+            document.head.appendChild(style);
     
-} else {
-    // ERREUR SERVEUR
-    console.error('❌ Erreur serveur:', result.message);
-    alert('Désolé, une erreur est survenue: ' + result.message);
-    resetButton();
-}
+            // Fermer automatiquement après 6 secondes
+            setTimeout(() => {
+                if (window.opener) {
+                    window.close();
+                }
+            }, 6000);
+        }
+    
+        } else {
+            // ERREUR SERVEUR
+            console.error('❌ Erreur serveur:', result.message);
+            alert('Désolé, une erreur est survenue: ' + result.message);
+            resetButton();
+        }
             
         } catch (error) {
             console.error('Erreur:', error);
@@ -149,4 +163,5 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener('input', () => el.style.borderColor = '');
     });
 });
+
 

@@ -53,94 +53,45 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Résultat:', result);
             
             if (result.success) {
-                // SUCCÈS - REMPLACER TOUT LE CONTENU PAR LE MESSAGE
-                const container = document.querySelector('.commande-container');
+    console.log('✅ Commande réussie !');
     
-                container.innerHTML = `
-                    <div class="success-fullscreen">
-                        <div class="success-icon">✅</div>
-                        <h1>Commande Envoyée !</h1>
-                        <p class="success-message">${result.message}</p>
-                        <p class="success-id">ID: #${result.commande_id || 'XXXX'}</p>
-                        <p class="success-note">Notre équipe vous contactera dans les 24h.</p>
-                        <button class="close-btn" onclick="window.close()">Fermer</button>
-                    </div>
-                `;
+    // Cacher tout sauf le message
+    const elementsToHide = [
+        '.commande-header',
+        '#commandeForm', 
+        '.commande-footer'
+    ];
     
-                // Ajouter le CSS pour le message plein écran
-                const style = document.createElement('style');
-                style.textContent = `
-                .success-fullscreen {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    min-height: 600px;
-                    padding: 40px;
-                    text-align: center;
-                    background: linear-gradient(135deg, #151b54 0%, #324499 100%);
-                    color: white;
-                    border-radius: 20px;
-                }
-                .success-icon {
-                    font-size: 5rem;
-                    margin-bottom: 30px;
-                    animation: bounce 1s;
-                }
-                @keyframes bounce {
-                    0%, 100% { transform: scale(1); }
-                    50% { transform: scale(1.2); }
-                }
-                .success-fullscreen h1 {
-                    font-size: 2.5rem;
-                    margin-bottom: 20px;
-                    color: #faaa03;
-                }
-                .success-message {
-                    font-size: 1.3rem;
-                    margin-bottom: 15px;
-                    max-width: 600px;
-                    line-height: 1.6;
-                }
-                .success-id {
-                    background: rgba(255,255,255,0.1);
-                    padding: 10px 20px;
-                    border-radius: 10px;
-                    margin: 20px 0;
-                    font-weight: bold;
-                    letter-spacing: 1px;
-                }
-                .success-note {
-                    font-size: 1rem;
-                    opacity: 0.9;
-                    margin-top: 30px;
-                }
-                .close-btn {
-                    margin-top: 40px;
-                    padding: 15px 40px;
-                    background: #faaa03;
-                    color: white;
-                    border: none;
-                    border-radius: 10px;
-                    font-size: 1.1rem;
-                    cursor: pointer;
-                    font-weight: bold;
-                    transition: all 0.3s;
-                }
-                .close-btn:hover {
-                    transform: translateY(-3px);
-                    box-shadow: 0 10px 20px rgba(250, 170, 3, 0.3);
-                }
-            `;
-            document.head.appendChild(style);
+    elementsToHide.forEach(selector => {
+        const el = document.querySelector(selector);
+        if (el) el.style.display = 'none';
+    });
     
-            // Fermer automatiquement après 6 secondes
-            setTimeout(() => {
-                if (window.opener) {
-                    window.close();
-                }
-            }, 6000);
-        }
+    // Montrer et agrandir le message
+    successMessage.style.display = 'flex';
+    successMessage.style.flexDirection = 'column';
+    successMessage.style.justifyContent = 'center';
+    successMessage.style.alignItems = 'center';
+    successMessage.style.minHeight = '400px';
+    successMessage.style.textAlign = 'center';
+    successMessage.style.padding = '40px';
+    successMessage.style.borderRadius = '15px';
+    
+    // Mettre à jour le contenu
+    successMessage.innerHTML = `
+        <div style="font-size: 3.5rem; margin-bottom: 20px;">✅</div>
+        <h2 style="color: white; margin-bottom: 15px;">Commande Envoyée !</h2>
+        <p style="font-size: 1.1rem; margin-bottom: 10px;">${result.message}</p>
+        <p style="margin-top: 25px; font-size: 0.9rem; opacity: 0.9;">
+            Fermeture automatique...
+        </p>
+    `;
+    
+    // Fermer après 4 secondes
+    setTimeout(() => {
+        if (window.opener) window.close();
+    }, 4000);
+}
     
         } else {
             // ERREUR SERVEUR
@@ -163,5 +114,6 @@ document.addEventListener('DOMContentLoaded', function() {
         el.addEventListener('input', () => el.style.borderColor = '');
     });
 });
+
 
 

@@ -353,7 +353,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    // Empêcher le comportement par défaut
     submitBtn.type = 'button';
     
     submitBtn.addEventListener('click', async function() {
@@ -362,89 +361,384 @@ document.addEventListener('DOMContentLoaded', function() {
         // Validation
         let valid = true;
         const inputs = form.querySelectorAll('[required]');
+        let firstInvalid = null;
+        
         inputs.forEach(input => {
             if (!input.value.trim()) {
-                input.style.borderColor = 'red';
+                input.style.borderColor = '#e74c3c';
+                input.style.backgroundColor = '#fff5f5';
                 valid = false;
+                if (!firstInvalid) firstInvalid = input;
+            } else {
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
             }
         });
         
         if (!valid) {
-            alert('Remplissez les champs obligatoires');
+            alert('❌ Veuillez remplir tous les champs obligatoires');
+            if (firstInvalid) {
+                firstInvalid.focus();
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
             return;
         }
         
         // Loading
         submitBtn.disabled = true;
-        btnText.textContent = 'Envoi...';
+        submitBtn.classList.add('loading');
+        btnText.textContent = 'Envoi en cours...';
         if (spinner) spinner.style.display = 'inline-block';
         
         try {
             const formData = new FormData(form);
+            
             const response = await fetch('/send_commande.php', {
                 method: 'POST',
                 body: formData
             });
             
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
             const result = await response.json();
-            console.log('Result:', result);
+            console.log('📊 Résultat:', result);
             
             if (result.success) {
-                // SUCCÈS - REMPLACER TOUTE LA PAGE
+                console.log('🎉 Commande réussie!');
+                
                 document.querySelector('.commande-container').innerHTML = `
-                    <div style="
-                        min-height: 600px;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        text-align: center;
-                        padding: 40px;
-                        background: linear-gradient(135deg, #151b54 0%, #324499 100%);
-                        color: white;
-                        border-radius: 20px;
-                    ">
-                        <div style="font-size: 5rem; margin-bottom: 30px;">✅</div>
-                        <h1 style="font-size: 2.5rem; margin-bottom: 20px; color: #faaa03;">
-                            Commande Envoyée !
-                        </h1>
-                        <p style="font-size: 1.3rem; margin-bottom: 15px; max-width: 500px;">
-                            ${result.message}
-                        </p>
-                        <p style="margin-top: 25px; padding: 10px 20px; 
-                           background: rgba(255,255,255,0.1); border-radius: 10px;">
-                            <strong>ID: #${result.commande_id || 'XXXX'}</strong>
-                        </p>
-                        <p style="margin-top: 40px; font-size: 0.9rem; opacity: 0.8;">
-                            Fermeture dans 5 secondes...
-                        </p>
+                    <div class="success-screen">
+                        <div class="success-icon">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none">
+                                <path d="M20 6L9 17L4 12" stroke="white" stroke-width="3" 
+                                      stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        
+                        <h1 class="success-title">Commande Confirmée !</h1>
+                        
+                        <p class="success-message">${result.message}</p>
+                        
+                        <div class="order-id">
+                            <span class="id-label">NUMÉRO DE COMMANDE</span>
+                            <span class="id-value">#${result.commande_id || 'XXXX'}</span>
+                        </div>
+                        
+                        <div class="success-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">✓</span>
+                                <span>Email de confirmation envoyé</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">✓</span>
+                                <span>Base de données mise à jour</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">✓</span>
+                                <span>Notre équipe vous contactera sous 24h</span>
+                            </div>
+                        </div>
+                        
+                        <p class="auto-close">Fermeture automatique dans <span id="countdown">5</span> secondes</p>
+                        
+                        <button class="close-btn">Fermer maintenant</button>
+                        
+                        <div class="success-footer">
+                            <p>Merci pour votre confiance !</p>
+                            <p class="brand">WiseConcept Services</p>
+                        </div>
                     </div>
+                    
+                    <style>
+                        .success-screen {
+                            min-height: 700px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            text-align: center;
+                            padding: 50px 30px;
+                            background: linear-gradient(135deg, 
+                                #27ae60 0%, 
+                                #2ecc71 25%, 
+                                #1abc9c 50%, 
+                                #16a085 100%);
+                            color: white;
+                            border-radius: 20px;
+                            box-shadow: 0 20px 60px rgba(39, 174, 96, 0.3);
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        
+                        .success-screen::before {
+                            content: '';
+                            position: absolute;
+                            top: -50%;
+                            left: -50%;
+                            width: 200%;
+                            height: 200%;
+                            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+                            background-size: 30px 30px;
+                            animation: float 20s linear infinite;
+                            z-index: 0;
+                        }
+                        
+                        @keyframes float {
+                            0% { transform: translate(0, 0) rotate(0deg); }
+                            100% { transform: translate(-30px, -30px) rotate(360deg); }
+                        }
+                        
+                        .success-icon {
+                            margin-bottom: 30px;
+                            animation: iconPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                            z-index: 1;
+                            position: relative;
+                        }
+                        
+                        @keyframes iconPop {
+                            0% { transform: scale(0); opacity: 0; }
+                            70% { transform: scale(1.2); }
+                            100% { transform: scale(1); opacity: 1; }
+                        }
+                        
+                        .success-title {
+                            font-size: 2.8rem;
+                            margin-bottom: 20px;
+                            color: white;
+                            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                            font-weight: 800;
+                            letter-spacing: -0.5px;
+                            z-index: 1;
+                            position: relative;
+                        }
+                        
+                        .success-message {
+                            font-size: 1.4rem;
+                            margin-bottom: 40px;
+                            max-width: 600px;
+                            line-height: 1.6;
+                            opacity: 0.95;
+                            z-index: 1;
+                            position: relative;
+                            font-weight: 300;
+                        }
+                        
+                        .order-id {
+                            background: rgba(255, 255, 255, 0.15);
+                            backdrop-filter: blur(10px);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 15px;
+                            padding: 20px 40px;
+                            margin: 25px 0;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 8px;
+                            z-index: 1;
+                            position: relative;
+                        }
+                        
+                        .id-label {
+                            font-size: 0.9rem;
+                            opacity: 0.8;
+                            letter-spacing: 1px;
+                            text-transform: uppercase;
+                        }
+                        
+                        .id-value {
+                            font-size: 2rem;
+                            font-weight: 700;
+                            letter-spacing: 2px;
+                            color: #f1c40f;
+                            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                        }
+                        
+                        .success-details {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 15px;
+                            margin: 30px 0;
+                            max-width: 400px;
+                            z-index: 1;
+                            position: relative;
+                        }
+                        
+                        .detail-item {
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                            font-size: 1.1rem;
+                            padding: 12px 20px;
+                            background: rgba(255, 255, 255, 0.1);
+                            border-radius: 10px;
+                            backdrop-filter: blur(5px);
+                        }
+                        
+                        .detail-icon {
+                            background: white;
+                            color: #27ae60;
+                            width: 24px;
+                            height: 24px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-weight: bold;
+                            font-size: 0.9rem;
+                        }
+                        
+                        .auto-close {
+                            margin-top: 40px;
+                            font-size: 1rem;
+                            opacity: 0.9;
+                            z-index: 1;
+                            position: relative;
+                        }
+                        
+                        #countdown {
+                            font-weight: bold;
+                            color: #f1c40f;
+                            font-size: 1.2rem;
+                        }
+                        
+                        .close-btn {
+                            margin-top: 30px;
+                            padding: 16px 45px;
+                            background: linear-gradient(90deg, #f1c40f, #f39c12);
+                            color: white;
+                            border: none;
+                            border-radius: 12px;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.3s;
+                            z-index: 1;
+                            position: relative;
+                            box-shadow: 0 8px 25px rgba(241, 196, 15, 0.3);
+                        }
+                        
+                        .close-btn:hover {
+                            transform: translateY(-3px);
+                            box-shadow: 0 12px 30px rgba(241, 196, 15, 0.4);
+                        }
+                        
+                        .close-btn:active {
+                            transform: translateY(-1px);
+                        }
+                        
+                        .success-footer {
+                            margin-top: 50px;
+                            padding-top: 20px;
+                            border-top: 1px solid rgba(255, 255, 255, 0.2);
+                            width: 100%;
+                            max-width: 400px;
+                            z-index: 1;
+                            position: relative;
+                        }
+                        
+                        .success-footer p {
+                            margin: 5px 0;
+                            opacity: 0.8;
+                            font-size: 0.95rem;
+                        }
+                        
+                        .brand {
+                            font-weight: bold;
+                            font-size: 1.1rem !important;
+                            color: rgba(255, 255, 255, 0.9);
+                            margin-top: 10px !important;
+                        }
+                        
+                        /* Animation de confettis */
+                        .confetti {
+                            position: absolute;
+                            width: 10px;
+                            height: 10px;
+                            background: #f1c40f;
+                            opacity: 0.8;
+                            z-index: 0;
+                        }
+                        
+                        @keyframes confetti-fall {
+                            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+                            100% { transform: translateY(700px) rotate(360deg); opacity: 0; }
+                        }
+                    </style>
                 `;
                 
-                // Fermer automatiquement
-                setTimeout(() => {
-                    if (window.opener) window.close();
-                }, 5000);
+                // Ajouter des confettis
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.background = ['#f1c40f', '#2ecc71', '#3498db', '#9b59b6', '#e74c3c'][Math.floor(Math.random() * 5)];
+                        confetti.style.width = Math.random() * 10 + 5 + 'px';
+                        confetti.style.height = Math.random() * 10 + 5 + 'px';
+                        confetti.style.animation = `confetti-fall ${Math.random() * 2 + 2}s linear forwards`;
+                        document.querySelector('.success-screen').appendChild(confetti);
+                    }, i * 100);
+                }
+                
+                // Compte à rebours
+                let countdown = 5;
+                const countdownEl = document.getElementById('countdown');
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdownEl) countdownEl.textContent = countdown;
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        if (window.opener && !window.opener.closed) {
+                            window.close();
+                        }
+                    }
+                }, 1000);
+                
+                // Bouton de fermeture manuelle
+                document.querySelector('.close-btn').addEventListener('click', () => {
+                    clearInterval(countdownInterval);
+                    if (window.opener && !window.opener.closed) {
+                        window.close();
+                    }
+                });
                 
             } else {
-                alert('Erreur: ' + result.message);
-                submitBtn.disabled = false;
-                btnText.textContent = 'Soumettre';
-                if (spinner) spinner.style.display = 'none';
+                // ERREUR SERVEUR
+                console.error('❌ Erreur serveur:', result.message);
+                alert('Désolé: ' + result.message);
+                resetButton();
             }
             
         } catch (error) {
-            console.error('Erreur:', error);
-            alert('Erreur réseau');
-            submitBtn.disabled = false;
-            btnText.textContent = 'Soumettre';
-            if (spinner) spinner.style.display = 'none';
+            console.error('💥 Erreur fetch:', error);
+            alert('Erreur de connexion au serveur. Veuillez réessayer.');
+            resetButton();
         }
     });
+    
+    // Fonction pour réinitialiser le bouton
+    function resetButton() {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+        btnText.textContent = 'Soumettre la commande';
+        if (spinner) spinner.style.display = 'none';
+    }
+    
+    // Nettoyer les styles d'erreur
+    form.querySelectorAll('input, textarea, select').forEach(input => {
+        input.addEventListener('input', function() {
+            this.style.borderColor = '';
+            this.style.backgroundColor = '';
+        });
+    });
+    
+    console.log('✅ Formulaire de commande prêt !');
 });
 </script>
 </body>
 </html>
+
 
 
 

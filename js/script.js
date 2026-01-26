@@ -304,21 +304,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const speed = 0.015;
 
   fetch('/api/get-random-portfolio.php')
-    .then(res => res.json())
-    .then(images => {
-      if (!images.length) return;
+  .then(res => {
+    if (!res.ok) {
+      throw new Error('Server error: ' + res.status);
+    }
+    return res.json();
+  })
+  .then(images => {
+    if (!Array.isArray(images) || images.length === 0) {
+      console.warn('No portfolio images found');
+      return;
+    }
 
-      // duplication pour boucle fluide
-      images.concat(images).forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.loading = 'lazy';
-        track.appendChild(img);
-      });
+    images.concat(images).forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.loading = 'lazy';
+      track.appendChild(img);
+    });
 
-      requestAnimationFrame(animate);
-    })
-    .catch(err => console.error('Portfolio showcase error:', err));
+    requestAnimationFrame(animate);
+  })
+  .catch(err => {
+    console.error('Portfolio API error:', err);
+  });
 
   function animate() {
     position -= speed;

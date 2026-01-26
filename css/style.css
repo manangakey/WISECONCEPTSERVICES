@@ -2386,12 +2386,11 @@ body {
 }
 
 .portfolio-track img {
-  width: 33.333%;
+  width: 16.666%;
   height: 100%;
   object-fit: cover;
   flex-shrink: 0;
   transform: scale(1.1);
-  transition: transform 8s ease;
 }
 
 .portfolio-overlay {
@@ -2411,10 +2410,10 @@ body {
 .portfolio-cta {
   padding: 12px 28px;
   border-radius: 30px;
-  background: #ffffff;
+  background: #fff;
   color: #000;
-  text-decoration: none;
   font-weight: 600;
+  text-decoration: none;
   transition: transform 0.3s ease;
 }
 
@@ -2422,7 +2421,7 @@ body {
   transform: scale(1.05);
 }
 
-/* Mobile optimisation */
+/* Mobile simplifié */
 @media (max-width: 768px) {
   .portfolio-track img {
     width: 100%;

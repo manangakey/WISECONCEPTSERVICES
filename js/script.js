@@ -294,3 +294,40 @@ function createCommandeModal() {
         }
     });
 }
+
+// Images showcase
+const track = document.querySelector('.portfolio-track');
+let position = 0;
+let speed = 0.02; // vitesse très lente = effet cinématique
+
+fetch('../api/get-random-portfolio.php')
+  .then(res => res.json())
+  .then(images => {
+    images.concat(images).forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      track.appendChild(img);
+    });
+
+    animate();
+  });
+
+function animate() {
+  position -= speed;
+  track.style.transform = `translateX(${position}%)`;
+
+  // boucle infinie douce
+  if (Math.abs(position) >= 50) {
+    position = 0;
+  }
+
+  requestAnimationFrame(animate);
+}
+
+// Effet parallaxe léger au scroll
+window.addEventListener('scroll', () => {
+  if (window.innerWidth < 768) return;
+
+  const offset = window.scrollY * 0.05;
+  track.style.transform = `translateX(${position}%) translateY(${offset}px)`;
+});

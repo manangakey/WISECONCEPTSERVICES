@@ -296,38 +296,44 @@ function createCommandeModal() {
 }
 
 // Images showcase
-const track = document.querySelector('.portfolio-track');
-let position = 0;
-let speed = 0.02; // vitesse très lente = effet cinématique
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.querySelector('.portfolio-track');
+  if (!track) return;
 
-fetch('../api/get-random-portfolio.php')
-  .then(res => res.json())
-  .then(images => {
-    images.concat(images).forEach(src => {
-      const img = document.createElement('img');
-      img.src = src;
-      track.appendChild(img);
-    });
+  let position = 0;
+  const speed = 0.015;
 
-    animate();
-  });
+  fetch('/api/get-random-portfolio.php')
+    .then(res => res.json())
+    .then(images => {
+      if (!images.length) return;
 
-function animate() {
-  position -= speed;
-  track.style.transform = `translateX(${position}%)`;
+      // duplication pour boucle fluide
+      images.concat(images).forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.loading = 'lazy';
+        track.appendChild(img);
+      });
 
-  // boucle infinie douce
-  if (Math.abs(position) >= 50) {
-    position = 0;
+      requestAnimationFrame(animate);
+    })
+    .catch(err => console.error('Portfolio showcase error:', err));
+
+  function animate() {
+    position -= speed;
+    track.style.transform = `translateX(${position}%)`;
+
+    if (Math.abs(position) >= 50) {
+      position = 0;
+    }
+
+    requestAnimationFrame(animate);
   }
 
-  requestAnimationFrame(animate);
-}
-
-// Effet parallaxe léger au scroll
-window.addEventListener('scroll', () => {
-  if (window.innerWidth < 768) return;
-
-  const offset = window.scrollY * 0.05;
-  track.style.transform = `translateX(${position}%) translateY(${offset}px)`;
+  // Parallaxe léger (desktop only)
+  window.addEventListener('scroll', () => {
+    if (window.innerWidth < 768) return;
+    track.style.transform = `translateX(${position}%) translateY(${window.scrollY * 0.04}px)`;
+  });
 });

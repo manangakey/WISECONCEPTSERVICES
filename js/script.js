@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let position = 0;
   const speed = 0.015;
 
-  fetch('/api/get-random-portfolio.php')
+  fetch('api/get-random-portfolio.php')
   .then(res => {
     if (!res.ok) {
       throw new Error('Server error: ' + res.status);

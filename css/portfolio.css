@@ -1,0 +1,68 @@
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.portfolio-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #151b54;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+.portfolio-placeholder {
+    height: 260px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    transition: transform .6s ease;
+}
+
+.portfolio-placeholder video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.portfolio-item:hover .portfolio-placeholder {
+    transform: scale(1.08);
+}
+
+.portfolio-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(21,27,84,.85),
+        rgba(0,0,0,.1)
+    );
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity .4s ease;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+    opacity: 1;
+}
+
+.portfolio-overlay span {
+    color: #faaa03;
+    font-weight: bold;
+    letter-spacing: .5px;
+}
+
+/* Animation reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: .7s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

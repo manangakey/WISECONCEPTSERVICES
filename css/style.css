@@ -1963,6 +1963,7 @@ body {
     text-align: center;
     box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     transition: transform 0.3s;
+    overflow: hidden;
 }
 
 .info-card:hover {
@@ -1984,6 +1985,10 @@ body {
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    hyphens: auto;
 }
 
 .info-card span {
@@ -2369,3 +2374,4 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+

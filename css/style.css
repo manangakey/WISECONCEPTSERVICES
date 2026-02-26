@@ -610,8 +610,8 @@ body {
     
     .nav-menu.active {
         display: flex;
-        transition: opacity 0.4s, all 0.3s ease;
-        transform: translateX(-10px);
+        transition: all 0.3s ease;
+        transform: translateX(80px);
     }
     
     .nav-link {
@@ -2422,6 +2422,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

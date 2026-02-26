@@ -753,7 +753,7 @@ body {
     
     .social-icon {
         font-size: 1.1rem;
-    }
+    }
 
     .back-to-top {
         width: 30px;
@@ -765,7 +765,7 @@ body {
     
     .back-to-top i {
         font-size: 1rem;
-    }
+    }
 
     .portfolio-item {
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06); /* Ombre plus légère sur mobile */
@@ -774,8 +774,6 @@ body {
     .portfolio-item:hover {
         transform: translateY(-3px); /* Élévation plus subtile sur mobile */
     }
-
-}
 
 /* Page Services Spécifique */
 .services-hero {
@@ -978,8 +976,7 @@ body {
     
     .services-cta h2 {
         font-size: 2rem;
-    }
-}
+    }
 
 /* Page Formations Spécifique */
 .formations-hero {
@@ -1342,8 +1339,7 @@ body {
     
     .form-actions {
         flex-direction: column;
-    }
-}
+    }
 
 /* Page Portfolio Spécifique */
 .portfolio-hero {
@@ -1817,9 +1813,7 @@ body {
     
     .floating-card h4 {
         font-size: 1rem;
-    }
-
-}
+    }
 
 @media (max-width: 480px) {
     
@@ -1837,8 +1831,7 @@ body {
         justify-content: flex-start;
         overflow-x: auto;
         padding-bottom: 1rem;
-    }
-}
+    }
 
 /* Page Contact Spécifique */
 .contact-hero {
@@ -2293,8 +2286,7 @@ body {
     
     .faq-question h4 {
         font-size: 1rem;
-    }
-}
+    }
 
 .services-hero .hero-content,
 .formations-hero .hero-content,
@@ -2482,6 +2474,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

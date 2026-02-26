@@ -1,23 +1,81 @@
 // =============================================
 // NAVIGATION MOBILE
 // =============================================
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    const body = document.body;
+    
+    if (!hamburger || !navMenu) return;
 
-if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
+    // Créer l'overlay pour fermer en cliquant dehors
+    const overlay = document.createElement('div');
+    overlay.className = 'nav-overlay';
+    document.body.appendChild(overlay);
+
+    // Fonction pour ouvrir le menu
+    function openMenu() {
+        hamburger.classList.add('active');
+        navMenu.classList.add('active');
+        overlay.classList.add('active');
+        body.style.overflow = 'hidden'; // Empêcher le scroll
+    }
+
+    // Fonction pour fermer le menu
+    function closeMenu() {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        body.style.overflow = ''; // Réactiver le scroll
+    }
+
+    // Toggle menu au clic sur hamburger
+    hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (navMenu.classList.contains('active')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
     });
 
-    // Fermer le menu en cliquant sur un lien
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
+    // Fermer en cliquant sur un lien
+    document.querySelectorAll('.nav-link, .nav-menu a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            // Si c'est un lien interne (ancre), on ferme après navigation
+            if (link.getAttribute('href')?.startsWith('#')) {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            closeMenu();
         });
     });
-}
+
+    // Fermer en cliquant sur l'overlay
+    overlay.addEventListener('click', closeMenu);
+
+    // Fermer avec la touche Echap
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+
+    // Empêcher la propagation des clics dans le menu
+    navMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Gestion du redimensionnement
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+});
 
 // =============================================
 // SMOOTH SCROLL

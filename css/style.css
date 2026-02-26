@@ -620,13 +620,13 @@ body {
         top: 0;
         right: -50%; /* Commence hors de l'écran */
         width: 50%;
-        height: 100vh;
-        background: rgba(255, 255, 255, 0.85);
+        height: 50vh;
+        background: rgba(255, 255, 255, 0.75);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         box-shadow: -5px 0 30px rgba(21, 27, 84, 0.15);
         flex-direction: column;
-        justify-content: center;
+        justify-content: left;
         align-items: center;
         gap: 2rem;
         z-index: 1000;
@@ -2455,6 +2455,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

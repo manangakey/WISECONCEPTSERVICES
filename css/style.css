@@ -626,13 +626,14 @@ body {
         -webkit-backdrop-filter: blur(10px);
         box-shadow: -5px 0 30px rgba(21, 27, 84, 0.15);
         flex-direction: column;
-        justify-content: left;
-        align-items: center;
+        justify-content: start;
+        align-items: flex-start;
+        align-content: space-arround;
         gap: 2rem;
         z-index: 1000;
         transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         border-left: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 12px;
+        border-radius: 15px;
     }
     
     .nav-menu.active {
@@ -2456,6 +2457,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

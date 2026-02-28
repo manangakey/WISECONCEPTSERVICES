@@ -628,8 +628,8 @@ body {
         flex-direction: column;
         justify-content: start;
         align-items: flex-start;
-        align-content: space-arround;
-        gap: 1rem;
+        align-content: center;
+        gap: 2rem;
         z-index: 1000;
         transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         border-left: 1px solid rgba(255, 255, 255, 0.3);
@@ -2457,6 +2457,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

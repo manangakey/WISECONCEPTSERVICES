@@ -617,7 +617,7 @@ body {
     } */
     .nav-menu {
         position: fixed;
-        top: 0;
+        top: 10px;
         right: -50%; /* Commence hors de l'écran */
         width: 50%;
         height: 50vh;
@@ -632,6 +632,7 @@ body {
         z-index: 1000;
         transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         border-left: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
     }
     
     .nav-menu.active {
@@ -2455,6 +2456,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

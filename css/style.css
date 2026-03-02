@@ -305,8 +305,8 @@ body {
 
 /* Style pour l'image personnalisée */
 .img-hero {
-    width: 100%;
-    height: 100%;
+    width: 80px;
+    height: 80px;
     object-fit: contain; /* Garde les proportions de l'image */
     display: block;
     padding-top: 15px;
@@ -2472,6 +2472,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

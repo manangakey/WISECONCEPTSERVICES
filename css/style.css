@@ -263,8 +263,8 @@ body {
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     text-align: center;
-    /* min-width: 180px;  Plus large */
-    /* height: 180px; Plus haut */
+    min-width: 180px; /* Plus large */
+    height: 180px; /* Plus haut */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -272,6 +272,7 @@ body {
     transition: all 0.3s ease;
     position: relative;
     z-index: 2;
+    border: 1px solid #e9edf4;
 }
 
 .card-1 { 
@@ -305,11 +306,10 @@ body {
 
 /* Style pour l'image personnalisée */
 .img-hero {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
     object-fit: contain; /* Garde les proportions de l'image */
     display: block;
-    padding-top: 15px;
 }
 
 .floating-card h4 {
@@ -2472,6 +2472,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

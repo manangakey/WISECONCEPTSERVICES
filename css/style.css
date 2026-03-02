@@ -309,6 +309,7 @@ body {
     height: 80%;
     object-fit: contain; /* Garde les proportions de l'image */
     display: block;
+    padding-top: 15px;
 }
 
 .floating-card h4 {
@@ -2471,6 +2472,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

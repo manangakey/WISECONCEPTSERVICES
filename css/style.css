@@ -263,8 +263,8 @@ body {
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     text-align: center;
-    min-width: 180px; /* Plus large */
-    height: 180px; /* Plus haut */
+    /* min-width: 180px;  Plus large */
+    /* height: 180px; Plus haut */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -305,8 +305,8 @@ body {
 
 /* Style pour l'image personnalisée */
 .img-hero {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
     object-fit: contain; /* Garde les proportions de l'image */
     display: block;
 }
@@ -2471,6 +2471,7 @@ body {
         transform: scale(1) translateY(0);
     }
 }
+
 
 
 

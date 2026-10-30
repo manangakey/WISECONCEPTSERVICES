@@ -2145,6 +2145,7 @@ body {
 /* FAQ */
 .contact-faq {
     padding: 80px 0;
+    background: var(--contact-bg);
 }
 
 .faq-grid {
@@ -2153,10 +2154,22 @@ body {
 }
 
 .faq-item {
-    border: 1px solid var(--gray-light);
+    background: var(--white);
+    border: 2px solid var(--field-border);
     border-radius: 12px;
     margin-bottom: 1rem;
     overflow: hidden;
+    box-shadow: 0 4px 14px rgba(21, 27, 84, 0.06);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.faq-item:hover {
+    border-color: #aab4d0;
+}
+
+.faq-item.active {
+    border-color: var(--orange-primary);
+    box-shadow: 0 10px 30px rgba(250, 170, 3, 0.15);
 }
 
 .faq-question {
@@ -2170,7 +2183,7 @@ body {
 }
 
 .faq-question:hover {
-    background: var(--gray-light);
+    background: var(--field-bg);
 }
 
 .faq-question h4 {

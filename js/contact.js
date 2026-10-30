@@ -44,26 +44,25 @@ async function handleFormSubmit(form, formType) {
     btnLoading.style.display = 'inline';
     submitBtn.disabled = true;
     
-    // Simuler l'envoi (remplacer par votre API)
     try {
         const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        
-        // Ici, intégration avec votre backend
-        console.log('Données du formulaire:', data);
-        
-        // Simulation délai d'envoi
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Afficher la confirmation
-        showConfirmation(formType);
-        
-        // Réinitialiser le formulaire
-        form.reset();
-        
+        formData.append('form_type', formType);
+
+        const response = await fetch('send_contact.php', {
+            method: 'POST',
+            body: formData
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            showConfirmation(formType);
+            form.reset();
+        } else {
+            showError(result.message || 'Une erreur est survenue. Veuillez réessayer.');
+        }
     } catch (error) {
         console.error('Erreur:', error);
-        alert('Une erreur est survenue. Veuillez réessayer.');
+        showError('Problème de connexion. Veuillez réessayer.');
     } finally {
         // Réinitialiser le bouton
         btnText.style.display = 'inline';
@@ -73,18 +72,25 @@ async function handleFormSubmit(form, formType) {
 }
 
 function showConfirmation(formType) {
-    const modal = document.getElementById('confirmation-modal');
-    const title = document.getElementById('confirmation-title');
-    const message = document.getElementById('confirmation-message');
-    
     if (formType === 'formation') {
-        title.textContent = 'Inscription envoyée !';
-        message.textContent = 'Nous vous confirmons votre inscription par email sous 24h.';
+        openModal('✅', 'Inscription envoyée !', 'Nous vous confirmons votre inscription par email sous 24h.', 'Parfait');
     } else {
-        title.textContent = 'Demande envoyée !';
-        message.textContent = 'Nous étudions votre projet et vous recontactons sous 24h.';
+        openModal('✅', 'Demande envoyée !', 'Nous étudions votre projet et vous recontactons sous 24h.', 'Parfait');
     }
-    
+}
+
+function showError(text) {
+    openModal('❌', 'Envoi impossible', text, 'Fermer');
+}
+
+// Une seule fenêtre (avec icône) pour la réussite comme pour l'erreur
+function openModal(icon, titleText, messageText, buttonText) {
+    const modal = document.getElementById('confirmation-modal');
+    modal.querySelector('.confirmation-icon').textContent = icon;
+    document.getElementById('confirmation-title').textContent = titleText;
+    document.getElementById('confirmation-message').textContent = messageText;
+    modal.querySelector('.btn').textContent = buttonText;
+
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
 }

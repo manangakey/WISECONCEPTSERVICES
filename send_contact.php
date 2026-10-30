@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 require_once '../private_config/config.php';
+require_once __DIR__ . '/includes/graph_mail.php';
 
 $response = ['success' => false, 'message' => 'Une erreur est survenue.'];
 
@@ -99,22 +100,9 @@ if ($formType === 'formation') {
         $emailMessage .= "Date : " . date('d/m/Y H:i') . "\n";
         $emailMessage .= "Type : Formation (B2C)\n";
 
-        // 3. Headers CORRIGÉS pour UTF-8
-        $headers = "From: WiseConcept Services <contact@wiseconceptservices.com>\r\n";
-        $headers .= "Reply-To: " . $email . "\r\n";
-        $headers .= "Return-Path: contact@wiseconceptservices.com\r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/plain; charset=\"UTF-8\"\r\n";
-        $headers .= "Content-Transfer-Encoding: 8bit\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-        $headers .= "X-Priority: 3\r\n";
-        $headers .= "X-MSMail-Priority: Normal\r\n";
-
-        // 4. Encoder le sujet pour UTF-8 (TRÈS IMPORTANT)
-        $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
-
-        // 5. Envoi
-        if (mail($to, $subject, $emailMessage, $headers)) {
+        // 3. Envoi via Microsoft 365 (réponse directe au client grâce au Reply-To)
+        $emailBody = html_entity_decode($emailMessage, ENT_QUOTES, 'UTF-8');
+        if (sendGraphMail($to, $subjectText, $emailBody, $email)) {
             error_log("✅ Email formation envoyé - ID #" . $lastId);
             $emailSent = true;
         } else {
@@ -218,22 +206,9 @@ if ($formType === 'formation') {
         $emailMessage .= "Date : " . date('d/m/Y H:i') . "\n";
         $emailMessage .= "Type : Service B2B\n";
 
-        // 3. Headers CORRIGÉS pour UTF-8
-        $headers = "From: WiseConcept Services <contact@wiseconceptservices.com>\r\n";
-        $headers .= "Reply-To: " . $email . "\r\n";
-        $headers .= "Return-Path: contact@wiseconceptservices.com\r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/plain; charset=\"UTF-8\"\r\n";
-        $headers .= "Content-Transfer-Encoding: 8bit\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
-        $headers .= "X-Priority: 3\r\n";
-        $headers .= "X-MSMail-Priority: Normal\r\n";
-
-        // 4. Encoder le sujet pour UTF-8
-        $subject = '=?UTF-8?B?' . base64_encode($subjectText) . '?=';
-
-        // 5. Envoi
-        if (mail($to, $subject, $emailMessage, $headers)) {
+        // 3. Envoi via Microsoft 365 (réponse directe au client grâce au Reply-To)
+        $emailBody = html_entity_decode($emailMessage, ENT_QUOTES, 'UTF-8');
+        if (sendGraphMail($to, $subjectText, $emailBody, $email)) {
             error_log("✅ Email service envoyé - ID #" . $lastId);
             $emailSent = true;
         } else {

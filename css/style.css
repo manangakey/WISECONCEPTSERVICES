@@ -10,6 +10,9 @@
     --gray-light: #f8f9fa;
     --gray-medium: #6c757d;
     --gray-dark: #343a40;
+    --contact-bg: #eef1f8;     /* fond bleu-gris clair (page contact) */
+    --field-bg: #f7f8fc;       /* fond des champs */
+    --field-border: #d5dbe8;   /* bordure des champs */
 }
 
 * {
@@ -1853,6 +1856,7 @@ body {
 /* Sélecteur de Formulaire */
 .form-selector {
     padding: 60px 0 0;
+    background: var(--contact-bg);
 }
 
 .selector-tabs {
@@ -1865,7 +1869,8 @@ body {
 
 .tab-btn {
     background: var(--white);
-    border: 2px solid var(--gray-light);
+    border: 2px solid var(--field-border);
+    box-shadow: 0 4px 14px rgba(21, 27, 84, 0.06);
     border-radius: 15px;
     padding: 2rem;
     cursor: pointer;
@@ -1905,12 +1910,55 @@ body {
 
 /* Section Formulaire */
 .contact-form-section {
-    padding: 60px 0;
+    padding: 40px 0 80px;
+    background: var(--contact-bg);
 }
 
 .form-container {
     max-width: 800px;
     margin: 0 auto;
+}
+
+/* Carte blanche autour du formulaire de contact */
+.contact-form-section .form-container {
+    background: var(--white);
+    padding: 3rem;
+    border-radius: 20px;
+    border: 1px solid var(--field-border);
+    box-shadow: 0 10px 40px rgba(21, 27, 84, 0.08);
+}
+
+/* Champs du formulaire de contact : fond teinté + bordure visible */
+.contact-form .form-group input,
+.contact-form .form-group select,
+.contact-form .form-group textarea {
+    background: var(--field-bg);
+    border: 2px solid var(--field-border);
+    color: var(--gray-dark);
+}
+
+.contact-form .form-group input::placeholder,
+.contact-form .form-group textarea::placeholder {
+    color: #8a92a6;
+}
+
+.contact-form .form-group input:hover,
+.contact-form .form-group select:hover,
+.contact-form .form-group textarea:hover {
+    border-color: #aab4d0;
+}
+
+.contact-form .form-group input:focus,
+.contact-form .form-group select:focus,
+.contact-form .form-group textarea:focus {
+    background: var(--white);
+    border-color: var(--orange-primary);
+    box-shadow: 0 0 0 4px rgba(250, 170, 3, 0.18);
+}
+
+.contact-form .checkmark {
+    background: var(--white);
+    border-color: #aab4d0;
 }
 
 .contact-form {
@@ -2250,7 +2298,12 @@ body {
     .form-grid {
         grid-template-columns: 1fr;
     }
-    
+
+    .contact-form-section .form-container {
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+
     .info-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;

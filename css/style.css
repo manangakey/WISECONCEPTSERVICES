@@ -676,9 +676,10 @@ body {
         box-shadow: -5px 0 30px rgba(21, 27, 84, 0.15);
         flex-direction: column;
         justify-content: start;
-        align-items: flex-start;
+        align-items: stretch;
         align-content: center;
-        gap: 2rem;
+        gap: 0.4rem;
+        padding: 72px 0.75rem 1rem; /* sous la croix de fermeture */
         z-index: 1000;
         transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         border-left: 1px solid rgba(255, 255, 255, 0.3);
@@ -690,14 +691,36 @@ body {
         /* display: flex; */
     }
     
-    .nav-link {
-        padding: 1rem 1.5rem;
+    /* Liens du menu mobile : bleu WCS, liste nette et alignée */
+    .nav-menu .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.8rem 1rem;
+        margin: 0;
         border-radius: 10px;
-        margin: 0.2rem 0;
+        border-left: 4px solid transparent;
+        color: var(--blue-dark);
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.2px;
     }
-    
-    .nav-link:hover {
-        background: rgba(250, 170, 3, 0.1);
+
+    .nav-menu .nav-link::before {
+        display: none;
+    }
+
+    .nav-menu .nav-link:hover {
+        color: var(--blue-dark);
+        background: rgba(21, 27, 84, 0.08);
+    }
+
+    /* Page active : blanc sur bleu WCS, repère orange */
+    .nav-menu .nav-link.active,
+    .nav-menu .nav-link.active:hover {
+        color: var(--white);
+        background: var(--blue-dark);
+        border-left-color: var(--orange-primary);
+        box-shadow: 0 6px 16px rgba(21, 27, 84, 0.25);
     }
 
     .hamburger {

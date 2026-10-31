@@ -8,9 +8,9 @@ filterBtns.forEach(btn => {
         filterBtns.forEach(b => b.classList.remove('active'));
         // Activer le bouton cliqué
         btn.classList.add('active');
-        
+
         const filter = btn.getAttribute('data-filter');
-        
+
         formationCards.forEach(card => {
             const categories = card.getAttribute('data-categories');
             if (filter === 'all' || categories.includes(filter)) {
@@ -30,98 +30,123 @@ filterBtns.forEach(btn => {
     });
 });
 
-// Modal d'inscription
-function openModal(formationId) {
-    const modal = document.getElementById('inscription-modal');
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
+// =============================================
+// DEMANDE D'INSCRIPTION (popup)
+// =============================================
+const inscriptionModal = document.getElementById('inscription-modal');
+const inscriptionForm = document.getElementById('inscription-form');
+const formView = document.getElementById('inscription-form-view');
+const successView = document.getElementById('inscription-success-view');
+const submitBtn = document.getElementById('inscription-submit');
+const errorBox = document.getElementById('inscription-error');
 
-// Fermer modal
-document.querySelector('.close-modal').addEventListener('click', closeModal);
+// Ouvre la popup avec la formation et le prix de la carte cliquée
+function openInscription(card) {
+    const formation = card.querySelector('h3').textContent.trim();
+    const priceEl = card.querySelector('.formation-price .price');
+    const prix = priceEl ? priceEl.textContent.replace(/\s+/g, '').replace('$', ' $') : 'Sur demande';
+
+    document.getElementById('summary-formation').textContent = formation;
+    document.getElementById('summary-price').textContent = prix;
+    document.getElementById('inscription-formation').value = formation;
+    document.getElementById('inscription-prix').value = prix;
+
+    inscriptionForm.reset();
+    clearErrors();
+    formView.hidden = false;
+    successView.hidden = true;
+
+    inscriptionModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('inscription-nom').focus(), 50);
+}
 
 function closeModal() {
-    const modal = document.getElementById('inscription-modal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
+    inscriptionModal.style.display = 'none';
+    document.body.style.overflow = '';
 }
 
-// Navigation formulaire
-document.querySelectorAll('.next-step').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const currentStep = document.querySelector('.form-step.active');
-        const nextStep = currentStep.nextElementSibling;
-        
-        currentStep.classList.remove('active');
-        nextStep.classList.add('active');
-    });
+document.querySelectorAll('.btn-inscription').forEach(button => {
+    button.addEventListener('click', () => openInscription(button.closest('.formation-card')));
 });
 
-document.querySelectorAll('.prev-step').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const currentStep = document.querySelector('.form-step.active');
-        const prevStep = currentStep.previousElementSibling;
-        
-        currentStep.classList.remove('active');
-        prevStep.classList.add('active');
-    });
-});
+document.querySelector('.close-modal').addEventListener('click', closeModal);
+document.getElementById('inscription-done').addEventListener('click', closeModal);
 
-// Gestion paiement
-document.querySelectorAll('input[name="payment"]').forEach(radio => {
-    radio.addEventListener('change', (e) => {
-        const cardPayment = document.querySelector('.card-payment');
-        if (e.target.value === 'card') {
-            cardPayment.style.display = 'block';
-        } else {
-            cardPayment.style.display = 'none';
-        }
-    });
-});
-
-// Soumission formulaire
-document.getElementById('inscription-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // Simulation traitement paiement
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    submitBtn.innerHTML = 'Traitement...';
-    submitBtn.disabled = true;
-    
-    // Ici, intégration avec Stripe/API
-    setTimeout(() => {
-        alert('Inscription réussie ! Vous recevrez un email de confirmation.');
-        closeModal();
-        submitBtn.innerHTML = 'Payer et s\'inscrire';
-        submitBtn.disabled = false;
-    }, 2000);
-});
-
-// Clic en dehors du modal pour fermer
+// Clic en dehors de la popup ou touche Échap pour fermer
 window.addEventListener('click', (e) => {
-    const modal = document.getElementById('inscription-modal');
-    if (e.target === modal) {
-        closeModal();
-    }
+    if (e.target === inscriptionModal) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && inscriptionModal.style.display === 'block') closeModal();
 });
 
-// Synchronise le bouton d'inscription avec le modal
-document.querySelectorAll('.formation-card .btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const card = this.closest('.formation-card');
-        const title = card.querySelector('h3').textContent;
-        const select = document.getElementById('formation-choix');
-        
-        // Trouve l'option correspondante dans la liste
-        for (let option of select.options) {
-            if (option.text.includes(title.split(' - ')[0]) || 
-                option.text.includes(title.split(' ')[0])) {
-                select.value = option.value;
-                break;
-            }
+// Numéro RDC : 9 chiffres après +243 (on tolère un 0 initial ou « 243 » saisi)
+function normalizePhone(value) {
+    let digits = value.replace(/\D/g, '');
+    if (digits.startsWith('243')) digits = digits.slice(3);
+    if (digits.startsWith('0')) digits = digits.slice(1);
+    return digits;
+}
+
+function setError(field, message) {
+    field.classList.add('error');
+    errorBox.textContent = message;
+    field.focus();
+}
+
+function clearErrors() {
+    errorBox.textContent = '';
+    inscriptionForm.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+}
+
+inscriptionForm.addEventListener('input', (e) => {
+    e.target.classList.remove('error');
+    errorBox.textContent = '';
+});
+
+inscriptionForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    const nom = document.getElementById('inscription-nom');
+    const email = document.getElementById('inscription-email');
+    const tel = document.getElementById('inscription-tel');
+    const consent = document.getElementById('inscription-consent');
+    const phoneDigits = normalizePhone(tel.value);
+
+    if (nom.value.trim().length < 2) return setError(nom, 'Veuillez indiquer votre nom complet.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) return setError(email, 'Veuillez indiquer une adresse e-mail valide.');
+    if (phoneDigits.length !== 9) return setError(tel, 'Le numéro doit comporter 9 chiffres après +243.');
+    if (!consent.checked) {
+        errorBox.textContent = 'Veuillez accepter d\'être recontacté(e) pour envoyer votre demande.';
+        return;
+    }
+
+    const formData = new FormData(inscriptionForm);
+    formData.append('form_type', 'formation');
+    formData.append('telephone', '+243 ' + phoneDigits.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3'));
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi en cours...';
+
+    try {
+        const response = await fetch('send_contact.php', { method: 'POST', body: formData });
+        const result = await response.json();
+
+        if (result.success) {
+            document.getElementById('success-nom').textContent = nom.value.trim();
+            document.getElementById('success-formation').textContent = document.getElementById('inscription-formation').value;
+            formView.hidden = true;
+            successView.hidden = false;
+        } else {
+            errorBox.textContent = result.message || 'Une erreur est survenue. Veuillez réessayer.';
         }
-        
-        // Ouvre le modal (assurez-vous que openModal() existe)
-        openModal('inscription-modal');
-    });
+    } catch (error) {
+        console.error('Erreur:', error);
+        errorBox.textContent = 'Problème de connexion. Veuillez réessayer.';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Soumettre';
+    }
 });

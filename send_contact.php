@@ -30,7 +30,11 @@ if ($formType === 'formation') {
     $formation = trim(htmlspecialchars($_POST['formation'] ?? ''));
     $message = trim(htmlspecialchars($_POST['message'] ?? ''));
     $newsletter = isset($_POST['newsletter']) ? 1 : 0;
-    
+    // Champs optionnels envoyés par la popup de la page Formations
+    $prix = trim(htmlspecialchars($_POST['prix'] ?? ''));
+    $format = trim(htmlspecialchars($_POST['format'] ?? ''));
+    $source = trim(htmlspecialchars($_POST['source'] ?? ''));
+
     // Validation
     if (empty($nom) || empty($email) || empty($telephone) || empty($formation) || 
         !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -56,6 +60,14 @@ if ($formType === 'formation') {
             :formation, :message, :newsletter
         )";
         
+        // Les détails de la popup Formations sont gardés dans le message enregistré
+        $details = array_filter([
+            $prix ? "Coût : $prix" : '',
+            $format ? "Format : $format" : '',
+            $source ? "Source : $source" : '',
+        ]);
+        $messageDb = trim($message . ($details ? "\n[" . implode(' | ', $details) . "]" : ''));
+
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':nom' => $nom,
@@ -63,7 +75,7 @@ if ($formType === 'formation') {
             ':telephone' => $telephone,
             ':entreprise' => $entreprise,
             ':formation' => $formation,
-            ':message' => $message,
+            ':message' => $messageDb,
             ':newsletter' => $newsletter
         ]);
         
@@ -81,6 +93,12 @@ if ($formType === 'formation') {
         $emailMessage .= "DÉTAILS DE L'INSCRIPTION :\n";
         $emailMessage .= "--------------------------\n";
         $emailMessage .= "Formation : " . $formation . "\n";
+        if (!empty($prix)) {
+            $emailMessage .= "Coût : " . $prix . "\n";
+        }
+        if (!empty($format)) {
+            $emailMessage .= "Format souhaité : " . $format . "\n";
+        }
         $emailMessage .= "Nom : " . $nom . "\n";
         $emailMessage .= "Email : " . $email . "\n";
         $emailMessage .= "Téléphone : " . $telephone . "\n";
@@ -99,6 +117,7 @@ if ($formType === 'formation') {
         $emailMessage .= "ID : #" . $lastId . "\n";
         $emailMessage .= "Date : " . date('d/m/Y H:i') . "\n";
         $emailMessage .= "Type : Formation (B2C)\n";
+        $emailMessage .= "Source : " . (!empty($source) ? $source : 'Page Contact') . "\n";
 
         // 3. Envoi via Microsoft 365 (réponse directe au client grâce au Reply-To)
         $emailBody = html_entity_decode($emailMessage, ENT_QUOTES, 'UTF-8');

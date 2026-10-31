@@ -102,10 +102,9 @@
                 		<span class="price">40$</span>
                 		<span class="price-old">95$</span>
             		</div>
-					<a href="contact.html" class="btn btn-primary">S'inscrire maintenant</a>
-            		<!-- button class="btn btn-primary btn-block" onclick="openModal('photoshop-modal')">
+            		<button type="button" class="btn btn-primary btn-block btn-inscription">
                 		S'inscrire maintenant
-					</button -->
+            		</button>
         		</div>
     		</div>
 
@@ -134,7 +133,7 @@
             		<div class="formation-price">
                 		<span class="price">200$</span>
             		</div>
-            		<button class="btn btn-primary btn-block" onclick="openModal('office-modal')">
+            		<button type="button" class="btn btn-primary btn-block btn-inscription">
                 		S'inscrire maintenant
             		</button>
         		</div>
@@ -166,7 +165,7 @@
             		<div class="formation-price">
                 		<span class="price">100$<span class="price-unit">/mois</span></span>
             		</div>
-            		<button class="btn btn-primary btn-block" onclick="openModal('anglais-modal')">
+            		<button type="button" class="btn btn-primary btn-block btn-inscription">
                 		S'inscrire maintenant
             		</button>
         		</div>
@@ -198,7 +197,7 @@
             		<div class="formation-price">
                		 	<span class="price">105$<span class="price-unit">/mois</span></span>
             		</div>
-            		<button class="btn btn-primary btn-block" onclick="openModal('ccna-modal')">
+            		<button type="button" class="btn btn-primary btn-block btn-inscription">
                 		S'inscrire maintenant
             		</button>
         		</div>
@@ -229,7 +228,7 @@
             		<div class="formation-price">
                 		<span class="price">60$</span>
             		</div>
-            		<button class="btn btn-primary btn-block" onclick="openModal('illustrator-modal')">
+            		<button type="button" class="btn btn-primary btn-block btn-inscription">
                 		S'inscrire maintenant
             		</button>
         		</div>
@@ -260,7 +259,7 @@
             		<div class="formation-price">
                 		<span class="price">120$</span>
             		</div>
-            		<button class="btn btn-primary btn-block" onclick="openModal('video-modal')">
+            		<button type="button" class="btn btn-primary btn-block btn-inscription">
                 		S'inscrire maintenant
             		</button>
         		</div>
@@ -361,73 +360,85 @@
         </div>
     </footer>
 
-    <!-- Modal Inscription -->
-    <div id="inscription-modal" class="modal">
+    <!-- Modal Demande d'inscription -->
+    <div id="inscription-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="inscription-title">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h3>Inscription à la formation</h3>
-            <form id="inscription-form" class="inscription-form">
-                <div class="form-step step-1 active">
-                    <h4>Informations personnelles</h4>
-                    <div class="form-group">
-                        <input type="text" placeholder="Nom complet" required>
+            <span class="close-modal" role="button" aria-label="Fermer">&times;</span>
+
+            <!-- Étape 1 : formulaire -->
+            <div class="inscription-view" id="inscription-form-view">
+                <h3 id="inscription-title">Demande d'inscription</h3>
+
+                <div class="inscription-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Formation souhaitée</span>
+                        <span class="summary-value" id="summary-formation">—</span>
                     </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Email" required>
+                    <div class="summary-item">
+                        <span class="summary-label">Coût de la formation</span>
+                        <span class="summary-value summary-price" id="summary-price">—</span>
                     </div>
-                    <div class="form-group">
-                        <input type="tel" placeholder="Téléphone" required>
-                    </div>
-                    <div class="form-group">
-						<select id="formation-choix" name="formation" required>
-    						<option value="">Formation choisie</option>
-    						<option value="photoshop">Adobe Photoshop - Débutant (40$)</option>
-    						<option value="office365">Suite Office 365 (200$)</option>
-    						<option value="anglais">Anglais Professionnel (100$/mois)</option>
-   							<option value="ccna">Cisco CCNA - Réseaux (105$/mois)</option>
-    						<option value="illustrator">Adobe Illustrator Avancé (60$)</option>
-    						<option value="montage">Montage Vidéo Professionnel (120$)</option>
-    						<option value="autre">Autre formation</option>
-						</select>
-                    </div>
-                    <button type="button" class="btn btn-primary next-step">Suivant</button>
                 </div>
 
-                <div class="form-step step-2">
-                    <h4>Méthode de paiement</h4>
-                    <div class="payment-options">
-                        <label class="payment-option">
-                            <input type="radio" name="payment" value="card" checked>
-                            <span>Carte de crédit</span>
-                        </label>
-                        <label class="payment-option">
-                            <input type="radio" name="payment" value="paypal">
-                            <span>PayPal</span>
-                        </label>
-                        <label class="payment-option">
-                            <input type="radio" name="payment" value="transfer">
-                            <span>Virement bancaire</span>
-                        </label>
+                <form id="inscription-form" class="inscription-form" novalidate>
+                    <input type="hidden" name="formation" id="inscription-formation">
+                    <input type="hidden" name="prix" id="inscription-prix">
+                    <input type="hidden" name="source" value="Page Formations">
+
+                    <h4>Vos coordonnées</h4>
+                    <div class="form-group">
+                        <label for="inscription-nom">Nom complet *</label>
+                        <input type="text" id="inscription-nom" name="nom" autocomplete="name" required>
                     </div>
-                    <div class="card-payment">
-                        <div class="form-group">
-                            <input type="text" placeholder="Numéro de carte" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="text" placeholder="MM/AA" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" placeholder="CVV" required>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="inscription-email">Adresse e-mail *</label>
+                        <input type="email" id="inscription-email" name="email" autocomplete="email" required>
                     </div>
+                    <div class="form-group">
+                        <label for="inscription-tel">Numéro de téléphone *</label>
+                        <div class="phone-group">
+                            <span class="phone-prefix">+243</span>
+                            <input type="tel" id="inscription-tel" inputmode="numeric" autocomplete="tel-national" placeholder="XX XXX XXXX" required>
+                        </div>
+                        <small class="field-hint">9 chiffres, sans le 0 initial</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="inscription-format">Format souhaité</label>
+                        <select id="inscription-format" name="format">
+                            <option value="Pas de préférence">Pas de préférence</option>
+                            <option value="Présentiel (Kinshasa)">Présentiel (Kinshasa)</option>
+                            <option value="En ligne">En ligne</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="inscription-message">Message (optionnel)</label>
+                        <textarea id="inscription-message" name="message" rows="3" placeholder="Votre niveau, vos disponibilités, vos questions..."></textarea>
+                    </div>
+                    <label class="checkbox-label inscription-consent">
+                        <input type="checkbox" name="consentement" id="inscription-consent" required>
+                        <span class="checkmark"></span>
+                        J'accepte d'être recontacté(e) par Wise Concept Services au sujet de cette demande *
+                    </label>
+
+                    <p class="inscription-note">Aucun paiement n'est demandé maintenant : nous vous contactons sous 24h pour confirmer la session et les modalités de paiement.</p>
+                    <p class="inscription-error" id="inscription-error" role="alert"></p>
+
                     <div class="form-actions">
-                        <button type="button" class="btn btn-secondary prev-step">Précédent</button>
-                        <button type="submit" class="btn btn-primary">Payer et s'inscrire</button>
+                        <button type="submit" class="btn btn-primary" id="inscription-submit">Soumettre</button>
                     </div>
+                </form>
+            </div>
+
+            <!-- Étape 2 : confirmation -->
+            <div class="inscription-view inscription-success" id="inscription-success-view" hidden>
+                <div class="success-check" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="44" height="44" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
-            </form>
+                <h3>Demande envoyée !</h3>
+                <p>Merci <strong id="success-nom"></strong>, votre demande d'inscription à la formation <strong id="success-formation"></strong> a bien été reçue.</p>
+                <p class="success-sub">Notre équipe vous contactera sous 24h pour confirmer la session et les modalités de paiement.</p>
+                <button type="button" class="btn btn-primary" id="inscription-done">Parfait</button>
+            </div>
         </div>
     </div>
 

@@ -1366,6 +1366,173 @@ body {
     flex: 1;
 }
 
+/* ---------- Demande d'inscription (page Formations) ---------- */
+#inscription-modal {
+    z-index: 1100; /* au-dessus de la barre de navigation */
+}
+
+#inscription-modal .modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 4vh auto;
+}
+
+#inscription-modal h3 {
+    color: var(--blue-dark);
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+#inscription-modal h4 {
+    color: var(--blue-dark);
+    margin: 1.5rem 0 1rem;
+}
+
+.inscription-summary {
+    background: var(--contact-bg);
+    border-left: 4px solid var(--orange-primary);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.summary-label {
+    color: var(--gray-medium);
+    font-size: 0.9rem;
+}
+
+.summary-value {
+    color: var(--blue-dark);
+    font-weight: 700;
+    text-align: right;
+}
+
+.summary-price {
+    color: var(--orange-dark);
+    font-size: 1.15rem;
+}
+
+#inscription-modal .form-group input,
+#inscription-modal .form-group select,
+#inscription-modal .form-group textarea {
+    background: var(--field-bg);
+    border: 2px solid var(--field-border);
+}
+
+#inscription-modal .form-group input:focus,
+#inscription-modal .form-group select:focus,
+#inscription-modal .form-group textarea:focus {
+    background: var(--white);
+    border-color: var(--orange-primary);
+}
+
+#inscription-modal .form-group input.error {
+    border-color: #e74c3c;
+}
+
+.phone-group {
+    display: flex;
+}
+
+.phone-prefix {
+    display: flex;
+    align-items: center;
+    padding: 0 0.9rem;
+    background: var(--blue-dark);
+    color: var(--white);
+    font-weight: 600;
+    border-radius: 8px 0 0 8px;
+}
+
+#inscription-modal .phone-group input {
+    flex: 1;
+    min-width: 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.field-hint {
+    color: var(--gray-medium);
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+}
+
+.inscription-consent {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+#inscription-modal .checkmark {
+    background: var(--white);
+    border-color: #aab4d0;
+}
+
+.inscription-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--gray-medium);
+}
+
+.inscription-error {
+    color: #c0392b;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-height: 1.2em;
+    margin-top: 0.5rem;
+}
+
+#inscription-modal .form-actions {
+    margin-top: 1rem;
+}
+
+/* Confirmation */
+.inscription-success {
+    text-align: center;
+    padding: 1.5rem 0.5rem 0.5rem;
+}
+
+.success-check {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 1.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    background: linear-gradient(135deg, #1e9e52, #2ecc71); /* vert : réussite */
+    box-shadow: 0 0 0 6px rgba(250, 170, 3, 0.35), 0 12px 30px rgba(30, 158, 82, 0.3);
+    animation: successPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes successPop {
+    from { transform: scale(0.4); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.inscription-success p {
+    color: var(--gray-dark);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.inscription-success .success-sub {
+    color: var(--gray-medium);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.inscription-success .btn {
+    min-width: 160px;
+}
+
 /* Responsive Formations */
 @media (max-width: 768px) {
     .formations-hero .hero-title {

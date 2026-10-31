@@ -1369,12 +1369,18 @@ body {
 /* ---------- Demande d'inscription (page Formations) ---------- */
 #inscription-modal {
     z-index: 1100; /* au-dessus de la barre de navigation */
+    /* C'est le fond qui défile : la popup entière reste atteignable,
+       même quand la barre d'adresse du mobile réduit l'écran */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 }
 
 #inscription-modal .modal-content {
-    max-height: 90vh;
-    overflow-y: auto;
+    max-height: none;
+    overflow: visible;
     margin: 4vh auto;
+    margin-bottom: calc(4vh + env(safe-area-inset-bottom, 0px));
 }
 
 #inscription-modal h3 {

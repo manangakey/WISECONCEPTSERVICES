@@ -57,8 +57,9 @@ function openInscription(card) {
     successView.hidden = true;
 
     inscriptionModal.style.display = 'block';
+    inscriptionModal.scrollTop = 0;
     document.body.style.overflow = 'hidden';
-    setTimeout(() => document.getElementById('inscription-nom').focus(), 50);
+    setTimeout(() => document.getElementById('inscription-nom').focus({ preventScroll: true }), 50);
 }
 
 function closeModal() {
@@ -139,6 +140,7 @@ inscriptionForm.addEventListener('submit', async (e) => {
             document.getElementById('success-formation').textContent = document.getElementById('inscription-formation').value;
             formView.hidden = true;
             successView.hidden = false;
+            inscriptionModal.scrollTop = 0;
         } else {
             errorBox.textContent = result.message || 'Une erreur est survenue. Veuillez réessayer.';
         }

@@ -1480,6 +1480,32 @@ body {
     border-color: #aab4d0;
 }
 
+/* Case cochée : orange WCS bien visible */
+#inscription-modal .checkbox-label input:checked + .checkmark {
+    background: var(--orange-primary);
+    border-color: var(--orange-primary);
+}
+
+/* Case masquée visuellement mais atteignable au clavier */
+#inscription-modal .checkbox-label {
+    position: relative;
+}
+
+#inscription-modal .checkbox-label input {
+    display: block;
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+}
+
+/* Contour visible quand la case est atteinte au clavier */
+#inscription-modal .checkbox-label input:focus-visible + .checkmark {
+    outline: 3px solid rgba(250, 170, 3, 0.4);
+    outline-offset: 2px;
+}
+
 .inscription-note {
     margin-top: 1rem;
     font-size: 0.85rem;

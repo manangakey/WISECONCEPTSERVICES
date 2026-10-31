@@ -245,6 +245,13 @@ body {
     animation: slideUp 1s ease 0.9s forwards;
 }
 
+/* Texte centré verticalement quand le bouton prend la hauteur de « Nos tarifs » */
+.hero-buttons .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Hero visual - Blocs horizontaux améliorés */
 .hero-visual {
     flex: 1;
@@ -355,6 +362,30 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
+}
+
+/* Bouton « Découvrir nos services » sous les cartes */
+.services-cta-link {
+    margin-top: 3rem;
+}
+
+/* Tablette et petit ordinateur : 2 x 2 */
+@media (min-width: 769px) and (max-width: 1099px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Ordinateur : les 4 domaines sur une seule ligne */
+@media (min-width: 1100px) {
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    .services-grid .service-card {
+        padding: 2rem 1.5rem;
+    }
 }
 
 .service-card {

@@ -405,6 +405,14 @@ body {
     margin-bottom: 1rem;
 }
 
+/* Icônes WCS (SVG) : 90 % de la zone d'icône (4,8rem = 77px de haut) */
+.service-icon .service-icon-img {
+    width: calc(4.8rem * 0.9);
+    height: calc(4.8rem * 0.9);
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .service-icon i {
     font-size: 2.5rem; /* Taille de l'icône */
     color: var(--orange-primary); /* Utilise votre couleur orange */
@@ -874,6 +882,23 @@ body {
     background: var(--gray-light);
     padding: 1.5rem;
     border-radius: 20px;
+}
+
+/* Icônes WCS (SVG) : cadre gris inchangé (136 x 150), icône à 90 % de sa largeur */
+.service-icon-large:has(.service-icon-img) {
+    width: 136px;
+    height: 150px;
+    padding: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-icon-large .service-icon-img {
+    display: block;
+    width: 90%;
+    height: auto;
 }
 
 .service-info h2 {

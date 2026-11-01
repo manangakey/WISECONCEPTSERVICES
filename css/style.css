@@ -405,8 +405,11 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Icônes WCS (SVG) : 90 % de la zone d'icône (4,8rem = 77px de haut) */
-.service-icon .service-icon-img {
+/* Icônes WCS (SVG) : 90 % de la zone d'icône (4,8rem = 77px de haut)
+   Accueil (domaines), Contact (infos) et Formations (avantages) */
+.service-icon .service-icon-img,
+.info-icon .service-icon-img,
+.avantage-icon .service-icon-img {
     width: calc(4.8rem * 0.9);
     height: calc(4.8rem * 0.9);
     display: inline-block;

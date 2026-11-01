@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title"><title id="title">Pratique intensive</title><defs><linearGradient id="blue" x1="0.1" y1="0" x2="0.8" y2="1"><stop stop-color="#0877D1"/><stop offset="0.4" stop-color="#0A428F"/><stop offset="1" stop-color="#151B54"/></linearGradient>
+<linearGradient id="orange" x1="0.15" y1="1" x2="0.85" y2="0"><stop stop-color="#FF8000"/><stop offset="0.5" stop-color="#FAAA03"/><stop offset="1" stop-color="#FFDB76"/></linearGradient>
+<linearGradient id="edge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFD97A"/><stop offset="0.5" stop-color="#FAAA03"/><stop offset="1" stop-color="#FF8A00"/></linearGradient>
+<linearGradient id="deep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0B4FA0"/><stop offset="1" stop-color="#0A1546"/></linearGradient>
+<radialGradient id="glow" cx="0.25" cy="0.08" r="0.9"><stop stop-color="#26A5F3" stop-opacity="0.4"/><stop offset="0.65" stop-color="#1576D1" stop-opacity="0"/></radialGradient>
+<radialGradient id="warm" cx="0.35" cy="0.05" r="0.9"><stop stop-color="#FFF0B4" stop-opacity="0.65"/><stop offset="0.8" stop-color="#FFD14B" stop-opacity="0"/></radialGradient></defs><g transform="translate(70 65) rotate(-45)">
+<path d="M-9 9H9V168Q9 179 0 179Q-9 179-9 168Z" fill="url(#edge)"/>
+<path d="M-12 102H12V168Q12 181 0 181Q-12 181-12 168Z" fill="url(#blue)"/>
+<path d="M-5 119V163" fill="none" stroke="url(#edge)" stroke-width="3" stroke-linecap="round"/>
+<path d="M-38-19H-18V-12H17C35-12 48-3 54 12C42 5 31 2 18 5L10 15H-18V10H-38Z" fill="url(#orange)"/>
+<path d="M-38-19H-29V10H-38Z" fill="url(#edge)"/>
+<path d="M-18-12H17C31-12 42-7 49 3C37-4 27-5 16-4H-18Z" fill="url(#warm)"/>
+</g><path d="M43 186L148 81C139 63 146 43 161 33Q173 25 185 27L171 47L178 65L197 70L217 55C218 69 209 86 197 92Q183 100 170 94L65 211Q54 221 43 211Q33 200 43 186Z" fill="url(#blue)" stroke="white" stroke-width="5" stroke-linejoin="round"/>
+<path d="M148 81C139 63 146 43 161 33Q173 25 185 27L171 47L178 65L197 70L217 55C218 69 209 86 197 92Q183 100 170 94L160 105Z" fill="url(#orange)"/>
+<circle cx="53" cy="201" r="6" fill="url(#orange)"/></svg>

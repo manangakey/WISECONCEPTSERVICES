@@ -55,6 +55,19 @@
     letter-spacing: .5px;
 }
 
+/* Accueil « Nos réalisations » : cartes carrées, image ajustée à la hauteur */
+#portfolioGrid .portfolio-item {
+    height: auto;
+    aspect-ratio: 1 / 1;
+}
+
+#portfolioGrid .portfolio-placeholder {
+    height: 100%;
+    background-size: auto 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 /* Animation reveal */
 .reveal {
     opacity: 0;

@@ -68,6 +68,15 @@
     background-repeat: no-repeat;
 }
 
+/* Fond : la même image, floutée, sur toute la carte (cache aussi l'étiquette de catégorie) */
+#portfolioGrid .portfolio-flou {
+    position: absolute;
+    inset: -24px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(18px) brightness(0.75);
+}
+
 /* Animation reveal */
 .reveal {
     opacity: 0;

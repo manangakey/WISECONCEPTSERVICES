@@ -30,15 +30,21 @@
     function creerContenu(p) {
         const bloc = document.createElement('div');
         bloc.style.cssText = 'position:relative;height:100%;';
+        const url = 'url("' + p.i.replace(/["\\\n\r]/g, '') + '")';
         const etiquette = document.createElement('div');
         etiquette.className = 'portfolio-category';
         etiquette.textContent = p.c;
+        // La même image floutée remplit les côtés vides de la carte
+        const flou = document.createElement('div');
+        flou.className = 'portfolio-flou';
+        flou.setAttribute('aria-hidden', 'true');
+        flou.style.backgroundImage = url;
         const image = document.createElement('div');
         image.className = 'portfolio-placeholder';
         image.setAttribute('role', 'img');
         image.setAttribute('aria-label', p.t);
-        image.style.backgroundImage = 'url("' + p.i.replace(/["\\\n\r]/g, '') + '")';
-        bloc.append(etiquette, image);
+        image.style.backgroundImage = url;
+        bloc.append(etiquette, flou, image);
         return bloc;
     }
 

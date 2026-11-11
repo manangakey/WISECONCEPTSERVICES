@@ -46,10 +46,8 @@ $commandeTypes = [
 ];
 $commandeLibelle = $commandeTypes[$commande] ?? $commande;
 
-$dbInserted = false;
-$lastId = null;
-
-// 3. Enregistrement en base de données
+// Connexion à la base : les commandes et le catalogue des tarifs sont dans la même base
+$pdo = null;
 try {
     $pdo = new PDO(
         "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
@@ -57,6 +55,72 @@ try {
         DB_PASS,
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
+} catch (Exception $e) {
+    error_log('Commande : connexion à la base impossible ' . $e->getMessage());
+}
+
+// Offres choisies dans le catalogue (formulaire en popup) : nom, service et prix relus en base
+$offresChoisies = [];
+$ids = array_values(array_unique(array_filter(array_map('strval', (array) ($_POST['offres'] ?? [])))));
+$autreProjet = in_array('autre', $ids, true);
+$ids = array_slice(array_map('intval', array_filter($ids, 'ctype_digit')), 0, 30);
+if ($ids && $pdo) {
+    try {
+        $marques = implode(',', array_fill(0, count($ids), '?'));
+        $stmt = $pdo->prepare("SELECT o.nom, o.prix, o.devise, o.type_prix, o.duree, s.nom AS service, c.nom AS categorie
+            FROM services_offres o JOIN services s ON s.id = o.service_id JOIN services_categories c ON c.id = s.categorie_id
+            WHERE o.id IN ($marques) AND o.statut = 1 AND s.statut = 1 AND c.statut = 1 ORDER BY c.ordre, s.ordre, o.ordre");
+        $stmt->execute($ids);
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $o) {
+            $montant = (float) $o['prix'];
+            $prix = $o['type_prix'] === 'sur_devis' ? 'Sur devis'
+                : number_format($montant, floor($montant) == $montant ? 0 : 2, ',', ' ') . ' ' . ($o['devise'] ?: '$');
+            $offresChoisies[] = [
+                'nom' => $o['nom'],
+                'ligne' => $o['categorie'] . ' > ' . $o['service'] . ' > ' . $o['nom'] . ' : ' . $prix . ($o['duree'] ? ' (' . $o['duree'] . ')' : ''),
+            ];
+        }
+    } catch (Exception $e) {
+        error_log('Commande : lecture du catalogue impossible ' . $e->getMessage());
+    }
+}
+// Base indisponible : on garde au moins les noms affichés dans le formulaire (signalés « non vérifié »)
+if ($ids && !$offresChoisies) {
+    foreach (array_slice((array) ($_POST['offres_libelles'] ?? []), 0, 30) as $libelle) {
+        $libelle = mb_substr(trim(strip_tags((string) $libelle)), 0, 200);
+        if ($libelle !== '') {
+            // « Catégorie > Service > Offre : prix » : le nom est la partie entre le dernier « > » et « : »
+            $parties = explode(' > ', $libelle);
+            $nomOffre = trim(explode(' : ', end($parties))[0]);
+            $offresChoisies[] = ['nom' => $nomOffre !== '' ? $nomOffre : $libelle, 'ligne' => $libelle . ' (non vérifié)'];
+        }
+    }
+}
+if ($offresChoisies || $autreProjet) {
+    $noms = array_column($offresChoisies, 'nom');
+    if ($autreProjet) {
+        $noms[] = 'Autre projet';
+    }
+    // Le type tient en 50 caractères (colonne de la base) ; le détail complet va dans la description
+    $commandeLibelle = $noms[0] . (count($noms) > 1 ? ' + ' . (count($noms) - 1) . ' autre(s)' : '');
+    if (mb_strlen($commandeLibelle) > 50) {
+        $commandeLibelle = mb_substr($commandeLibelle, 0, 49) . '…';
+    }
+    $lignes = array_column($offresChoisies, 'ligne');
+    if ($autreProjet) {
+        $lignes[] = 'Autre projet (voir la description)';
+    }
+    $description = "OFFRES CHOISIES :\n- " . implode("\n- ", $lignes) . "\n\n" . $description;
+}
+
+$dbInserted = false;
+$lastId = null;
+
+// 3. Enregistrement en base de données
+try {
+    if (!$pdo) {
+        throw new Exception('pas de connexion');
+    }
 
     $pdo->exec("
     CREATE TABLE IF NOT EXISTS `commandes` (
@@ -123,6 +187,7 @@ if (!empty($email)) $emailBody .= "Email : $email\n";
 $emailBody .= "Devis demandé : " . ($devis ? 'Oui' : 'Non') . "\n\n";
 $emailBody .= "COMMANDE :\n";
 $emailBody .= "Type : $commandeLibelle\n\n";
+// (les offres choisies figurent en tête de la description ci-dessous)
 $emailBody .= "DESCRIPTION :\n";
 $emailBody .= "$description\n\n";
 $emailBody .= "STATUT BASE : " . ($dbInserted ? 'Enregistrée' : 'Échec (copie de secours dans private_config)') . "\n";

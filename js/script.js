@@ -193,99 +193,64 @@ document.addEventListener('DOMContentLoaded', initPageLoader);
 
 // Les formulaires de contact.html sont gérés dans js/contact.js
 
-// ========== GESTION DU BOUTON "PASSER UNE COMMANDE" ==========
-document.addEventListener('DOMContentLoaded', function() {
-    // Gestion des boutons "Passer une commande"
-    const commandeButtons = document.querySelectorAll('.open-commande-modal');
-    
-    commandeButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Option 1 : Ouvrir dans une nouvelle fenêtre pop-up
-            const popup = window.open(
-                'commande.html',
-                'CommandeWiseConcept',
-                'width=900,height=800,scrollbars=yes,resizable=yes,top=100,left=100'
-            );
-            
-            if (popup) {
-                popup.focus();
-            } else {
-                // Option 2 : Si pop-up bloqué, ouvrir dans un nouvel onglet
-                window.open('commande.html', '_blank');
-            }
-            
-            // Option 3 : Vous pouvez aussi utiliser un modal JS si vous préférez
-            // createCommandeModal(); // À implémenter si vous voulez un vrai modal
-        });
-    });
-    
-    // Log pour debug
-    console.log(`✅ ${commandeButtons.length} bouton(s) "Passer une commande" initialisé(s)`);
-});
+// ========== BOUTONS "PASSER UNE COMMANDE" / "COMMANDER" : FORMULAIRE EN POPUP ==========
+// Le formulaire commande.html s'ouvre par-dessus la page (même design, même envoi).
+// Un bouton qui porte data-offre="ID" (page Nos tarifs) ouvre le formulaire avec cette offre déjà choisie.
+function ouvrirCommandePopup(offreId) {
+    if (document.getElementById('commande-popup')) return;
+    const precedent = document.activeElement;
 
-// Fonction pour créer un modal (optionnel - plus avancé)
-function createCommandeModal() {
-    // Créer l'overlay
-    const overlay = document.createElement('div');
-    overlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #151b54ee, #324499ee);
-        z-index: 9998;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    `;
-    
-    // Créer l'iframe
-    const iframe = document.createElement('iframe');
-    iframe.src = 'commande.html';
-    iframe.style.cssText = `
-        width: 90%;
-        max-width: 800px;
-        height: 90vh;
-        border: none;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    `;
-    
-    // Bouton de fermeture
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = '×';
-    closeBtn.style.cssText = `
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: #faaa03;
-        color: white;
-        border: none;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 9999;
-    `;
-    closeBtn.onclick = () => document.body.removeChild(overlay);
-    
-    overlay.appendChild(iframe);
-    overlay.appendChild(closeBtn);
-    document.body.appendChild(overlay);
-    
-    // Empêcher le scroll sur le body
-    document.body.style.overflow = 'hidden';
-    
-    // Restaurer le scroll à la fermeture
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) {
-            document.body.removeChild(overlay);
+    const fond = document.createElement('div');
+    fond.id = 'commande-popup';
+    fond.setAttribute('role', 'dialog');
+    fond.setAttribute('aria-modal', 'true');
+    fond.setAttribute('aria-label', 'Passer une commande');
+    fond.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(10,14,45,0.72);' +
+        'backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;transition:opacity .25s ease;';
+
+    const cadre = document.createElement('iframe');
+    cadre.src = '/commande.html' + (offreId ? '?offre=' + encodeURIComponent(offreId) : '');
+    cadre.title = 'Formulaire de commande';
+    cadre.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;color-scheme:normal;';
+    cadre.setAttribute('allowtransparency', 'true');
+
+    const fermerBtn = document.createElement('button');
+    fermerBtn.type = 'button';
+    fermerBtn.setAttribute('aria-label', 'Fermer le formulaire');
+    fermerBtn.innerHTML = '&times;';
+    fermerBtn.style.cssText = 'position:absolute;top:14px;right:16px;z-index:2;width:42px;height:42px;border-radius:50%;' +
+        'border:none;cursor:pointer;background:#faaa03;color:#fff;font-size:26px;line-height:1;box-shadow:0 6px 18px rgba(0,0,0,.3);';
+
+    function fermer() {
+        window.removeEventListener('message', recevoir);
+        document.removeEventListener('keydown', echap);
+        fond.style.opacity = '0';
+        setTimeout(() => {
+            fond.remove();
             document.body.style.overflow = '';
-        }
-    });
+            if (precedent && precedent.focus) precedent.focus();
+        }, 250);
+    }
+    // Messages envoyés par le formulaire (fermeture après envoi, clic à côté, touche Échap)
+    function recevoir(e) {
+        if (e.origin === window.location.origin && e.data && e.data.type === 'wcs-commande-fermer') fermer();
+    }
+    function echap(e) { if (e.key === 'Escape') fermer(); }
+
+    fermerBtn.addEventListener('click', fermer);
+    window.addEventListener('message', recevoir);
+    document.addEventListener('keydown', echap);
+
+    fond.append(cadre, fermerBtn);
+    document.body.appendChild(fond);
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => { fond.style.opacity = '1'; });
+    cadre.addEventListener('load', () => { try { cadre.contentWindow.focus(); } catch (err) {} });
 }
+
+document.addEventListener('click', function(e) {
+    const bouton = e.target.closest('.open-commande-modal');
+    if (!bouton) return;
+    e.preventDefault();
+    ouvrirCommandePopup(bouton.dataset.offre || '');
+});

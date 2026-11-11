@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Commander - WiseConcept Services</title>
+    <script>
+        // Ouvert en popup depuis le site : fond transparent (la page derrière reste visible)
+        if (window.self !== window.top) document.documentElement.classList.add('en-popup');
+    </script>
     <style>
         /* Reset et base */
         * {
@@ -211,8 +215,69 @@
             font-size: 0.9rem;
         }
         
+        /* En popup : la page du site reste visible derrière */
+        html.en-popup body { background: transparent; padding: 70px 20px 30px; align-items: flex-start; }
+        html.en-popup .commande-container { margin: 0 auto; }
+
+        /* Choix des offres : recherche, catégorie, service, offres */
+        .offres-zone[hidden], .ancien-type[hidden], .offres-suggestions[hidden] { display: none !important; }
+        .offres-recherche { position: relative; margin-bottom: 14px; }
+        .offres-recherche input { padding-left: 42px; }
+        .offres-recherche .loupe {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            width: 16px; height: 16px; color: #8a92a6; pointer-events: none;
+        }
+        .offres-suggestions {
+            position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 5;
+            background: white; border: 2px solid #e1e5f1; border-radius: 10px;
+            box-shadow: 0 12px 30px rgba(21, 27, 84, 0.15);
+            max-height: 260px; overflow-y: auto; list-style: none;
+        }
+        .offres-suggestions li {
+            padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #f0f2f8;
+            font-size: 0.95rem; color: #151b54;
+        }
+        .offres-suggestions li:last-child { border-bottom: none; }
+        .offres-suggestions li small { display: block; color: #6b7393; font-size: 0.8rem; margin-top: 2px; }
+        .offres-suggestions li.actif, .offres-suggestions li:hover { background: #fff7e6; }
+        .offres-suggestions .vide { cursor: default; color: #6b7393; }
+        .offres-suggestions .vide:hover { background: white; }
+        .offres-filtres { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 14px; }
+        .offres-filtres label { font-size: 0.85rem; margin-bottom: 6px; }
+        .offres-filtres select { padding: 11px 14px; font-size: 0.95rem; }
+        .offres-liste {
+            border: 2px solid #e1e5f1; border-radius: 10px; background: white;
+            max-height: 240px; overflow-y: auto;
+        }
+        .offres-liste.erreur { border-color: #e74c3c; background: #fff5f5; }
+        .offre-choix {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 11px 14px; border-bottom: 1px solid #f0f2f8;
+            cursor: pointer; margin: 0; font-weight: normal; color: #151b54;
+        }
+        .offre-choix:last-child { border-bottom: none; }
+        .offre-choix:hover { background: #f8f9fd; }
+        .offre-choix input { width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; accent-color: #faaa03; padding: 0; }
+        .offre-choix span { flex: 1; min-width: 0; }
+        .offre-choix strong { display: block; font-size: 0.95rem; }
+        .offre-choix small { display: block; color: #6b7393; font-size: 0.8rem; margin-top: 2px; }
+        .offre-choix em { font-style: normal; font-weight: 700; color: #151b54; white-space: nowrap; font-size: 0.9rem; }
+        .offre-choix.autre { background: #fafbff; }
+        .offres-aucune { padding: 16px; color: #6b7393; font-size: 0.9rem; text-align: center; }
+        .offres-selection { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+        .offres-selection:empty { display: none; }
+        .offres-selection button {
+            display: inline-flex; align-items: center; gap: 6px; max-width: 100%;
+            padding: 6px 10px; border-radius: 20px; border: none; cursor: pointer;
+            background: #151b54; color: white; font-size: 0.82rem; font-family: inherit; text-align: left;
+        }
+        .offres-selection button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .offres-selection button b { color: #faaa03; font-size: 1rem; line-height: 1; }
+        .offres-aide { display: block; margin-top: 6px; color: #6b7393; font-size: 0.8rem; }
+
         /* Responsive */
         @media (max-width: 768px) {
+            html.en-popup body { padding: 64px 10px 20px; }
             .form-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
@@ -280,9 +345,34 @@
                 
                 <!-- Colonne droite -->
                 <div>
-                    <div class="form-group">
+                    <!-- Choix des offres du catalogue (rempli par le script) -->
+                    <div class="form-group offres-zone" id="offresZone" hidden>
+                        <label for="offreRecherche" class="required">Votre commande</label>
+                        <div class="offres-recherche">
+                            <svg class="loupe" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2.5"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+                            <input type="search" id="offreRecherche" placeholder="Rechercher une offre (ex. logo, affiche...)" autocomplete="off"
+                                   role="combobox" aria-expanded="false" aria-controls="offreSuggestions" aria-autocomplete="list">
+                            <ul class="offres-suggestions" id="offreSuggestions" role="listbox" hidden></ul>
+                        </div>
+                        <div class="offres-filtres">
+                            <div>
+                                <label for="offreCategorie">Catégorie</label>
+                                <select id="offreCategorie"><option value="">Toutes les catégories</option></select>
+                            </div>
+                            <div>
+                                <label for="offreService">Service</label>
+                                <select id="offreService"><option value="">Tous les services</option></select>
+                            </div>
+                        </div>
+                        <label id="offresTitre">Offres (plusieurs choix possibles)</label>
+                        <div class="offres-liste" id="offresListe" role="group" aria-labelledby="offresTitre"></div>
+                        <div class="offres-selection" id="offresSelection" aria-live="polite"></div>
+                    </div>
+
+                    <!-- Ancienne liste : utilisée seulement si le catalogue ne répond pas -->
+                    <div class="form-group ancien-type" id="ancienType" hidden>
                         <label for="commande" class="required">Type de commande</label>
-                        <select id="commande" name="commande" required>
+                        <select id="commande" name="commande">
                             <option value="">Sélectionnez une option</option>
                             <option value="logo_simple">Logo simple</option>
                             <option value="logo_charte">Logo & charte graphique</option>
@@ -354,7 +444,210 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     submitBtn.type = 'button';
-    
+
+    // =====================================================================
+    // FERMETURE : popup du site (iframe) ou ancienne fenêtre séparée
+    // =====================================================================
+    const enPopup = window.self !== window.top;
+    function fermerFormulaire() {
+        if (enPopup) {
+            window.parent.postMessage({ type: 'wcs-commande-fermer' }, window.location.origin);
+        } else if (window.opener && !window.opener.closed) {
+            window.close();
+        }
+    }
+    if (enPopup) {
+        // Clic à côté du formulaire ou touche Échap : on ferme la popup
+        document.body.addEventListener('click', (e) => { if (e.target === document.body) fermerFormulaire(); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') fermerFormulaire();
+        });
+    }
+
+    // =====================================================================
+    // CHOIX DES OFFRES : recherche, catégorie, service, offres (choix multiple)
+    // =====================================================================
+    const zone = document.getElementById('offresZone');
+    const ancienType = document.getElementById('ancienType');
+    const ancienSelect = document.getElementById('commande');
+    const recherche = document.getElementById('offreRecherche');
+    const suggestions = document.getElementById('offreSuggestions');
+    const selCategorie = document.getElementById('offreCategorie');
+    const selService = document.getElementById('offreService');
+    const liste = document.getElementById('offresListe');
+    const resume = document.getElementById('offresSelection');
+
+    let offres = [];                 // toutes les offres : { id, nom, prix, duree, description, cat, catId, serv, servId }
+    const choisies = new Set();      // identifiants choisis ('autre' = autre projet)
+    let modeCatalogue = false;
+    let suggestionActive = -1;
+
+    const normaliser = (t) => String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const creer = (tag, classe, texte) => {
+        const el = document.createElement(tag);
+        if (classe) el.className = classe;
+        if (texte !== undefined) el.textContent = texte;
+        return el;
+    };
+
+    function passerEnAncienMode() {
+        modeCatalogue = false;
+        zone.hidden = true;
+        ancienType.hidden = false;
+        ancienSelect.required = true;
+        ancienSelect.name = 'commande';
+    }
+
+    function remplirServices() {
+        const catId = selCategorie.value;
+        const vus = new Map();
+        offres.forEach(o => { if (!catId || String(o.catId) === catId) vus.set(o.servId, o.serv); });
+        const garde = selService.value;
+        selService.replaceChildren(new Option('Tous les services', ''));
+        vus.forEach((nom, id) => selService.append(new Option(nom, id)));
+        selService.value = vus.has(Number(garde)) ? garde : '';
+    }
+
+    function afficherOffres() {
+        const catId = selCategorie.value, servId = selService.value;
+        const visibles = offres.filter(o => (!catId || String(o.catId) === catId) && (!servId || String(o.servId) === servId));
+        liste.replaceChildren();
+        if (!visibles.length) liste.append(creer('div', 'offres-aucune', 'Aucune offre pour ce choix.'));
+        visibles.forEach(o => liste.append(ligneOffre(o.id, o.nom, [servId ? '' : o.serv, o.duree].filter(Boolean).join(' · '), o.prix)));
+        liste.append(ligneOffre('autre', 'Autre projet', 'Précisez votre besoin dans la description', '', 'autre'));
+    }
+
+    function ligneOffre(id, nom, detail, prix, classe) {
+        const label = creer('label', 'offre-choix' + (classe ? ' ' + classe : ''));
+        const caseACocher = creer('input');
+        caseACocher.type = 'checkbox';
+        caseACocher.value = id;
+        caseACocher.checked = choisies.has(String(id));
+        caseACocher.addEventListener('change', () => {
+            caseACocher.checked ? choisies.add(String(id)) : choisies.delete(String(id));
+            liste.classList.remove('erreur');
+            afficherResume();
+        });
+        const texte = creer('span');
+        texte.append(creer('strong', '', nom));
+        if (detail) texte.append(creer('small', '', detail));
+        label.append(caseACocher, texte);
+        if (prix) label.append(creer('em', '', prix));
+        return label;
+    }
+
+    function afficherResume() {
+        resume.replaceChildren();
+        choisies.forEach(id => {
+            const o = offres.find(x => String(x.id) === id);
+            const btn = creer('button');
+            btn.type = 'button';
+            btn.title = 'Retirer';
+            btn.setAttribute('aria-label', 'Retirer ' + (o ? o.nom : 'Autre projet'));
+            btn.append(creer('span', '', o ? o.nom + ' · ' + o.prix : 'Autre projet'), creer('b', '', '×'));
+            btn.addEventListener('click', () => { choisies.delete(id); afficherResume(); afficherOffres(); });
+            resume.append(btn);
+        });
+    }
+
+    // Choisir une offre (recherche ou lien « Commander ») : les filtres se placent tout seuls
+    function choisirOffre(id) {
+        const o = offres.find(x => String(x.id) === String(id));
+        if (!o) return;
+        choisies.add(String(o.id));
+        selCategorie.value = String(o.catId);
+        remplirServices();
+        selService.value = String(o.servId);
+        afficherOffres();
+        afficherResume();
+        liste.classList.remove('erreur');
+        const coche = liste.querySelector('input[value="' + o.id + '"]');
+        if (coche) coche.closest('.offre-choix').scrollIntoView({ block: 'nearest' });
+    }
+
+    // ---- Recherche avec suggestions ----
+    function fermerSuggestions() {
+        suggestions.hidden = true;
+        recherche.setAttribute('aria-expanded', 'false');
+        suggestionActive = -1;
+    }
+    function afficherSuggestions() {
+        const mots = normaliser(recherche.value.trim()).split(/\s+/).filter(Boolean);
+        if (!mots.length) { fermerSuggestions(); return; }
+        const trouvees = offres.filter(o => mots.every(m => o.texte.includes(m))).slice(0, 12);
+        suggestions.replaceChildren();
+        if (!trouvees.length) {
+            suggestions.append(creer('li', 'vide', 'Aucune offre trouvée. Choisissez « Autre projet ».'));
+        }
+        trouvees.forEach((o, i) => {
+            const li = creer('li');
+            li.setAttribute('role', 'option');
+            li.id = 'suggestion-' + i;
+            li.dataset.id = o.id;
+            li.append(document.createTextNode(o.nom), creer('small', '', o.serv + ' · ' + o.cat + ' · ' + o.prix));
+            li.addEventListener('mousedown', (e) => { e.preventDefault(); validerSuggestion(o.id); });
+            suggestions.append(li);
+        });
+        suggestionActive = -1;
+        suggestions.hidden = false;
+        recherche.setAttribute('aria-expanded', 'true');
+    }
+    function validerSuggestion(id) {
+        choisirOffre(id);
+        recherche.value = '';
+        fermerSuggestions();
+    }
+    function surlignerSuggestion(sens) {
+        const items = suggestions.querySelectorAll('li[data-id]');
+        if (!items.length) return;
+        suggestionActive = (suggestionActive + sens + items.length) % items.length;
+        items.forEach((li, i) => li.classList.toggle('actif', i === suggestionActive));
+        recherche.setAttribute('aria-activedescendant', items[suggestionActive].id);
+        items[suggestionActive].scrollIntoView({ block: 'nearest' });
+    }
+    recherche.addEventListener('input', afficherSuggestions);
+    recherche.addEventListener('focus', afficherSuggestions);
+    recherche.addEventListener('blur', () => setTimeout(fermerSuggestions, 150));
+    recherche.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); surlignerSuggestion(1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); surlignerSuggestion(-1); }
+        else if (e.key === 'Enter') {
+            e.preventDefault();
+            const items = suggestions.querySelectorAll('li[data-id]');
+            const item = items[suggestionActive] || items[0];
+            if (item) validerSuggestion(item.dataset.id);
+        } else if (e.key === 'Escape' && !suggestions.hidden) {
+            e.stopPropagation();
+            fermerSuggestions();
+        }
+    });
+
+    selCategorie.addEventListener('change', () => { remplirServices(); afficherOffres(); });
+    selService.addEventListener('change', afficherOffres);
+
+    // ---- Chargement du catalogue (offres actives de la page Nos tarifs) ----
+    fetch('/catalogue-offres.php', { headers: { Accept: 'application/json' } })
+        .then(r => (r.ok ? r.json() : null))
+        .then(data => {
+            const categories = (data && Array.isArray(data.categories)) ? data.categories : [];
+            // Les formations s'inscrivent depuis les pages Formations et Nos tarifs (bouton « S'inscrire »)
+            categories.filter(c => !c.formation).forEach(c => {
+                selCategorie.append(new Option(c.nom, c.id));
+                c.services.forEach(s => s.offres.forEach(o => offres.push({
+                    ...o, cat: c.nom, catId: c.id, serv: s.nom, servId: s.id,
+                    texte: normaliser([o.nom, s.nom, c.nom, o.description, o.prix].join(' '))
+                })));
+            });
+            if (!offres.length) return passerEnAncienMode();
+            modeCatalogue = true;
+            zone.hidden = false;
+            remplirServices();
+            afficherOffres();
+            const demandee = new URLSearchParams(window.location.search).get('offre');
+            if (demandee) choisirOffre(demandee);
+        })
+        .catch(passerEnAncienMode);
+
     submitBtn.addEventListener('click', async function() {
         console.log('📝 Soumission...');
         
@@ -375,8 +668,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // Au moins une offre (ou « Autre projet ») doit être choisie
+        if (modeCatalogue && choisies.size === 0) {
+            liste.classList.add('erreur');
+            valid = false;
+            if (!firstInvalid) firstInvalid = recherche;
+        }
+
         if (!valid) {
-            alert('❌ Veuillez remplir tous les champs obligatoires');
+            alert(modeCatalogue && choisies.size === 0 && firstInvalid === recherche
+                ? '❌ Choisissez au moins une offre (ou « Autre projet »)'
+                : '❌ Veuillez remplir tous les champs obligatoires');
             if (firstInvalid) {
                 firstInvalid.focus();
                 firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -392,7 +694,20 @@ document.addEventListener('DOMContentLoaded', function() {
         
         try {
             const formData = new FormData(form);
-            
+            if (modeCatalogue) {
+                // Offres choisies : le serveur retrouve leur nom et leur prix dans le catalogue
+                choisies.forEach(id => {
+                    formData.append('offres[]', id);
+                    const o = offres.find(x => String(x.id) === id);
+                    if (o) formData.append('offres_libelles[]', o.cat + ' > ' + o.serv + ' > ' + o.nom + ' : ' + o.prix);
+                });
+                const noms = [...choisies].map(id => {
+                    const o = offres.find(x => String(x.id) === id);
+                    return o ? o.nom : 'Autre projet';
+                });
+                formData.set('commande', noms[0] + (noms.length > 1 ? ' + ' + (noms.length - 1) + ' autre(s)' : ''));
+            }
+
             const response = await fetch('/send_commande.php', {
                 method: 'POST',
                 body: formData
@@ -689,18 +1004,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (countdownEl) countdownEl.textContent = countdown;
                     if (countdown <= 0) {
                         clearInterval(countdownInterval);
-                        if (window.opener && !window.opener.closed) {
-                            window.close();
-                        }
+                        fermerFormulaire();
                     }
                 }, 1000);
-                
+
                 // Bouton de fermeture manuelle
                 document.querySelector('.close-btn').addEventListener('click', () => {
                     clearInterval(countdownInterval);
-                    if (window.opener && !window.opener.closed) {
-                        window.close();
-                    }
+                    fermerFormulaire();
                 });
                 
             } else {

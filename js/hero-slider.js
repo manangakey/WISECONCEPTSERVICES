@@ -49,9 +49,20 @@
         minuteur = null;
     }
 
+    // Pause au survol de la souris : une transition déjà lancée se termine, puis l'image reste affichée
+    let survol = false;
+    cadre.addEventListener('mouseenter', () => {
+        survol = true;
+        arreter();
+    });
+    cadre.addEventListener('mouseleave', () => {
+        survol = false;
+        if (!document.hidden) demarrer();
+    });
+
     // Pause quand l'onglet n'est pas visible (évite un enchaînement rapide au retour)
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) arreter(); else demarrer();
+        if (document.hidden) arreter(); else if (!survol) demarrer();
     });
 
     demarrer();

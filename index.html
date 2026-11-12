@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wise Concept Services | Branding, Solutions IT &amp; Marketing Digital</title>
 	<meta name="description" content="WCS accompagne les entreprises à Kinshasa en stratégie de marque, infrastructures IT, communication digitale et formation professionnelle. Découvrez nos solutions.">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
 	<link rel="stylesheet" href="css/portfolio.css?v=3">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -202,18 +202,13 @@
 
                 </div>
             </div>
-            <div class="hero-visual">
-                <div class="floating-card card-1">
-                    <div class="card-icon"><!-- 🎨 --><img src="assets/images/graph.png" class="img-hero" alt="Identité de Marque"></div>
-                    <h4>Identité de Marque</h4>
-                </div>
-                <div class="floating-card card-2">
-                    <div class="card-icon"><!-- 💻 --><img src="assets/images/it-support.png" class="img-hero" alt="Solutions IT"></div>
-                    <h4>Solutions IT</h4>
-                </div>
-                <div class="floating-card card-3">
-                    <div class="card-icon"><!-- 📱 --><img src="assets/images/digital-marketing.png" class="img-hero" alt="Marketing Digital"></div>
-                    <h4>Marketing Digital</h4>
+            <!-- Images défilantes (ordre aléatoire, de droite à gauche) -->
+            <div class="hero-visual hero-slider" aria-label="Nos domaines d'expertise">
+                <div class="hero-slider-cadre">
+                    <img class="hero-slide actif" src="assets/images/hero/identite-de-marque.webp" alt="Stratégie et identité de marque" width="1536" height="1024">
+                    <img class="hero-slide" src="assets/images/hero/solutions-it.webp" alt="Solutions et infrastructure IT" width="1536" height="1024" loading="lazy">
+                    <img class="hero-slide" src="assets/images/hero/marketing-digital.webp" alt="Communication et marketing digital" width="1536" height="1024" loading="lazy">
+                    <img class="hero-slide" src="assets/images/hero/formation.webp" alt="Formation et développement des compétences" width="1536" height="1024" loading="lazy">
                 </div>
             </div>
         </div>
@@ -359,6 +354,7 @@
 
 <script src="js/script.js"></script>
 <script src="js/realisations-accueil.js?v=2" defer></script>
+<script src="js/hero-slider.js?v=1" defer></script>
 
 </body>
 	<!-- Loader animé -->

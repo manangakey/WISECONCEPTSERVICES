@@ -333,6 +333,89 @@ body {
     50% { transform: translateY(-15px) rotate(1deg); }
 }
 
+/* Accueil : images défilantes à la place des icônes flottantes */
+/* Le conteneur prend toute la largeur (les anciennes cartes lui donnaient sa taille) */
+.hero .container {
+    width: 100%;
+    align-items: center;
+}
+
+.hero .hero-slider {
+    display: block;
+    flex: 1 1 0;
+    min-width: 0;
+    height: auto;
+}
+
+.hero-slider-cadre {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto;
+    aspect-ratio: 3 / 2;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--white);
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translateX(100%);
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.hero-slide.actif {
+    transform: translateX(0);
+}
+
+.hero-slide.sortie {
+    transform: translateX(-100%);
+}
+
+.hero-slide.sans-transition {
+    transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide,
+    .hero-slide.sortie {
+        transform: none;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+    }
+    .hero-slide.actif {
+        opacity: 1;
+    }
+}
+
+/* Mobile : l'image passe sous la description, au-dessus des boutons */
+@media (max-width: 768px) {
+    .hero .container {
+        flex-direction: column;
+        gap: 0;
+    }
+    .hero .hero-content {
+        display: contents;
+    }
+    .hero .hero-title { order: 1; }
+    .hero .hero-description { order: 2; }
+    .hero .hero-slider {
+        order: 3;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+    .hero .hero-buttons { order: 4; }
+    .hero-slider-cadre {
+        border-radius: 14px;
+    }
+}
+
 /* Sections générales */
 .section-header {
     text-align: center;
